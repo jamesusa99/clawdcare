@@ -169,13 +169,22 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   );
 }
 
-// Static files + fallback for local dev (Vercel serves these directly from CDN in production)
+// Static files (local dev only — Vercel serves these from CDN in production)
 app.get("/favicon.ico", (req, res) => res.redirect(301, "/favicon.svg"));
 app.get("/favicon.png", (req, res) => res.redirect(301, "/favicon.svg"));
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname)));
 app.use((req, res) => {
-  if (req.path.startsWith("/api/")) return res.status(404).json({ error: "Not found" });
-  res.status(404).sendFile(require("path").join(__dirname, "index.html"));
+  if (req.path.startsWith("/api/")) {
+    return res.status(404).json({ error: "Not found" });
+  }
+  // Never serve HTML for asset requests — return a proper 404 so the browser
+  // doesn't silently receive HTML when expecting CSS/JS/images.
+  const assetExts = new Set([".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".woff", ".woff2", ".ttf", ".map", ".json"]);
+  if (assetExts.has(path.extname(req.path))) {
+    return res.status(404).send("Not found");
+  }
+  // SPA/MPA fallback for HTML page routes
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 module.exports = app;
