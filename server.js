@@ -36,6 +36,16 @@ const app = express();
 app.set("trust proxy", 1);
 
 // ─── 1. Static files — served immediately, no auth overhead ──────────────────
+// Block direct access to backend source files
+const BLOCKED_PATHS = new Set([
+  "/server.js", "/user-store.js", "/package.json", "/package-lock.json",
+  "/vercel.json", "/.env", "/.env.example", "/api/index.js",
+]);
+app.use((req, res, next) => {
+  if (BLOCKED_PATHS.has(req.path)) return res.status(403).send("Forbidden");
+  next();
+});
+
 app.get("/favicon.ico", (req, res) => res.redirect(301, "/favicon.svg"));
 app.get("/favicon.png",  (req, res) => res.redirect(301, "/favicon.svg"));
 app.use(express.static(path.join(__dirname), { index: "index.html" }));
