@@ -38,7 +38,8 @@ app.set("trust proxy", 1);
 // ─── 1. Static files — served immediately, no auth overhead ──────────────────
 app.get("/favicon.ico", (req, res) => res.redirect(301, "/favicon.svg"));
 app.get("/favicon.png",  (req, res) => res.redirect(301, "/favicon.svg"));
-app.use(express.static(path.join(__dirname, "public"), { index: "index.html" }));
+// Serve from repo root (same paths as Vercel’s static CDN) — do not use public/ only
+app.use(express.static(path.join(__dirname), { index: "index.html" }));
 
 // ─── 2. Body parsers ─────────────────────────────────────────────────────────
 app.use(express.json());
@@ -185,7 +186,7 @@ app.use((req, res) => {
   const assetExts = new Set([".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg",
     ".ico", ".woff", ".woff2", ".ttf", ".map", ".json"]);
   if (assetExts.has(path.extname(req.path))) return res.status(404).send("Not found");
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 module.exports = app;
