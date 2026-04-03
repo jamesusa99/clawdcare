@@ -13,10 +13,20 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { createStore } = require("./user-store");
 
 const PORT = process.env.PORT || 3000;
-const BASE_URL = (process.env.BASE_URL || `http://localhost:${PORT}`).replace(/\/$/, "");
+/** Public site URL (OAuth + links). On Vercel, prefer BASE_URL env or VERCEL_URL. */
+function resolveBaseUrl() {
+  if (process.env.BASE_URL) return process.env.BASE_URL.replace(/\/$/, "");
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL.replace(/^https?:\/\//, "")}`;
+  return `http://localhost:${PORT}`;
+}
+const BASE_URL = resolveBaseUrl();
 const SESSION_SECRET = process.env.SESSION_SECRET || "dev-only-change-me";
 
-const store = createStore(path.join(__dirname, "data", "users.json"));
+/** Vercel filesystem is read-only except /tmp — use temp store there when deployed. */
+const userStorePath = process.env.VERCEL
+  ? path.join("/tmp", "clawdcare-users.json")
+  : path.join(__dirname, "data", "users.json");
+const store = createStore(userStorePath);
 
 const app = express();
 app.set("trust proxy", 1);
@@ -159,6 +169,13 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   );
 }
 
+app.get("/favicon.ico", (req, res) => {
+  res.redirect(301, "/favicon.svg");
+});
+app.get("/favicon.png", (req, res) => {
+  res.redirect(301, "/favicon.svg");
+});
+
 app.use(express.static(__dirname));
 
 app.use((req, res) => {
@@ -166,6 +183,10 @@ app.use((req, res) => {
   res.status(404).send("Not found");
 });
 
-app.listen(PORT, () => {
-  console.log(`ClawdCare server running at ${BASE_URL}`);
-});
+module.exports = app;
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`ClawdCare server running at ${BASE_URL}`);
+  });
+}
