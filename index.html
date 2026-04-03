@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="ClawdCare — Local-first AI health intelligence. BingoClaw V-Series: your family's private health hub powered by LifeClock science." />
+  <title>ClawdCare — Local AI Health Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav-inner">
+      <a class="logo" href="index.html#top" id="top">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 18c0-4 2.5-7 6-8 1.5 2 2 4.5 1.5 7L8 18zm16 0c0-4-2.5-7-6-8-1.5 2-2 4.5-1.5 7L24 18z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M12 20c2 3 5 4 8 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            <circle cx="13" cy="12" r="1.2" fill="currentColor" />
+            <circle cx="19" cy="12" r="1.2" fill="currentColor" />
+          </svg>
+        </span>
+        ClawdCare
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#product">Product</a>
+        <a href="#architecture">Platform</a>
+        <a href="#science">Science</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#team">Team</a>
+        <a href="#roadmap">Roadmap</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-ghost" href="login.html">Sign in</a>
+        <a class="btn btn-primary" href="register.html">Create account</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="hero-badge">BingoClaw V-Series · Health Guardian</p>
+          <h1>The intelligence of health—on your desk, in your home, under your control.</h1>
+          <p class="hero-lead">
+            ClawdCare is an out-of-the-box <strong>local AI health hub</strong>: bring together labs, imaging, wearables, and PDFs on <em>your</em> hardware, then turn longitudinal data into a repeatable test-and-action loop—powered by LifeClock science and a trust-first architecture.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#product">Explore the device</a>
+            <a class="btn btn-ghost" href="#science">LifeClock engine</a>
+          </div>
+          <div class="hero-stats" role="list">
+            <div class="stat" role="listitem">
+              <div class="stat-value">64</div>
+              <div class="stat-label">Health phenotype clusters (LifeClock)</div>
+            </div>
+            <div class="stat" role="listitem">
+              <div class="stat-value">Local-first</div>
+              <div class="stat-label">Default stays on-device</div>
+            </div>
+            <div class="stat" role="listitem">
+              <div class="stat-value">$199</div>
+              <div class="stat-label">Hardware entry (planned)</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img src="assets/hero-home.png" width="960" height="720" alt="BingoClaw V-Series on a shelf in a modern living room, Health Guardian interface visible" />
+          <p class="hero-caption">BingoClaw V-Series — aluminum chassis, edge display, cyan accent lighting. Health Guardian at the center of your home.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="product" style="background: var(--bg-elevated); border-block: 1px solid var(--border-subtle);">
+      <div class="wrap">
+        <p class="section-label">Product</p>
+        <h2>BingoClaw V-Series: embodied intelligence—not another cloud-only app.</h2>
+        <p class="section-lead">
+          A compact desktop appliance with a slanted glass display, bead-blasted aluminum, and purposeful cyan lighting. Three modules frame the experience—<strong>Quant Hunter</strong> for data, <strong>Health Guardian</strong> (the ClawdCare core) for longitudinal wellness, and <strong>Creative Engine</strong> for multimodal AI workflows.
+        </p>
+
+        <div class="card-grid cols-3" style="margin-bottom: 3rem;">
+          <article class="card">
+            <div class="card-icon icon-cyan" aria-hidden="true">◇</div>
+            <h3>Quant Hunter</h3>
+            <p>Finance-grade visualization for biomarkers and trends—charts, drivers, and signals in one glance.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon icon-green" aria-hidden="true">🛡</div>
+            <h3>Health Guardian</h3>
+            <p>Your family's anti-aging and prevention layer: LifeClock interpretation, retest priorities, and actionable plans.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon icon-purple" aria-hidden="true">◆</div>
+            <h3>Creative Engine</h3>
+            <p>Multimodal AI for summaries, imaging context, and voice—running in a restricted, auditable envelope.</p>
+          </article>
+        </div>
+
+        <div class="product-showcase">
+          <div class="product-shot">
+            <img src="assets/product-v-series-detail.png" width="960" height="720" alt="BingoClaw V-Series side view showing SSD bay, Ethernet, USB-C, and WiFi status" />
+          </div>
+          <div>
+            <p class="section-label" style="margin-bottom: 0.5rem;">Design &amp; engineering</p>
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.75rem;">Precision hardware for a private health OS.</h2>
+            <p class="section-lead" style="margin-bottom: 1rem;">
+              User-accessible <strong>M.2 NVMe</strong> storage, <strong>RJ45</strong> and <strong>USB-C (power &amp; data)</strong>, <strong>WiFi 7 / cloud sync</strong> indicators, and a front <strong>mic array with ANC</strong> for clear voice sessions. Thermal vents and mesh acoustics match compute-class reliability with living-room quiet.
+            </p>
+            <ul class="feature-list">
+              <li>Brushed space-gray aluminum, edge-to-edge glass, under-glow feet</li>
+              <li>Discrete data plane: expand storage without shipping data to a third party by default</li>
+              <li>Built for 24/7 presence—ambient light strip and status LEDs you can trust at a glance</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="product-showcase reverse" style="margin-top: 3rem;">
+          <div class="product-shot">
+            <img src="assets/product-medialab.png" width="960" height="720" alt="BingoClaw V-Series on a research desk with keyboard and HydraQuant documents" />
+          </div>
+          <div>
+            <p class="section-label" style="margin-bottom: 0.5rem;">Where it lives</p>
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.75rem;">From research bench to family room.</h2>
+            <p class="section-lead" style="margin-bottom: 1rem;">
+              The same industrial design language works in a Media Lab workflow or beside family photos: credible, calm, and unmistakably <em>premium tech</em>—because health infrastructure should feel as serious as the decisions it supports.
+            </p>
+            <ul class="feature-list">
+              <li>Structured ingestion from PDFs, DICOM summaries, labs, and wearables</li>
+              <li>Unified timeline—not scattered across siloed apps and portals</li>
+              <li>Designed for households that value privacy, longevity, and continuity</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="architecture">
+      <div class="wrap">
+        <p class="section-label">Platform</p>
+        <h2>Four layers: from raw files to closed-loop care.</h2>
+        <p class="section-lead">
+          ClawdCare is a <strong>health operating layer</strong>—not a one-off chatbot. It connects ingestion, intelligence, action, and a gated ecosystem so your data stays useful across years, not minutes.
+        </p>
+        <div class="card-grid cols-2">
+          <article class="card">
+            <h3>1 · Data plane</h3>
+            <p>Auto-import physicals, lab PDFs, imaging summaries, wearables, and household profiles. OCR, field mapping, and a structured longitudinal record.</p>
+          </article>
+          <article class="card">
+            <h3>2 · Health intelligence</h3>
+            <p>LifeClock core: biological age trends, cluster assignment across 64 phenotype groups, driver decomposition, long-horizon risk hints, and retest prioritization.</p>
+          </article>
+          <article class="card">
+            <h3>3 · Action loop</h3>
+            <p>Next retest windows, missing data to collect, behavior nudges, clinician talking points, and family-aware reminders—turning insight into execution.</p>
+          </article>
+          <article class="card">
+            <h3>4 · Controlled ecosystem</h3>
+            <p>OpenClaw-inspired expansion with medical guardrails: allow-listed skills, read-only defaults, dual confirmation for external actions, sensitive-field isolation, and full audit logs.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="science" style="background: var(--bg-elevated); border-block: 1px solid var(--border-subtle);">
+      <div class="wrap">
+        <p class="section-label">Science</p>
+        <h2>LifeClock: population-scale longitudinal biology.</h2>
+        <p class="section-lead">
+          Our algorithmic foundation builds on peer-reviewed work: a model trained on vast real-world longitudinal visits, encoding a life-course clock and discovering dozens of health-state clusters—so your trajectory is interpreted in context, not as a single snapshot.
+        </p>
+        <div class="card-grid cols-3">
+          <article class="card">
+            <h3>Scale</h3>
+            <p>Training signal from tens of millions of longitudinal clinical visits and millions of individuals—designed for real-world heterogeneity, not toy datasets.</p>
+          </article>
+          <article class="card">
+            <h3>Phenotype clusters</h3>
+            <p><strong>64</strong> clusters capture distinct risk and lifestyle patterns—so recommendations reflect cohort-level structure, not generic advice.</p>
+          </article>
+          <article class="card">
+            <h3>From chart to plan</h3>
+            <p>LifeClock isn't vanity scoring—it's a <strong>task prioritizer</strong> for retests, drivers, and the next 90 days of disciplined follow-through.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="privacy">
+      <div class="wrap">
+        <p class="section-label">Privacy &amp; trust</p>
+        <h2>Default stays with you. Architecture, not marketing.</h2>
+        <p class="section-lead">
+          High-net-worth families and privacy-native technologists do not want sensitive history mirrored by default. ClawdCare is built as a <strong>local-first</strong> container: physical isolation, user sovereignty, and an honest threat model—including a curated agent surface in health mode.
+        </p>
+        <div class="table-wrap">
+          <table class="compare">
+            <thead>
+              <tr>
+                <th>Typical cloud wellness</th>
+                <th>ClawdCare approach</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Upload-first archives</td>
+                <td class="highlight">On-device M.2 storage · default non-export</td>
+              </tr>
+              <tr>
+                <td>Ephemeral chat UX</td>
+                <td class="highlight">Durable longitudinal record &amp; retest loop</td>
+              </tr>
+              <tr>
+                <td>Single-user accounts</td>
+                <td class="highlight">Household views &amp; coordinated care</td>
+              </tr>
+              <tr>
+                <td>Opaque models</td>
+                <td class="highlight">Cluster + driver explanations tied to your data</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="wrap">
+        <p class="section-label">Pricing</p>
+        <h2>Accessible entry. Depth when you need it.</h2>
+        <p class="section-lead">
+          Hardware priced for reach; subscription aligns with mainstream preventive health anchors while reserving advanced longevity tooling for power users and families managing complexity.
+        </p>
+        <div class="pricing-grid">
+          <div class="price-card">
+            <h3>Device</h3>
+            <p class="price-tag">$199 <span>one-time (target)</span></p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0;">Local terminal · trust anchor for the home</p>
+            <ul>
+              <li>BingoClaw V-Series appliance</li>
+              <li>Health Guardian + local vault</li>
+              <li>Designed for multi-user households</li>
+            </ul>
+            <a class="btn btn-ghost" href="#contact">Notify me</a>
+          </div>
+          <div class="price-card featured">
+            <h3>Hub</h3>
+            <p class="price-tag">$19 <span>/ mo or $199 / yr</span></p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0;">For most families</p>
+            <ul>
+              <li>Multi-user management &amp; imports</li>
+              <li>Trend analysis &amp; baseline risk cues</li>
+              <li>Annual retest planning</li>
+            </ul>
+            <a class="btn btn-primary" href="register.html">Join the waitlist</a>
+          </div>
+          <div class="price-card">
+            <h3>Pro Longevity</h3>
+            <p class="price-tag">$79 <span>/ mo or $799 / yr</span></p>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0;">Deep programs</p>
+            <ul>
+              <li>Richer cluster &amp; driver narratives</li>
+              <li>Long-horizon task systems</li>
+              <li>Collaboration &amp; priority support</li>
+            </ul>
+            <a class="btn btn-ghost" href="#contact">Talk to us</a>
+          </div>
+        </div>
+        <p style="margin-top: 1.5rem; font-size: 0.8125rem; color: var(--text-muted);">
+          Partner labs, imaging, and concierge services may carry separate fees; optional referral economics align with CLIA-grade providers. Figures are directional per business plan V5.4 and subject to change.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" id="team" style="background: var(--bg-elevated); border-block: 1px solid var(--border-subtle);">
+      <div class="wrap">
+        <p class="section-label">Leadership</p>
+        <h2>Scientists, engineers, and operators—shipping trust at the edge.</h2>
+        <p class="section-lead">
+          Building ClawdCare requires edge hardware, health informatics, compliance, and rigorous AI—not generic SaaS alone.
+        </p>
+        <div class="team-grid">
+          <article class="team-card">
+            <p class="role">Chief Scientific Advisor</p>
+            <h3>Prof. Kang Zhang, M.D., Ph.D.</h3>
+            <p>Harvard &amp; MIT trained; Member, Academia Europaea; extensive publication record across top-tier journals; guides medical AI architecture and privacy-preserving health data practice.</p>
+          </article>
+          <article class="team-card">
+            <p class="role">Founder &amp; CEO</p>
+            <h3>Jianwen Chen, Ph.D.</h3>
+            <p>Professor, UESTC; founder of Media Lab@UESTC; 200+ papers and 100+ patents; leads product strategy, systems architecture, and partnerships.</p>
+          </article>
+          <article class="team-card">
+            <p class="role">Chief Technology Officer</p>
+            <h3>Wenyi Wang, Ph.D.</h3>
+            <p>Professor, UESTC; Ottawa Ph.D.; computer vision, segmentation, and deep learning optimization for on-device health imaging pipelines.</p>
+          </article>
+          <article class="team-card">
+            <p class="role">Chief Scientist</p>
+            <h3>Feng Xu, Ph.D.</h3>
+            <p>Tsinghua Ph.D.; multimodal LLMs, robotics vision, and medical AI; former Samsung Research America; standards and patent experience across video and imaging.</p>
+          </article>
+          <article class="team-card">
+            <p class="role">Chief Health Officer</p>
+            <h3>Shuang Wang, Ph.D.</h3>
+            <p>Sensor networks and chronic-care analytics; US patent holder in integrated monitoring; designs personalized health programs grounded in evidence.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <div class="wrap">
+        <p class="section-label">Roadmap</p>
+        <h2>Milestones toward scale—with discipline.</h2>
+        <p class="section-lead">
+          From alpha devices in Orange County to ten-thousand-unit production and a reproducible retest cohort—execution beats hype.
+        </p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <strong>2026 Q2</strong>
+            <p>Alpha local terminal &amp; structured-record MVP; 300–500 seed units in Irvine.</p>
+          </div>
+          <div class="timeline-item">
+            <strong>2026 Q3</strong>
+            <p>LifeClock productization, first retest-closure system, restricted OpenClaw health skill framework.</p>
+          </div>
+          <div class="timeline-item">
+            <strong>2026 Q4</strong>
+            <p>1.0 release; first 10,000-unit manufacturing run; initial longitudinal retest population.</p>
+          </div>
+          <div class="timeline-item">
+            <strong>2027 Q2</strong>
+            <p>Household &amp; multi-member Pro tiers; expanded lab and imaging partner network.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="wrap">
+        <div class="cta-band">
+          <h2>Put longitudinal health intelligence where it belongs—with you.</h2>
+          <p>
+            ClawdCare is the trust-driven loop: hardware you can see, science you can cite, and data that stays yours by default.
+          </p>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center;">
+            <a class="btn btn-primary" href="mailto:hello@clawdcare.com">hello@clawdcare.com</a>
+            <a class="btn btn-ghost" href="#top">Back to top</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="index.html#top">
+          <span class="logo-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 18c0-4 2.5-7 6-8 1.5 2 2 4.5 1.5 7L8 18zm16 0c0-4-2.5-7-6-8-1.5 2-2 4.5-1.5 7L24 18z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M12 20c2 3 5 4 8 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="13" cy="12" r="1.2" fill="currentColor"/><circle cx="19" cy="12" r="1.2" fill="currentColor"/></svg>
+          </span>
+          ClawdCare
+        </a>
+        <p>Local-first AI health intelligence. BingoClaw V-Series hardware · LifeClock science · OpenClaw-compatible ecosystem with medical guardrails.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#product">BingoClaw V-Series</a>
+        <a href="#architecture">Platform layers</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#team">Team</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="mailto:hello@clawdcare.com">Contact</a>
+      </div>
+    </div>
+    <div class="wrap">
+      <p class="disclaimer">
+        <strong>Wellness &amp; general health use.</strong> ClawdCare / BingoClaw Health Care is intended for wellness, prevention, and personal health record organization unless and where registered as a medical device. It does not replace professional medical diagnosis or treatment. LifeClock references reflect published research directions; commercial deployment is subject to licensing and regulatory positioning in your jurisdiction.
+      </p>
+      <p class="disclaimer" style="margin-top: 0.75rem;">
+        © <span id="y"></span> ClawdCare · clawdcare.com · BingoClaw
+      </p>
+    </div>
+  </footer>
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

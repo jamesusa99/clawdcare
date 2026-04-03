@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create account — ClawdCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body class="auth-page">
+  <header class="auth-topbar">
+    <a class="auth-brand" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M8 18c0-4 2.5-7 6-8 1.5 2 2 4.5 1.5 7L8 18zm16 0c0-4-2.5-7-6-8-1.5 2-2 4.5-1.5 7L24 18z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M12 20c2 3 5 4 8 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        <circle cx="13" cy="12" r="1.2" fill="currentColor" />
+        <circle cx="19" cy="12" r="1.2" fill="currentColor" />
+      </svg>
+      ClawdCare
+    </a>
+    <span class="auth-lang" lang="en">EN</span>
+  </header>
+
+  <main class="auth-main">
+    <div class="auth-card">
+      <h1>Create account</h1>
+      <p class="auth-sub">Join the ClawdCare platform — email or Google.</p>
+
+      <div id="auth-error" class="auth-error" role="alert"></div>
+
+      <div class="auth-social" id="google-slot"></div>
+
+      <div class="auth-divider"><span>or</span></div>
+
+      <form id="register-form" novalidate>
+        <div class="auth-field">
+          <label for="name">Name <span style="color:var(--auth-muted);font-weight:400">(optional)</span></label>
+          <input id="name" name="name" type="text" autocomplete="name" placeholder="Your name" />
+        </div>
+        <div class="auth-field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters" />
+        </div>
+        <button type="submit" class="auth-btn-primary">Create account</button>
+      </form>
+
+      <p class="auth-footer">
+        Already have an account? <a href="login.html">Sign in</a>
+      </p>
+    </div>
+  </main>
+
+  <p class="auth-footnote">
+    For general wellness and account access. Not a substitute for professional medical care.
+  </p>
+
+  <script src="js/auth.js"></script>
+  <script>
+    initGoogleButton("google-slot");
+    bindAuthForm("register-form", "/api/auth/register", function (fd) {
+      var n = (fd.get("name") || "").trim();
+      return n ? { name: n } : {};
+    });
+  </script>
+</body>
+</html>
