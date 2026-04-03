@@ -1,10 +1,6 @@
 {
-  "functions": {
-    "api/index.js": {
-      "includeFiles": "*.{html,css,svg},assets/**,fonts/**,js/**"
-    }
-  },
+  "outputDirectory": "public",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api" }
+    { "source": "/api/:path*", "destination": "/api" }
   ]
 }

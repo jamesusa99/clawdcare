@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>Sign in — ClawdCare</title>
+
+
+  <link rel="stylesheet" href="/fonts/inter.css" />
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body class="auth-page">
+  <header class="auth-topbar">
+    <a class="auth-brand" href="index.html">
+      <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M8 18c0-4 2.5-7 6-8 1.5 2 2 4.5 1.5 7L8 18zm16 0c0-4-2.5-7-6-8-1.5 2-2 4.5-1.5 7L24 18z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        <path d="M12 20c2 3 5 4 8 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        <circle cx="13" cy="12" r="1.2" fill="currentColor" />
+        <circle cx="19" cy="12" r="1.2" fill="currentColor" />
+      </svg>
+      ClawdCare
+    </a>
+    <span class="auth-lang" lang="en">EN</span>
+  </header>
+
+  <main class="auth-main">
+    <div class="auth-card">
+      <h1>Sign in</h1>
+      <p class="auth-sub">Access your local health hub account.</p>
+
+      <div id="auth-error" class="auth-error" role="alert"></div>
+
+      <div class="auth-social" id="google-slot"></div>
+
+      <div class="auth-divider" id="auth-or"><span>or</span></div>
+
+      <form id="login-form" novalidate>
+        <div class="auth-field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" />
+        </div>
+        <div class="auth-field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="auth-btn-primary">Sign in</button>
+      </form>
+
+      <p class="auth-footer">
+        New to ClawdCare? <a href="register.html">Create an account</a>
+      </p>
+    </div>
+  </main>
+
+  <p class="auth-footnote">
+    Local-first AI health intelligence. By continuing you agree to our approach to on-device data and wellness use only.
+  </p>
+
+  <script src="js/auth.js"></script>
+  <script>
+    (function () {
+      function showErr(msg) {
+        var el = document.getElementById("auth-error");
+        if (!el) return;
+        el.textContent = msg || "";
+        el.classList.toggle("visible", !!msg);
+      }
+      var p = new URLSearchParams(location.search);
+      if (p.get("error") === "google") showErr("Google sign-in was cancelled or failed. Try again or use email.");
+      initGoogleButton("google-slot");
+      bindAuthForm("login-form", "/api/auth/login");
+    })();
+  </script>
+</body>
+</html>
