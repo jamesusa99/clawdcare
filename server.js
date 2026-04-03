@@ -1,6 +1,12 @@
 /**
  * ClawdCare static site + auth API (email/password + Google OAuth).
- * Run: npm install && npm run dev
+ *
+ * Middleware order — static files FIRST, auth only for /api routes:
+ *   1. Static files  (no auth needed, fastest path)
+ *   2. Body parsers
+ *   3. Session + Passport  (only matters for /api routes)
+ *   4. API routes
+ *   5. Catch-all fallback
  */
 require("dotenv").config();
 const path = require("path");
@@ -13,7 +19,6 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const { createStore } = require("./user-store");
 
 const PORT = process.env.PORT || 3000;
-/** Public site URL (OAuth + links). On Vercel, prefer BASE_URL env or VERCEL_URL. */
 function resolveBaseUrl() {
   if (process.env.BASE_URL) return process.env.BASE_URL.replace(/\/$/, "");
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL.replace(/^https?:\/\//, "")}`;
@@ -22,7 +27,6 @@ function resolveBaseUrl() {
 const BASE_URL = resolveBaseUrl();
 const SESSION_SECRET = process.env.SESSION_SECRET || "dev-only-change-me";
 
-/** Vercel filesystem is read-only except /tmp — use temp store there when deployed. */
 const userStorePath = process.env.VERCEL
   ? path.join("/tmp", "clawdcare-users.json")
   : path.join(__dirname, "data", "users.json");
@@ -30,9 +34,17 @@ const store = createStore(userStorePath);
 
 const app = express();
 app.set("trust proxy", 1);
+
+// ─── 1. Static files — served immediately, no auth overhead ──────────────────
+app.get("/favicon.ico", (req, res) => res.redirect(301, "/favicon.svg"));
+app.get("/favicon.png",  (req, res) => res.redirect(301, "/favicon.svg"));
+app.use(express.static(path.join(__dirname), { index: "index.html" }));
+
+// ─── 2. Body parsers ─────────────────────────────────────────────────────────
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ─── 3. Session + Passport ───────────────────────────────────────────────────
 app.use(
   session({
     secret: SESSION_SECRET,
@@ -46,7 +58,6 @@ app.use(
     },
   })
 );
-
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -54,8 +65,7 @@ passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser((id, done) => {
   try {
     const row = store.findById(id);
-    if (!row) return done(null, null);
-    done(null, { id: row.id, email: row.email, name: row.name });
+    done(null, row ? { id: row.id, email: row.email, name: row.name } : null);
   } catch (e) {
     done(e);
   }
@@ -85,10 +95,9 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
       (accessToken, refreshToken, profile, done) => {
         try {
           const googleId = profile.id;
-          const email = (profile.emails && profile.emails[0] && profile.emails[0].value) || "";
+          const email = (profile.emails?.[0]?.value) || "";
           const name = profile.displayName || "";
           if (!email) return done(new Error("No email from Google"));
-
           let user = store.findByGoogleId(googleId);
           if (!user) {
             const existing = store.findByEmail(email);
@@ -108,6 +117,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   );
 }
 
+// ─── 4. API routes ───────────────────────────────────────────────────────────
 app.get("/api/auth/config", (req, res) => {
   res.json({
     googleEnabled: !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET),
@@ -169,21 +179,12 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   );
 }
 
-// Static files (local dev only — Vercel serves these from CDN in production)
-app.get("/favicon.ico", (req, res) => res.redirect(301, "/favicon.svg"));
-app.get("/favicon.png", (req, res) => res.redirect(301, "/favicon.svg"));
-app.use(express.static(path.join(__dirname)));
+// ─── 5. Fallback ─────────────────────────────────────────────────────────────
 app.use((req, res) => {
-  if (req.path.startsWith("/api/")) {
-    return res.status(404).json({ error: "Not found" });
-  }
-  // Never serve HTML for asset requests — return a proper 404 so the browser
-  // doesn't silently receive HTML when expecting CSS/JS/images.
-  const assetExts = new Set([".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".woff", ".woff2", ".ttf", ".map", ".json"]);
-  if (assetExts.has(path.extname(req.path))) {
-    return res.status(404).send("Not found");
-  }
-  // SPA/MPA fallback for HTML page routes
+  if (req.path.startsWith("/api/")) return res.status(404).json({ error: "Not found" });
+  const assetExts = new Set([".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg",
+    ".ico", ".woff", ".woff2", ".ttf", ".map", ".json"]);
+  if (assetExts.has(path.extname(req.path))) return res.status(404).send("Not found");
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
