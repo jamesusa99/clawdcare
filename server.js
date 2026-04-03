@@ -169,18 +169,13 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   );
 }
 
-app.get("/favicon.ico", (req, res) => {
-  res.redirect(301, "/favicon.svg");
-});
-app.get("/favicon.png", (req, res) => {
-  res.redirect(301, "/favicon.svg");
-});
-
+// Static files + fallback for local dev (Vercel serves these directly from CDN in production)
+app.get("/favicon.ico", (req, res) => res.redirect(301, "/favicon.svg"));
+app.get("/favicon.png", (req, res) => res.redirect(301, "/favicon.svg"));
 app.use(express.static(__dirname));
-
 app.use((req, res) => {
   if (req.path.startsWith("/api/")) return res.status(404).json({ error: "Not found" });
-  res.status(404).send("Not found");
+  res.status(404).sendFile(require("path").join(__dirname, "index.html"));
 });
 
 module.exports = app;
