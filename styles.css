@@ -719,3 +719,207 @@ table.compare {
     gap: 1.25rem;
   }
 }
+
+/* —— V5.4 landing additions —— */
+.hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 1.25rem;
+  padding: 1.25rem 0 0;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+@media (min-width: 640px) {
+  .hero-metrics {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.hero-metrics .metric {
+  text-align: left;
+}
+
+.hero-metrics .metric strong {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--accent-cyan);
+  line-height: 1.2;
+}
+
+.hero-metrics .metric span {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 0.35rem;
+  display: block;
+  line-height: 1.35;
+}
+
+.pill-note {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 1rem;
+  max-width: 56ch;
+  line-height: 1.5;
+}
+
+.dual-col {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 800px) {
+  .dual-col.split {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+.not-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.not-list li {
+  position: relative;
+  padding-left: 1.35rem;
+  margin-bottom: 0.65rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+
+.not-list li::before {
+  content: "×";
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.yes-list li::before {
+  content: "✓";
+  color: var(--accent-green);
+}
+
+.quote-block {
+  margin: 2rem 0 0;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--accent-cyan);
+  background: rgba(0, 232, 220, 0.06);
+  font-size: 1.0625rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.quote-block cite {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.8125rem;
+  font-style: normal;
+  color: var(--text-muted);
+}
+
+.revenue-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.revenue-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem 1.25rem;
+  align-items: baseline;
+  padding: 0.85rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+}
+
+.revenue-row strong {
+  color: var(--accent-cyan);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.revenue-row span {
+  color: var(--text-secondary);
+}
+
+.kpi-grid {
+  display: grid;
+  gap: 0.65rem 1.25rem;
+}
+
+@media (min-width: 560px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.kpi-grid li {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.kpi-grid li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+}
+
+.finance-strip {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 720px) {
+  .finance-strip {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.finance-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+.finance-card h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-cyan);
+}
+
+.finance-card p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.section-anchor {
+  scroll-margin-top: 5rem;
+}
