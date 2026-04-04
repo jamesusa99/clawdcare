@@ -253,6 +253,19 @@ h2 {
 .hero-card--media {
   padding: 0;
   overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(56, 189, 248, 0.12),
+    0 0 48px -12px rgba(249, 115, 22, 0.12);
+}
+.hero-card--media::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .hero-product-img {
@@ -260,8 +273,9 @@ h2 {
   height: auto;
   display: block;
   vertical-align: middle;
-  aspect-ratio: 4/3;
+  aspect-ratio: 1024 / 558;
   object-fit: cover;
+  object-position: 50% 42%;
 }
 
 .hero-card-foot {
@@ -295,6 +309,23 @@ h2 {
   border: 1px solid var(--border);
   background: var(--card);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.28s ease, transform 0.28s ease, border-color 0.28s ease;
+}
+.product-shot:hover {
+  border-color: rgba(249, 115, 22, 0.35);
+  box-shadow:
+    0 28px 72px rgba(0, 0, 0, 0.32),
+    0 0 0 1px rgba(56, 189, 248, 0.1),
+    0 0 40px -16px rgba(249, 115, 22, 0.15);
+  transform: translateY(-3px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-shot {
+    transition: none;
+  }
+  .product-shot:hover {
+    transform: none;
+  }
 }
 
 .product-shot img {
@@ -302,6 +333,13 @@ h2 {
   height: auto;
   display: block;
   vertical-align: middle;
+  aspect-ratio: 1024 / 558;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.product-shot-wide img {
+  object-position: 50% 45%;
 }
 
 .product-shot figcaption {

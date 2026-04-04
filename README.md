@@ -17,7 +17,7 @@ Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, 
 | `/login.html`, `/register.html` | Session auth |
 | `/404.html` | Custom not-found (used by Vercel when a path has no file) |
 
-**SEO / discovery:** `sitemap.xml` and `public/robots.txt` (served at `/robots.txt`). Product illustrations live in `public/assets/` as SVGs referenced from the homepage.
+**SEO / discovery:** `sitemap.xml` and `public/robots.txt` (served at `/robots.txt`). Product photography lives in `public/assets/` (homepage hero + gallery).
 
 ## Local development
 
@@ -31,7 +31,7 @@ Open `http://localhost:3000`.
 
 ## Deploy (Vercel)
 
-- Shared assets live under **`public/`** (`css/`, `js/`, `assets/*.svg`, `favicon.svg`, `robots.txt`) so Vercel’s static layer serves them at `/css/...`, `/js/...`, `/assets/...`, etc. (filesystem wins before rewrites).
+- Shared assets live under **`public/`** (`css/`, `js/`, `assets/` product PNGs + `favicon.svg`, `robots.txt`) so Vercel’s static layer serves them at `/css/...`, `/js/...`, `/assets/...`, etc. (filesystem wins before rewrites).
 - `vercel.json` only rewrites **`/api/:path*`** → `/api` (Express for auth/session APIs). HTML at the repo root is deployed as static files the same way.
 - Set `SESSION_SECRET` (and optionally `BASE_URL` for your production URL) in the Vercel project environment.
 - Demo users are stored in `/tmp` on serverless; use a real database for production.
