@@ -1,13 +1,14 @@
 # ClawdCare (clawdcare.com)
 
-Official marketing and account site for **BingoClaw Health Care** (business plan V3.0 narrative): product story, **shop** (cart + mailto checkout), **console** preview, **about**, **support**, **legal**, and **My account** (email/password auth).
+Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, **shop** (ordering), **Your health** (product use and personal health center narrative), **console** preview, **about**, **support**, **legal**, and **My account** (user management + email/password auth)—structured as a single platform toward a personal health management center.
 
 ## Pages
 
 | Path | Purpose |
 |------|---------|
 | `/` | Product introduction — 16 capabilities, market gap, science/privacy |
-| `/shop.html` | Purchase flow — SKUs, localStorage cart, email order handoff |
+| `/shop.html` | Product ordering — SKUs, localStorage cart, email order handoff |
+| `/use.html` | Product use — how ClawdCare fits daily life; links to console and account |
 | `/console.html` | Control panel preview (public; sign-in optional for future binding) |
 | `/about.html` | Company, roadmap, financial sketch from plan |
 | `/support.html` | Help & contact |

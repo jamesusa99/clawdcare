@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="ClawdCare console: pair hardware, manage health data imports, programs, and alerts—your control surface for a personal health management center." />
   <title>Console — ClawdCare</title>
   <style>html,body{background:#0a0e14;color:#e8edf4}</style>
   <link rel="stylesheet" href="/css/app.css" />
@@ -20,6 +21,7 @@
       <nav class="nav-main" aria-label="Main">
         <a href="/" data-nav>Product</a>
         <a href="/shop.html" data-nav>Shop</a>
+        <a href="/use.html" data-nav>Your health</a>
         <a href="/console.html" data-nav>Console</a>
         <a href="/about.html" data-nav>About</a>
         <a href="/support.html" data-nav>Support</a>
@@ -34,33 +36,45 @@
   <main>
     <div class="wrap page-title">
       <h1>Console</h1>
-      <p>Preview of the in-home control surface. Pairing, sync, and automation controls will activate as alpha hardware ships. <a href="/login.html?next=/console.html">Sign in</a> to associate this view with your account (optional during beta).</p>
+      <p>
+        Your <strong>control surface</strong> for ClawdCare: pairing, data imports, programs, skills, and alerts. This is where the platform moves from “website” to <strong>operating your personal health management center</strong> alongside the device. Preview UI—controls activate as hardware and services roll out.
+        <a href="/login.html?next=/console.html">Sign in</a> to tie this view to your account; new to the journey? See <a href="/use.html">Your health</a>.
+      </p>
     </div>
     <section style="padding-top:0">
       <div class="wrap panel-grid">
         <div class="panel">
           <h3><span class="status-dot"></span>Device</h3>
-          <p>No paired hardware detected. After you receive a BingoClaw hub, use <strong>Scan to pair</strong> from the mobile companion (coming soon).</p>
-          <p style="margin-top:0.75rem;font-size:0.8125rem"><a href="/account.html">My account</a> · <a href="/shop.html">Reserve hardware</a></p>
+          <p>No paired ClawdCare hardware detected. After delivery, use <strong>Scan to pair</strong> from the companion app (roadmap) so the console can manage firmware, storage, and trust boundaries.</p>
+          <p style="margin-top:0.75rem;font-size:0.8125rem"><a href="/account.html">My account</a> · <a href="/shop.html">Order hardware</a></p>
         </div>
         <div class="panel">
-          <h3>Data plane</h3>
-          <p>Imports: structured reports, wearables, and OCR pipelines—progress indicators will show per source.</p>
+          <h3>Health data plane</h3>
+          <p>Imports for labs, imaging PDFs, wearables, and voice-captured notes—so what you add at home becomes structured input for longitudinal wellness support (per roadmap).</p>
         </div>
         <div class="panel">
-          <h3>Skills &amp; automations</h3>
-          <p>Governed OpenClaw-compatible skills: allow-listed actions, read defaults, audit trail (health mode).</p>
+          <h3>Programs &amp; skills</h3>
+          <p>Longevity and adherence programs, plus governed OpenClaw-style skills: allow-listed actions, read defaults, and audit trail in health mode.</p>
         </div>
         <div class="panel">
-          <h3>Alerts</h3>
-          <p>Quiet by default. Priority nudges for retests, missing data, and risk summaries will surface here.</p>
+          <h3>Alerts &amp; reviews</h3>
+          <p>Quiet by default. Retest reminders, missing-data prompts, and periodic “healthy aging” summaries can surface here when you opt in.</p>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="wrap"><p class="disclaimer">Console is a preview UI. Features ship per roadmap on <a href="/about.html">About</a>.</p></div>
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 32 32" fill="none" width="20" height="20"><path d="M8 18c0-4 2.5-7 6-8 1.5 2 2 4.5 1.5 7L8 18zm16 0c0-4-2.5-7-6-8-1.5 2-2 4.5-1.5 7L24 18z" stroke="currentColor" stroke-width="1.5"/><path d="M12 20c2 3 5 4 8 0" stroke="currentColor" stroke-width="1.5"/></svg></span> ClawdCare</a>
+        <p>Console preview · roadmap on <a href="/about.html">About</a></p>
+      </div>
+      <div><h4>Platform</h4><a href="/use.html">Your health</a><a href="/shop.html">Shop</a></div>
+      <div><h4>Account</h4><a href="/account.html">My account</a><a href="/login.html?next=/console.html">Sign in</a></div>
+      <div><h4>Legal</h4><a href="/legal.html">Privacy &amp; terms</a></div>
+    </div>
+    <div class="wrap"><p class="disclaimer"><strong>Wellness use.</strong> Console features described here are product direction unless cleared as a medical device in your jurisdiction.</p></div>
   </footer>
   <script src="/js/nav.js" defer></script>
 </body>

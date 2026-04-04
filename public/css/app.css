@@ -373,6 +373,19 @@ h2 {
   .card-grid.cols-4 {
     grid-template-columns: repeat(4, 1fr);
   }
+  .card-grid.cols-5 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1100px) {
+  .card-grid.cols-5 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+@media (min-width: 640px) and (max-width: 899px) {
+  .card-grid.cols-5 {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .card {
