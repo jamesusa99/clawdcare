@@ -52,7 +52,7 @@ a:hover {
   margin-inline: auto;
 }
 
-/* Header — full-width bar; nav links span the space between logo and actions */
+/* Header: full-bleed bar; inner row uses .wrap so logo aligns with main content (cf. bingoclaw.cn) */
 .site-header {
   position: sticky;
   top: 0;
@@ -62,15 +62,7 @@ a:hover {
   border-bottom: 1px solid var(--border);
 }
 
-.nav-shell {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding-inline: clamp(1rem, 4vw, 3rem);
-  box-sizing: border-box;
-}
-
-/* BingoClaw-style: brand on the far left; nav + account pack at the right and grow leftward */
+/* BingoClaw-style: brand at content left edge; nav + account pack at the right and grow leftward */
 .nav-row {
   display: flex;
   flex-wrap: wrap;
