@@ -29,13 +29,40 @@ body.auth-body {
 }
 
 .auth-brand {
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
   color: var(--a-text);
   text-decoration: none;
+  letter-spacing: -0.02em;
 }
 .auth-brand:hover {
-  opacity: 0.85;
+  opacity: 0.92;
   text-decoration: none;
+}
+.auth-brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(145deg, rgba(249, 115, 22, 0.14), rgba(22, 29, 38, 0.95));
+  border: 1px solid rgba(249, 115, 22, 0.35);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+.auth-brand-svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  color: var(--a-accent);
+}
+.auth-brand .logo-type__clawd {
+  color: var(--a-text);
+}
+.auth-brand .logo-type__care {
+  color: var(--a-accent);
 }
 
 .auth-main {
