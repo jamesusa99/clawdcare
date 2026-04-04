@@ -33,6 +33,9 @@ body.auth-body {
   align-items: baseline;
   gap: 0;
   font-weight: 700;
+  font-size: clamp(0.75rem, 2.5vw, 0.95rem);
+  flex-wrap: wrap;
+  max-width: min(100%, 20rem);
   color: var(--a-text);
   text-decoration: none;
   letter-spacing: -0.02em;
@@ -51,6 +54,11 @@ body.auth-body {
   color: var(--a-text);
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+.auth-brand .logo-powered {
+  font-weight: 600;
+  color: var(--a-muted);
+  font-size: 0.88em;
 }
 .auth-brand .logo-accent {
   background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);

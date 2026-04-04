@@ -77,11 +77,13 @@ a:hover {
   align-items: baseline;
   gap: 0;
   font-weight: 700;
-  font-size: 1.35rem;
+  font-size: clamp(0.78rem, 1.55vw, 1.05rem);
   letter-spacing: -0.02em;
   color: var(--text);
   text-decoration: none;
   flex-shrink: 0;
+  flex-wrap: wrap;
+  max-width: min(100%, 22rem);
   transition: opacity 0.2s ease;
 }
 .logo:hover {
@@ -104,6 +106,20 @@ a:hover {
   font-weight: 700;
 }
 
+.logo-text--lockup {
+  line-height: 1.15;
+}
+.logo-name {
+  font-weight: 700;
+  color: var(--text);
+}
+.logo-powered {
+  font-weight: 600;
+  color: var(--muted);
+  font-size: 0.88em;
+  letter-spacing: -0.01em;
+}
+
 .logo-accent {
   background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
   -webkit-background-clip: text;
@@ -112,7 +128,8 @@ a:hover {
 }
 
 .site-footer .logo {
-  font-size: 1.15rem;
+  font-size: clamp(0.72rem, 1.35vw, 0.95rem);
+  max-width: min(100%, 20rem);
 }
 .site-footer .logo-icon {
   font-size: 1.05rem;
@@ -233,26 +250,6 @@ h1 {
   margin: 0 0 1rem;
 }
 
-/* Home hero: larger brand, smaller subtitle line — keeps vertical rhythm tighter */
-.hero-title {
-  margin: 0 0 0.7rem;
-  line-height: 1.18;
-  letter-spacing: -0.03em;
-  font-weight: 700;
-}
-.hero-title__brand {
-  font-size: clamp(2.35rem, 5.6vw, 3.2rem);
-  font-weight: 700;
-  white-space: nowrap;
-}
-.hero-title__rest {
-  font-size: clamp(1.05rem, 2.35vw, 1.55rem);
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.25;
-  color: var(--muted);
-}
-
 h2 {
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 600;
@@ -267,48 +264,96 @@ h2 {
   margin: 0 0 1.5rem;
 }
 
-/* Tighter hero copy stack so headline + body + stats + CTAs fit one viewport more often */
-.hero .pill {
-  margin-bottom: 0.6rem;
+/* Narrative block — compact vertical rhythm */
+.hero-story {
+  margin: 0.08rem 0 0;
+  padding: 0.35rem 0 0 0;
 }
-.hero .lead {
-  margin-bottom: 1rem;
-  font-size: 1.05rem;
-  line-height: 1.55;
+
+.hero-title {
+  margin: 0 0 0.55rem;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  font-weight: 700;
 }
-.hero .hero-lead-tight {
-  margin-bottom: 0.75rem;
-  font-size: 1.02rem;
-  line-height: 1.52;
+.hero-title__brand {
+  display: block;
+  font-size: clamp(1.45rem, 2.85vw, 1.85rem);
+  font-weight: 700;
+  white-space: nowrap;
 }
-.hero .hero-tagline {
-  margin: 0 0 0.85rem;
-  max-width: 54ch;
-  font-size: 1rem;
+.hero-title__rest {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: clamp(0.8rem, 1.5vw + 0.4rem, 1.22rem);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  line-height: 1.3;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding-bottom: 0.15rem;
+}
+
+.hero-story .lead {
+  margin: 0 0 0.72rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  max-width: min(100%, 58ch);
+  color: var(--muted);
+}
+
+.hero-story .hero-lead-accent {
+  margin: 0 0 0.65rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.98rem;
+  line-height: 1.58;
+  max-width: min(100%, 58ch);
+  color: var(--muted);
+}
+
+.hero-story .hero-tagline {
+  margin: 0;
+  padding: 0.5rem 0 0;
+  max-width: min(100%, 58ch);
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.018em;
   line-height: 1.45;
   color: var(--text);
 }
-.hero .stats {
-  margin-top: 0.85rem;
-  padding-top: 1rem;
-  gap: 0.75rem;
+
+.hero .stats.hero-stats {
+  margin-top: 0.55rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  background: linear-gradient(165deg, rgba(22, 29, 38, 0.92), rgba(19, 25, 32, 0.55));
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.14);
+  gap: 0.65rem 0.55rem;
 }
+
+.hero-copy .stats.hero-stats strong {
+  font-size: 1.05rem;
+}
+
 .hero-cta-row {
-  margin-top: 1.1rem;
+  margin-top: 0.6rem;
   margin-bottom: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.65rem;
+  gap: 0.55rem;
 }
 
 .hero {
   position: relative;
   overflow: hidden;
-  /* Tighter than default section padding so more fits above the fold */
-  padding-top: clamp(0.5rem, 1.5vw, 1rem);
-  padding-bottom: clamp(2rem, 5vw, 4rem);
+  padding-top: clamp(0.35rem, 1vw, 0.65rem);
+  padding-bottom: clamp(1rem, 2.5vw, 1.75rem);
 }
 .hero::before {
   content: "";
@@ -324,8 +369,9 @@ h2 {
 
 .hero-grid {
   display: grid;
-  gap: clamp(1.25rem, 3vw, 2rem);
-  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  /* Stretch so the lifestyle column fills row height when copy is taller (no dead band below images). */
+  align-items: stretch;
 }
 @media (min-width: 900px) {
   .hero-grid {
@@ -333,13 +379,61 @@ h2 {
   }
 }
 
+/* Text column can use full grid width; min-width 0 avoids grid overflow quirks */
+.hero-copy {
+  min-width: 0;
+}
+
 .hero-works-with {
-  margin-top: 1.25rem;
-  padding-top: 1rem;
+  grid-column: 1 / -1;
+  margin: 0.2rem 0 0;
+  padding: 0.5rem 0 0;
   border-top: 1px solid var(--border-soft);
-  font-size: 0.875rem;
-  line-height: 1.55;
+  font-size: 0.8125rem;
+  line-height: 1.45;
   color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.5rem;
+}
+.hero-works-with__lead {
+  flex-shrink: 0;
+  color: var(--text);
+  font-weight: 600;
+}
+.hero-works-with__inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.15rem;
+  row-gap: 0.35rem;
+  min-width: 0;
+}
+.hero-works-with__app {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+}
+.hero-works-with__app:not(:last-child)::after {
+  content: "，";
+  margin-left: 0.12rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+.hero-works-with__name {
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+.works-with-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  display: block;
+  object-fit: contain;
+  position: relative;
+  top: 0.05em;
 }
 
 @media print {
@@ -378,6 +472,12 @@ h2 {
     0 0 0 1px rgba(56, 189, 248, 0.12),
     0 0 48px -12px rgba(249, 115, 22, 0.12);
 }
+.hero-visual-stack .hero-card--media {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+}
 .hero-card--media::after {
   content: "";
   pointer-events: none;
@@ -395,11 +495,30 @@ h2 {
   aspect-ratio: 1024 / 558;
   object-fit: cover;
   object-position: 50% 42%;
-  max-height: min(40vh, 300px);
+  max-height: min(26vh, 200px);
+}
+
+/* Lifestyle tiles: equal flex share + min heights so the hero column feels full on desktop */
+.hero-visual-stack .hero-product-img,
+.hero-visual-stack .hero-ui-mock--photo img {
+  width: 100%;
+  max-height: none;
+  aspect-ratio: unset;
+  object-fit: cover;
+  flex: 1 1 0;
+  min-height: clamp(200px, min(34vw, 28vh), 360px);
+  height: auto;
+}
+.hero-visual-stack .hero-product-img {
+  object-position: 50% 42%;
+}
+.hero-visual-stack .hero-ui-mock--photo img {
+  object-position: 50% 38%;
 }
 
 .hero-card-foot {
-  padding: 1rem 1.25rem 1.25rem;
+  padding: 0.55rem 0.85rem 0.65rem;
+  flex-shrink: 0;
 }
 
 /* Product gallery (index) */
@@ -489,6 +608,20 @@ h2 {
   font-size: 0.75rem;
   font-weight: 600;
   margin-bottom: 1rem;
+}
+
+/* Hero eyebrow — same pill language as reference (warm tint + copper text) */
+.pill--hero {
+  margin: -0.2rem 0 0.42rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: #fb923c;
+  background: linear-gradient(180deg, rgba(249, 115, 22, 0.14), rgba(249, 115, 22, 0.06));
+  border: 1px solid rgba(251, 146, 60, 0.45);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
 }
 
 .stats {
@@ -749,7 +882,19 @@ table.data .hi {
 .hero-visual-stack {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: clamp(0.5rem, 1.2vw, 0.75rem);
+  min-height: 0;
+}
+@media (min-width: 900px) {
+  .hero-visual-stack {
+    min-height: min(72vh, 780px);
+  }
+}
+.hero-visual-stack .hero-ui-mock--photo {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
 }
 .hero-ui-mock {
   margin: 0;
@@ -767,17 +912,18 @@ table.data .hi {
 }
 .hero-ui-mock--photo img {
   aspect-ratio: 1024 / 558;
-  max-height: min(44vh, 340px);
+  max-height: min(24vh, 185px);
   object-fit: cover;
   object-position: 50% 38%;
 }
 .hero-ui-mock figcaption,
 .hero-ui-mock__cap {
-  padding: 0.65rem 1rem 0.85rem;
-  font-size: 0.8125rem;
+  padding: 0.4rem 0.75rem 0.5rem;
+  font-size: 0.75rem;
   line-height: 1.5;
   color: var(--muted);
   border-top: 1px solid var(--border);
+  flex-shrink: 0;
 }
 .hero-ui-mock__cap strong {
   color: var(--text);

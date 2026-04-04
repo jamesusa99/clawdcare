@@ -1,0 +1,8 @@
+Brand marks in this folder are trademarks of their owners. Use only in line with each company’s brand guidelines.
+
+- discord.svg — Geometry from Simple Icons (CC0 1.0, https://simpleicons.org/). Fill #5865F2 per Discord brand palette. Official assets: https://discord.com/branding
+- slack.svg — Wikimedia Commons: Slack_icon_2019.svg. Official: https://slack.com/media-kit
+- whatsapp.svg — Wikimedia Commons: WhatsApp.svg (trimmed duplicate gradient path). Official: https://whatsappbrand.com/
+- telegram.svg — Wikimedia Commons: Telegram_logo.svg
+- signal.svg — Geometry from Simple Icons (CC0); fill #3A76F0. Official: https://signal.org/
+- imessage.svg — Wikimedia Commons: IMessage_logo.svg. Apple trademark; official messaging marks: Apple Marketing Resources.
