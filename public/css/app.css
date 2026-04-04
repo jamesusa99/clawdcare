@@ -250,6 +250,9 @@ h2 {
 .hero {
   position: relative;
   overflow: hidden;
+  /* Tighter than default section padding so more fits above the fold */
+  padding-top: clamp(0.5rem, 1.5vw, 1rem);
+  padding-bottom: clamp(2rem, 5vw, 4rem);
 }
 .hero::before {
   content: "";
@@ -647,7 +650,7 @@ table.data .hi {
 }
 
 .page-title {
-  padding: 2rem 0 1rem;
+  padding: 1.15rem 0 1rem;
 }
 .page-title h1 {
   font-size: 1.75rem;
