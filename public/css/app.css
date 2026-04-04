@@ -12,6 +12,9 @@
   --accent-hover: #ea580c;
   --accent-dim: rgba(249, 115, 22, 0.15);
   --accent-glow: rgba(249, 115, 22, 0.35);
+  /* Wordmark second half — warm peach like BingoClaw “Claw” */
+  --logo-care: #ea9268;
+  --logo-care-hover: #f5c4a4;
   --cyan: var(--accent);
   --cyan-dim: var(--accent-dim);
   --green: #22c55e;
@@ -83,7 +86,6 @@ a:hover {
 }
 .logo:hover {
   text-decoration: none;
-  color: var(--accent);
 }
 
 .logo-type {
@@ -93,38 +95,39 @@ a:hover {
   font-weight: 700;
 }
 .logo-type__clawd {
-  color: inherit;
+  color: #f8fafc;
 }
 .logo-type__care {
-  color: var(--accent);
+  color: var(--logo-care);
 }
 .logo:hover .logo-type__clawd {
-  color: var(--text);
+  color: #fff;
 }
 .logo:hover .logo-type__care {
-  color: #fdba74;
+  color: var(--logo-care-hover);
 }
 
 .logo-mark {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 10px;
-  background: linear-gradient(145deg, rgba(249, 115, 22, 0.14), rgba(22, 29, 38, 0.95));
-  border: 1px solid rgba(249, 115, 22, 0.38);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 4px 14px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(160deg, rgba(234, 146, 104, 0.12), rgba(18, 22, 30, 0.92));
+  border: 1px solid rgba(234, 146, 104, 0.28);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset, 0 4px 14px rgba(0, 0, 0, 0.22);
   display: grid;
   place-items: center;
   flex-shrink: 0;
   line-height: 0;
+  transition: filter 0.15s ease, border-color 0.15s ease;
 }
 .logo-mark-svg {
   display: block;
-  width: 22px;
-  height: 22px;
-  color: var(--accent);
+  width: 24px;
+  height: 24px;
 }
-.logo:hover .logo-mark-svg {
-  color: #fb923c;
+.logo:hover .logo-mark {
+  filter: brightness(1.06);
+  border-color: rgba(245, 196, 164, 0.4);
 }
 
 .site-footer .logo-mark {

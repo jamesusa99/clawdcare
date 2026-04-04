@@ -42,27 +42,26 @@ body.auth-body {
   text-decoration: none;
 }
 .auth-brand-mark {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: linear-gradient(145deg, rgba(249, 115, 22, 0.14), rgba(22, 29, 38, 0.95));
-  border: 1px solid rgba(249, 115, 22, 0.35);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(160deg, rgba(234, 146, 104, 0.12), rgba(18, 22, 30, 0.92));
+  border: 1px solid rgba(234, 146, 104, 0.28);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
   display: grid;
   place-items: center;
   line-height: 0;
 }
 .auth-brand-svg {
   display: block;
-  width: 20px;
-  height: 20px;
-  color: var(--a-accent);
+  width: 22px;
+  height: 22px;
 }
 .auth-brand .logo-type__clawd {
-  color: var(--a-text);
+  color: #f8fafc;
 }
 .auth-brand .logo-type__care {
-  color: var(--a-accent);
+  color: #ea9268;
 }
 
 .auth-main {
