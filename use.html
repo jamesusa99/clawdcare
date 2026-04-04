@@ -4,10 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <meta name="description" content="Using ClawdCare as your personal health center: add vitals, labs, and notes anytime; local-first AI helps you organize longitudinal wellness and healthy aging." />
+  <meta name="description" content="ClawdCare Your health: longitudinal wellness dashboard—biomarker domains, biological age view, guidance on diet, supplements, sleep, and advanced screening layers. Sign in for a personalized stub; guests see a sample layout." />
   <title>Your health — Using ClawdCare | ClawdCare</title>
   <style>html,body{background:#0a0e14;color:#e8edf4}</style>
   <link rel="stylesheet" href="/css/app.css" />
+  <link rel="stylesheet" href="/css/use-health.css" />
 </head>
 <body>
   <header class="site-header">
@@ -31,67 +32,55 @@
     </div>
   </header>
 
-  <main>
-    <div class="wrap page-title">
-      <p class="pill">Product use · Personal health center</p>
-      <h1>Your personal health center—powered by ClawdCare.</h1>
-      <p class="lead">
-        After you <a href="/shop.html">order ClawdCare</a>, the platform is designed to become the place where you <strong>continuously add health information</strong>—vitals, labs, imaging reports, medications, and daily notes. ClawdCare helps you <strong>organize, connect, and act on that story over time</strong>, with a strong bias toward <strong>healthy aging</strong> and prevention, while keeping sensitive data <strong>under your roof by default</strong>.
+  <main class="use-health-main">
+    <div class="wrap">
+      <div class="use-health-hero page-title">
+        <div class="use-health-hero__row">
+          <div>
+            <span class="use-health-badge use-health-badge--demo" id="use-health-hero-badge">Loading…</span>
+            <h1 id="use-health-hero-title">Your health center</h1>
+            <p class="lead" id="use-health-hero-lead">Loading your view…</p>
+          </div>
+          <div class="use-health-cta" id="use-health-cta"></div>
+        </div>
+      </div>
+
+      <p id="use-health-loading" class="use-health-loading">Loading dashboard…</p>
+      <div id="use-health-root" class="use-health-dashboard" hidden></div>
+
+      <p class="use-health-footnote">
+        <strong>Wellness use only.</strong> Dashboards here are for personal organization and education. They are not medical advice, diagnosis, or treatment. Advanced imaging and screening rows describe product direction—not a claim that ClawdCare performs or interprets clinical imaging. Work with licensed professionals for care decisions.
       </p>
+
+      <section class="use-health-story bg-alt" style="margin-top:2rem;padding:2rem 0;border-radius:var(--r)">
+        <div class="wrap" style="max-width:none">
+          <h2>How ClawdCare supports the same story over time</h2>
+          <p class="lead" style="max-width:52ch;margin-bottom:1.5rem">
+            After you <a href="/shop.html">order ClawdCare</a>, the platform is designed so you can <strong>continuously add health information</strong>—vitals, labs, imaging reports, medications, and notes—while keeping sensitive context <strong>under your roof by default</strong>. The view above previews how longitudinal tiles, alerts, and action layers could come together.
+          </p>
+          <div class="card-grid cols-3">
+            <article class="card">
+              <p class="num">1</p>
+              <h3>Capture anytime</h3>
+              <p>Voice, PDF scan, wearables, typed notes—so your record isn’t trapped in “last visit only.”</p>
+            </article>
+            <article class="card">
+              <p class="num">2</p>
+              <h3>Structure &amp; memory</h3>
+              <p>Scattered inputs become a <strong>timeline</strong> with trends and reminders.</p>
+            </article>
+            <article class="card">
+              <p class="num">3</p>
+              <h3>Act with judgment</h3>
+              <p>Nudges and programs support <strong>adherence</strong>—not replace your clinician.</p>
+            </article>
+          </div>
+          <p class="lead" style="margin-top:1.75rem;margin-bottom:0">
+            Operate day-to-day from the <a href="/console.html">Console</a>; manage identity and orders in <a href="/account.html">My account</a>.
+          </p>
+        </div>
+      </section>
     </div>
-
-    <section class="bg-alt" style="padding-top:0">
-      <div class="wrap">
-        <p class="section-label">How it works</p>
-        <h2>Three loops you run for life.</h2>
-        <div class="card-grid cols-3" style="margin-top:1.5rem">
-          <article class="card">
-            <p class="num">1</p>
-            <h3>Capture anytime</h3>
-            <p>Speak to the device, scan a PDF, pull in wearable summaries, or type a quick note—so your record isn’t trapped in “last visit only.”</p>
-          </article>
-          <article class="card">
-            <p class="num">2</p>
-            <h3>Structure &amp; memory</h3>
-            <p>ClawdCare turns scattered inputs into a <strong>longitudinal timeline</strong>: trends, context, and reminders—so small shifts don’t get lost.</p>
-          </article>
-          <article class="card">
-            <p class="num">3</p>
-            <h3>Act with judgment</h3>
-            <p>Programs, nudges, and (where appropriate) care-team handoffs are designed to support <strong>wellness and adherence</strong>—not replace your clinician.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="wrap">
-        <p class="section-label">Where you manage it</p>
-        <h2>Console + account = your operating model.</h2>
-        <div class="card-grid cols-2" style="margin-top:1.25rem">
-          <article class="card">
-            <h3><a href="/console.html">Console</a></h3>
-            <p>Pair hardware, watch imports, tune skills and automations, and review alerts—your <strong>day-to-day control surface</strong> for ClawdCare.</p>
-          </article>
-          <article class="card">
-            <h3><a href="/account.html">My account</a></h3>
-            <p>Identity, orders, preferences, and (over time) how your health profile syncs with the device—your <strong>user management</strong> home on the web.</p>
-          </article>
-        </div>
-        <p class="lead" style="margin-top:2rem;margin-bottom:0">
-          New here? <a href="/register.html">Create an account</a>, explore the <a href="/">product story</a>, then <a href="/shop.html">order ClawdCare</a> when you’re ready.
-        </p>
-      </div>
-    </section>
-
-    <section class="bg-alt">
-      <div class="wrap">
-        <blockquote class="quote">
-          The long-term goal is simple: <strong>one platform</strong> for introduction, ordering, daily use, user management, and console control—so ClawdCare can grow into <strong>everyone’s personal health management center</strong>.
-          <span style="font-style:normal;display:block;margin-top:0.75rem;font-size:0.85rem;color:var(--dim)">— Platform roadmap (wellness-first; regulated claims only where cleared)</span>
-        </blockquote>
-      </div>
-    </section>
   </main>
 
   <footer class="site-footer">
@@ -121,9 +110,10 @@
       </div>
     </div>
     <div class="wrap">
-      <p class="disclaimer"><strong>Wellness use.</strong> Descriptions on this page support general wellness and personal organization unless a feature is registered as a medical device where you live. Not a substitute for professional care.</p>
+      <p class="disclaimer"><strong>Wellness use.</strong> This page supports general wellness and personal organization unless a feature is registered as a medical device where you live. Not a substitute for professional care.</p>
     </div>
   </footer>
   <script src="/js/nav.js" defer></script>
+  <script src="/js/use-health.js" defer></script>
 </body>
 </html>
