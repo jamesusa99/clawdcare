@@ -27,8 +27,8 @@ Open `http://localhost:3000`.
 
 ## Deploy (Vercel)
 
-- `vercel.json` routes **all** traffic to the Express serverless entry (`api/index.js`) so CSS/JS/HTML are always bundled with `includeFiles` (avoids “unstyled HTML” when the CDN layer does not see static files).
-- First rewrite still targets `/api/:path*` explicitly; a catch-all `/(.*)` → `/api` covers pages and assets.
+- Shared assets live under **`public/`** (`css/`, `js/`, `favicon.svg`) so Vercel’s static layer serves them at `/css/...`, `/js/...`, etc. (filesystem wins before rewrites).
+- `vercel.json` only rewrites **`/api/:path*`** → `/api` (Express for auth/session APIs). HTML at the repo root is deployed as static files the same way.
 - Set `SESSION_SECRET` (and optionally `BASE_URL` for your production URL) in the Vercel project environment.
 - Demo users are stored in `/tmp` on serverless; use a real database for production.
 
