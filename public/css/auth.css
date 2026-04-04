@@ -30,8 +30,8 @@ body.auth-body {
 
 .auth-brand {
   display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: baseline;
+  gap: 0;
   font-weight: 700;
   color: var(--a-text);
   text-decoration: none;
@@ -41,27 +41,22 @@ body.auth-body {
   opacity: 0.92;
   text-decoration: none;
 }
-.auth-brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: linear-gradient(160deg, rgba(234, 146, 104, 0.12), rgba(18, 22, 30, 0.92));
-  border: 1px solid rgba(234, 146, 104, 0.28);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
-  display: grid;
-  place-items: center;
-  line-height: 0;
+.auth-brand .logo-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-right: 6px;
+  opacity: 0.95;
 }
-.auth-brand-svg {
-  display: block;
-  width: 22px;
-  height: 22px;
+.auth-brand .logo-text {
+  color: var(--a-text);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
-.auth-brand .logo-type__clawd {
-  color: #f8fafc;
-}
-.auth-brand .logo-type__care {
-  color: #ea9268;
+.auth-brand .logo-accent {
+  background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .auth-main {
