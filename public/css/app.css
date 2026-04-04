@@ -52,7 +52,7 @@ a:hover {
   margin-inline: auto;
 }
 
-/* Header */
+/* Header — full-width bar; nav links span the space between logo and actions */
 .site-header {
   position: sticky;
   top: 0;
@@ -62,12 +62,20 @@ a:hover {
   border-bottom: 1px solid var(--border);
 }
 
+.nav-shell {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding-inline: clamp(1rem, 4vw, 3rem);
+  box-sizing: border-box;
+}
+
 .nav-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 0.9rem 0;
+  gap: 0.75rem 1.25rem;
+  padding-block: 0.9rem;
   flex-wrap: wrap;
 }
 
@@ -79,6 +87,7 @@ a:hover {
   font-size: 1.1rem;
   color: var(--text);
   text-decoration: none;
+  flex-shrink: 0;
 }
 .logo:hover {
   text-decoration: none;
@@ -102,8 +111,31 @@ a:hover {
 .nav-main {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 1.1rem;
   align-items: center;
+  justify-content: center;
+  gap: 0.35rem 1rem;
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+
+/* Wide viewports: distribute links across the full width between logo and account actions */
+@media (min-width: 960px) {
+  .nav-row {
+    flex-wrap: nowrap;
+  }
+  .nav-main {
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    justify-content: stretch;
+    gap: 0;
+    padding-inline: clamp(0.75rem, 2.5vw, 2.5rem);
+  }
+  .nav-main a {
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: center;
+    padding: 0.35rem 0.2rem;
+  }
 }
 
 .nav-main a {
@@ -111,6 +143,7 @@ a:hover {
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
+  white-space: nowrap;
 }
 .nav-main a:hover,
 .nav-main a[aria-current="page"] {
@@ -122,6 +155,8 @@ a:hover {
   align-items: center;
   gap: 0.65rem;
   flex-wrap: wrap;
+  flex-shrink: 0;
+  justify-content: flex-end;
 }
 
 .badge-cart {
