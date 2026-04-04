@@ -15,7 +15,7 @@ Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, 
 | `/about.html` | Company, roadmap, financial sketch from plan |
 | `/support.html` | Help & contact |
 | `/legal.html` | Wellness / disclaimer summary |
-| `/account.html` | **My** — profile, **BingoClaw credits** (demo balance), cart snapshot (**requires login**) |
+| `/account.html` | **My** — profile, **BingoClaw credits** (demo balance), **Orders** (placeholder), session (**requires login**) |
 | `/login.html`, `/register.html` | Session auth |
 | `/admin.html` | **Platform admin** — overview (stats, DB status, config hints), user table with filter & CSV export, refresh (**requires admin**; `noindex`) |
 | `/404.html` | Custom not-found (used by Vercel when a path has no file) |
@@ -27,7 +27,7 @@ Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, 
 Optional **[Supabase](https://supabase.com/)** Postgres backs registered users when `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are set. Otherwise users stay in `data/users.json` (or `/tmp` on Vercel).
 
 1. Create a project on [Supabase](https://supabase.com/).
-2. Run `supabase/migrations/20250404140000_clawdcare_profiles.sql` in the SQL Editor (see `supabase/README.md`).
+2. Run `supabase/migrations/20250404140000_clawdcare_profiles.sql`, then `supabase/migrations/20250410130000_profiles_credits.sql` in the SQL Editor (see `supabase/README.md`).
 3. Add the URL and **service_role** key to your server environment (never commit the key; never ship it to the browser).
 
 The Express app continues to own email/password checks (bcrypt + Passport); Supabase stores the `profiles` rows only.

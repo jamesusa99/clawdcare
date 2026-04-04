@@ -17,6 +17,11 @@ function writeJson(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf8");
 }
 
+function withCredits(u) {
+  if (!u) return null;
+  return { ...u, credits: typeof u.credits === "number" && Number.isFinite(u.credits) ? u.credits : 0 };
+}
+
 function createFileStore(filePath) {
   const load = () => readJson(filePath, { users: [] });
   const save = (data) => writeJson(filePath, data);
@@ -24,10 +29,10 @@ function createFileStore(filePath) {
   return {
     async findByEmail(email) {
       const e = (email || "").trim().toLowerCase();
-      return load().users.find((u) => u.email.toLowerCase() === e) || null;
+      return withCredits(load().users.find((x) => x.email.toLowerCase() === e) || null);
     },
     async findById(id) {
-      return load().users.find((u) => u.id === id) || null;
+      return withCredits(load().users.find((x) => x.id === id) || null);
     },
     async createUser({ email, password_hash, name }) {
       const data = load();
@@ -38,10 +43,11 @@ function createFileStore(filePath) {
         name: name || null,
         created_at: new Date().toISOString(),
         roles: [],
+        credits: 0,
       };
       data.users.push(row);
       save(data);
-      return row;
+      return withCredits(row);
     },
     async listPublicUsers() {
       return load().users.map((u) => ({
@@ -50,6 +56,7 @@ function createFileStore(filePath) {
         name: u.name,
         created_at: u.created_at,
         roles: Array.isArray(u.roles) ? u.roles : [],
+        credits: typeof u.credits === "number" ? u.credits : 0,
       }));
     },
     async setUserRoles(id, roles) {
@@ -65,6 +72,7 @@ function createFileStore(filePath) {
         name: u.name,
         created_at: u.created_at,
         roles: u.roles,
+        credits: typeof u.credits === "number" ? u.credits : 0,
       };
     },
     async updateUser(id, patch) {
@@ -73,7 +81,7 @@ function createFileStore(filePath) {
       if (!u) return null;
       Object.assign(u, patch);
       save(data);
-      return u;
+      return withCredits(u);
     },
   };
 }

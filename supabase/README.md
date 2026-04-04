@@ -5,7 +5,7 @@ Postgres schema for **registered users** used by the ClawdCare Express API (`pro
 ## Create a project
 
 1. Open [Supabase](https://supabase.com/) and create a project.
-2. In **SQL Editor**, run the migration in `migrations/20250404140000_clawdcare_profiles.sql` (or use [Supabase migrations](https://supabase.com/docs/guides/cli/local-development)).
+2. In **SQL Editor**, run migrations in order: `migrations/20250404140000_clawdcare_profiles.sql`, then `migrations/20250410130000_profiles_credits.sql` (adds `credits` for BingoClaw balance). Or use [Supabase migrations](https://supabase.com/docs/guides/cli/local-development).
 
 ## Environment variables (server only)
 

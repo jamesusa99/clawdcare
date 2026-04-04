@@ -120,6 +120,13 @@ function isUniqueViolation(err) {
   return msg.includes("duplicate key") || msg.includes("unique constraint");
 }
 
+function publicUserFromRow(row) {
+  if (!row) return null;
+  const c = row.credits;
+  const credits = typeof c === "number" && Number.isFinite(c) ? Math.max(0, Math.floor(c)) : 0;
+  return { id: row.id, email: row.email, name: row.name, credits };
+}
+
 const app = express();
 app.set("trust proxy", 1);
 
@@ -177,7 +184,7 @@ passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => {
   try {
     const row = await store.findById(id);
-    done(null, row ? { id: row.id, email: row.email, name: row.name } : null);
+    done(null, publicUserFromRow(row));
   } catch (e) {
     done(e);
   }
@@ -189,7 +196,7 @@ passport.use(
       const user = await store.findByEmail(email);
       if (!user || !user.password_hash) return done(null, false, { message: "Invalid email or password." });
       if (!bcrypt.compareSync(password, user.password_hash)) return done(null, false, { message: "Invalid email or password." });
-      return done(null, { id: user.id, email: user.email, name: user.name });
+      return done(null, publicUserFromRow(user));
     } catch (err) {
       return done(err);
     }
@@ -200,10 +207,11 @@ app.get("/api/auth/me", async (req, res, next) => {
   if (!req.user) return res.status(401).json({ error: "Unauthorized" });
   try {
     const row = await store.findById(req.user.id);
+    if (!row) return res.status(401).json({ error: "Unauthorized" });
     const isAdmin = userRowIsAdmin(row);
     const manage = isAdmin && (await canManageRoles(req));
     res.json({
-      user: req.user,
+      user: publicUserFromRow(row),
       isAdmin,
       canManageRoles: manage,
     });
@@ -228,7 +236,7 @@ app.post("/api/auth/register", async (req, res, next) => {
     }
     const hash = bcrypt.hashSync(password, 12);
     const row = await store.createUser({ email, password_hash: hash, name });
-    const user = { id: row.id, email: row.email, name: row.name };
+    const user = publicUserFromRow(row);
     req.login(user, (err) => {
       if (err) return res.status(500).json({ error: "Could not create session." });
       return res.json({ user });

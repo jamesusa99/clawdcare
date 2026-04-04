@@ -80,6 +80,7 @@
       } else {
         actions = '<span style="color:var(--muted);font-size:0.8125rem">—</span>';
       }
+      var cr = typeof u.credits === "number" ? u.credits : 0;
       tr.innerHTML =
         "<td>" +
         escapeHtml(u.email || "") +
@@ -87,6 +88,8 @@
         (u.name ? escapeHtml(u.name) : "—") +
         "</td><td>" +
         fmtDate(u.created_at) +
+        "</td><td>" +
+        String(cr) +
         '</td><td><span class="' +
         (isAdmin ? "admin-pill" : "admin-pill admin-pill--off") +
         '">' +
@@ -208,13 +211,14 @@
 
   function exportUsersCsv() {
     var users = state.allUsers;
-    var rows = [["id", "email", "name", "created_at", "roles"]];
+    var rows = [["id", "email", "name", "created_at", "credits", "roles"]];
     users.forEach(function (u) {
       rows.push([
         u.id || "",
         u.email || "",
         u.name || "",
         u.created_at || "",
+        typeof u.credits === "number" ? u.credits : 0,
         Array.isArray(u.roles) ? u.roles.join(";") : "",
       ]);
     });

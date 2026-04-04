@@ -2,6 +2,8 @@ const { createClient } = require("@supabase/supabase-js");
 
 function mapRow(r) {
   if (!r) return null;
+  const c = r.credits;
+  const credits = typeof c === "number" && Number.isFinite(c) ? Math.max(0, Math.floor(c)) : 0;
   return {
     id: r.id,
     email: r.email,
@@ -9,6 +11,7 @@ function mapRow(r) {
     password_hash: r.password_hash,
     created_at: r.created_at,
     roles: Array.isArray(r.roles) ? r.roles : [],
+    credits,
   };
 }
 
@@ -21,6 +24,7 @@ function mapPublic(r) {
     name: m.name,
     created_at: m.created_at,
     roles: m.roles,
+    credits: m.credits,
   };
 }
 
@@ -55,7 +59,7 @@ function createSupabaseStore(url, serviceRoleKey) {
     async listPublicUsers() {
       const { data, error } = await sb
         .from("profiles")
-        .select("id, email, name, created_at, roles")
+        .select("id, email, name, created_at, roles, credits")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return (data || []).map((r) => mapPublic(r));
@@ -66,13 +70,13 @@ function createSupabaseStore(url, serviceRoleKey) {
         .from("profiles")
         .update({ roles: next })
         .eq("id", id)
-        .select("id, email, name, created_at, roles")
+        .select("id, email, name, created_at, roles, credits")
         .maybeSingle();
       if (error) throw error;
       return data ? mapPublic(data) : null;
     },
     async updateUser(id, patch) {
-      const allowed = ["email", "name", "password_hash", "roles"];
+      const allowed = ["email", "name", "password_hash", "roles", "credits"];
       const clean = {};
       for (const k of allowed) {
         if (Object.prototype.hasOwnProperty.call(patch, k)) clean[k] = patch[k];
