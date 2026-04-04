@@ -247,6 +247,20 @@ h2 {
   margin: 0 0 1.5rem;
 }
 
+.hero .hero-lead-tight {
+  margin-bottom: 1.15rem;
+}
+
+.hero .hero-tagline {
+  margin: 0 0 1.5rem;
+  max-width: 54ch;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.45;
+  color: var(--text);
+}
+
 .hero {
   position: relative;
   overflow: hidden;
