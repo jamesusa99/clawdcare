@@ -1,7 +1,13 @@
 {
   "functions": {
     "api/index.js": {
-      "includeFiles": "css/**,js/**,assets/**,*.html,*.svg"
+      "includeFiles": [
+        "css/**",
+        "js/**",
+        "assets/**",
+        "*.html",
+        "*.svg"
+      ]
     }
   },
   "rewrites": [
