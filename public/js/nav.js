@@ -32,7 +32,12 @@
       if (r.ok) {
         var data = await r.json();
         var email = (data.user && data.user.email) || "Account";
+        var adminLink =
+          data.isAdmin
+            ? '<a href="/admin.html" class="btn btn-ghost" style="padding:0.4rem 0.85rem;font-size:0.8125rem">Admin</a>'
+            : "";
         slot.innerHTML =
+          adminLink +
           '<a href="/account.html" class="btn btn-ghost" style="padding:0.4rem 0.85rem;font-size:0.8125rem">My account</a>' +
           '<button type="button" class="btn btn-ghost" id="nav-logout" style="padding:0.4rem 0.85rem;font-size:0.8125rem">Sign out</button>';
         var lo = document.getElementById("nav-logout");

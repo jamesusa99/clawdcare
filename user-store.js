@@ -17,19 +17,19 @@ function writeJson(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf8");
 }
 
-function createStore(filePath) {
+function createFileStore(filePath) {
   const load = () => readJson(filePath, { users: [] });
   const save = (data) => writeJson(filePath, data);
 
   return {
-    findByEmail(email) {
+    async findByEmail(email) {
       const e = (email || "").trim().toLowerCase();
       return load().users.find((u) => u.email.toLowerCase() === e) || null;
     },
-    findById(id) {
+    async findById(id) {
       return load().users.find((u) => u.id === id) || null;
     },
-    createUser({ email, password_hash, name }) {
+    async createUser({ email, password_hash, name }) {
       const data = load();
       const row = {
         id: crypto.randomUUID(),
@@ -37,12 +37,37 @@ function createStore(filePath) {
         password_hash: password_hash || null,
         name: name || null,
         created_at: new Date().toISOString(),
+        roles: [],
       };
       data.users.push(row);
       save(data);
       return row;
     },
-    updateUser(id, patch) {
+    async listPublicUsers() {
+      return load().users.map((u) => ({
+        id: u.id,
+        email: u.email,
+        name: u.name,
+        created_at: u.created_at,
+        roles: Array.isArray(u.roles) ? u.roles : [],
+      }));
+    },
+    async setUserRoles(id, roles) {
+      const data = load();
+      const u = data.users.find((x) => x.id === id);
+      if (!u) return null;
+      const next = Array.isArray(roles) ? [...new Set(roles.filter((r) => typeof r === "string" && r.trim()))] : [];
+      u.roles = next;
+      save(data);
+      return {
+        id: u.id,
+        email: u.email,
+        name: u.name,
+        created_at: u.created_at,
+        roles: u.roles,
+      };
+    },
+    async updateUser(id, patch) {
       const data = load();
       const u = data.users.find((x) => x.id === id);
       if (!u) return null;
@@ -53,4 +78,18 @@ function createStore(filePath) {
   };
 }
 
-module.exports = { createStore };
+/**
+ * @param {string} filePath
+ * @param {{ supabaseUrl?: string, supabaseServiceKey?: string }} [opts]
+ */
+function createStore(filePath, opts = {}) {
+  const url = opts.supabaseUrl || process.env.SUPABASE_URL;
+  const key = opts.supabaseServiceKey || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (url && key) {
+    const { createSupabaseStore } = require("./supabase-store");
+    return createSupabaseStore(url, key);
+  }
+  return createFileStore(filePath);
+}
+
+module.exports = { createStore, createFileStore };

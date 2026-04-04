@@ -15,9 +15,57 @@ Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, 
 | `/legal.html` | Wellness / disclaimer summary |
 | `/account.html` | **My** — profile, cart snapshot (**requires login**) |
 | `/login.html`, `/register.html` | Session auth |
+| `/admin.html` | **Platform admin** — overview (stats, DB status, config hints), user table with filter & CSV export, refresh (**requires admin**; `noindex`) |
 | `/404.html` | Custom not-found (used by Vercel when a path has no file) |
 
 **SEO / discovery:** `sitemap.xml` and `public/robots.txt` (served at `/robots.txt`). Product photography lives in `public/assets/` (homepage hero + gallery).
+
+## Database (Supabase)
+
+Optional **[Supabase](https://supabase.com/)** Postgres backs registered users when `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are set. Otherwise users stay in `data/users.json` (or `/tmp` on Vercel).
+
+1. Create a project on [Supabase](https://supabase.com/).
+2. Run `supabase/migrations/20250404140000_clawdcare_profiles.sql` in the SQL Editor (see `supabase/README.md`).
+3. Add the URL and **service_role** key to your server environment (never commit the key; never ship it to the browser).
+
+The Express app continues to own email/password checks (bcrypt + Passport); Supabase stores the `profiles` rows only.
+
+## Admin login（如何进入 `/admin.html`）
+
+Admin 使用**和普通用户同一套账号密码**，没有单独的 “admin 密码”。
+
+### 预设管理员（`admin@clawdcare.com`）
+
+注册页要求密码至少 8 位，短密码需用脚本写入：
+
+```bash
+cp .env.example .env   # 若还没有
+npm run seed:admin
+```
+
+默认会创建或更新：**邮箱** `admin@clawdcare.com`，**密码** `123456`，并赋予 `admin` 角色。  
+可用环境变量覆盖：`SEED_ADMIN_EMAIL`、`SEED_ADMIN_PASSWORD`。
+
+`.env.example` 里已把 `ADMIN_EMAILS=admin@clawdcare.com` 作为示例；线上请改强密码并勿提交真实 `.env`。
+
+### 本地开发（`NODE_ENV` 不是 `production`）
+
+1. 打开 **`/register.html`** 注册一个账号（记下邮箱和密码）。  
+2. 打开 **`/login.html?next=/admin.html`** 登录；成功后会进入后台。  
+3. **默认规则：** 若 `.env` 里**没有**配置 `ADMIN_EMAILS`（或为空），则**任意已登录用户**都可以访问 `/admin.html`，无需再配环境变量。  
+4. 若你配了 `ADMIN_DEV_OPEN=0` 或 `STRICT_ADMIN=1`，则不再使用上述宽松策略：需要把邮箱写进 `ADMIN_EMAILS`，或在数据里给该用户 `admin` 角色。  
+5. 终端启动时会打印一行 `[clawdcare] Admin: ...` 提示。
+
+### 线上（production，如 Vercel）
+
+- **必须**在环境变量里设置 `ADMIN_EMAILS=你的运营邮箱`（与登录邮箱一致），**或**在数据库 / `profiles` 里给该用户 `roles` 包含 `admin`。  
+- 仅靠 “本地默认” 不会生效：生产环境不会开启宽松模式。
+
+### 仍然进不去？
+
+- 确认是**先登录**再打开 `/admin.html`；不要只打开后台地址。  
+- 若登录后立刻掉线：检查是否把 `NODE_ENV=production` 配在本地 HTTP 上（会导致 `secure` Cookie 不发送）；本地请保持非 production 或使用 HTTPS。  
+- 使用 Supabase 时，确认该邮箱已在 `profiles` 里注册成功（注册接口无报错）。
 
 ## Local development
 
@@ -34,7 +82,9 @@ Open `http://localhost:3000`.
 - Shared assets live under **`public/`** (`css/`, `js/`, `assets/` product PNGs + `favicon.svg`, `robots.txt`) so Vercel’s static layer serves them at `/css/...`, `/js/...`, `/assets/...`, etc. (filesystem wins before rewrites).
 - `vercel.json` only rewrites **`/api/:path*`** → `/api` (Express for auth/session APIs). HTML at the repo root is deployed as static files the same way.
 - Set `SESSION_SECRET` (and optionally `BASE_URL` for your production URL) in the Vercel project environment.
-- Demo users are stored in `/tmp` on serverless; use a real database for production.
+- **Admin:** In **production**, set `ADMIN_EMAILS` to operator emails and/or assign the `admin` role in storage. In **non-production**, if `ADMIN_EMAILS` is **empty**, any signed-in user can open `/admin.html` (local default). Opt out with `STRICT_ADMIN=1` or `ADMIN_DEV_OPEN=0` (see `.env.example`).
+- **There is no separate “admin password”.** Same email/password as site sign-in.
+- Demo users are stored in `/tmp` on serverless unless **Supabase** env vars are set; prefer Supabase (or another DB) for production.
 
 UI colors follow **bingoclaw.cn** tokens: background `#0a0e14`, text `#e8edf4`, accent `#f97316` / `#ea580c`.
 
