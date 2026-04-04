@@ -236,6 +236,68 @@ h2 {
   padding: 1rem;
 }
 
+.hero-card--media {
+  padding: 0;
+  overflow: hidden;
+}
+
+.hero-product-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  vertical-align: middle;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+}
+
+.hero-card-foot {
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+/* Product gallery (index) */
+.product-gallery-intro {
+  margin-top: 2rem;
+}
+
+.product-gallery-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .product-gallery-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .product-gallery-grid .product-shot-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.product-shot {
+  margin: 0;
+  border-radius: var(--r);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.product-shot img {
+  width: 100%;
+  height: auto;
+  display: block;
+  vertical-align: middle;
+}
+
+.product-shot figcaption {
+  padding: 0.85rem 1rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  line-height: 1.45;
+  border-top: 1px solid var(--border);
+}
+
 .pill {
   display: inline-block;
   padding: 0.35rem 0.85rem;
