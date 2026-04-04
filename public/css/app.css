@@ -70,13 +70,14 @@ a:hover {
   box-sizing: border-box;
 }
 
+/* BingoClaw-style: brand on the far right; nav + account pack to its left and grow leftward */
 .nav-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem 1.25rem;
+  column-gap: clamp(0.65rem, 1.8vw, 1.15rem);
+  row-gap: 0.65rem;
   padding-block: 0.9rem;
-  flex-wrap: wrap;
 }
 
 .logo {
@@ -88,6 +89,9 @@ a:hover {
   color: var(--text);
   text-decoration: none;
   flex-shrink: 0;
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
 }
 .logo:hover {
   text-decoration: none;
@@ -109,32 +113,40 @@ a:hover {
 }
 
 .nav-main {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  gap: 0.35rem 1rem;
-  flex: 1 1 14rem;
+  justify-content: flex-end;
+  gap: 0.2rem clamp(0.55rem, 1.2vw, 1.1rem);
   min-width: 0;
 }
 
-/* Wide viewports: distribute links across the full width between logo and account actions */
-@media (min-width: 960px) {
+@media (max-width: 640px) {
   .nav-row {
-    flex-wrap: nowrap;
+    grid-template-columns: 1fr auto auto;
+    grid-template-rows: auto auto;
+  }
+  .logo {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+  }
+  .nav-actions {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
   }
   .nav-main {
-    flex: 1 1 auto;
-    flex-wrap: nowrap;
-    justify-content: stretch;
-    gap: 0;
-    padding-inline: clamp(0.75rem, 2.5vw, 2.5rem);
-  }
-  .nav-main a {
-    flex: 1 1 0;
-    min-width: 0;
-    text-align: center;
-    padding: 0.35rem 0.2rem;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: stretch;
+    justify-content: flex-end;
+    padding-top: 0.5rem;
+    margin-top: 0.15rem;
+    border-top: 1px solid var(--border-soft);
   }
 }
 
@@ -157,6 +169,9 @@ a:hover {
   flex-wrap: wrap;
   flex-shrink: 0;
   justify-content: flex-end;
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
 }
 
 .badge-cart {
