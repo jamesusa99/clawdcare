@@ -1,11 +1,11 @@
 :root {
-  --a-bg: #f4f4f5;
-  --a-card: #fff;
-  --a-text: #18181b;
-  --a-muted: #71717a;
-  --a-border: #e4e4e7;
-  --a-accent: #ea580c;
-  --a-accent-soft: rgba(234, 88, 12, 0.12);
+  --a-bg: #0a0e14;
+  --a-card: #161d26;
+  --a-text: #e8edf4;
+  --a-muted: #94a3b8;
+  --a-border: #2d3748;
+  --a-accent: #f97316;
+  --a-accent-soft: rgba(249, 115, 22, 0.18);
 }
 
 body.auth-body {
@@ -50,9 +50,10 @@ body.auth-body {
   width: 100%;
   max-width: 400px;
   background: var(--a-card);
+  border: 1px solid var(--a-border);
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 8px 32px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.35);
 }
 
 .auth-card h1 {
@@ -83,6 +84,8 @@ body.auth-body {
   border: 1px solid var(--a-border);
   border-radius: 8px;
   font-size: 1rem;
+  background: #0a0e14;
+  color: var(--a-text);
 }
 .auth-field input:focus {
   outline: none;
@@ -109,8 +112,9 @@ body.auth-body {
 .auth-error {
   display: none;
   padding: 0.6rem 0.75rem;
-  background: #fef2f2;
-  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.35);
   border-radius: 8px;
   font-size: 0.875rem;
   margin-bottom: 1rem;

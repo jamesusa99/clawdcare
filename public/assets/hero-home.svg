@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" fill="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#131920"/>
+      <stop offset="100%" stop-color="#0a0e14"/>
+    </linearGradient>
+    <linearGradient id="warm" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ea580c" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="720" fill="url(#g)"/>
+  <ellipse cx="480" cy="620" rx="420" ry="80" fill="#0a0e14" opacity="0.5"/>
+  <!-- shelf -->
+  <rect x="120" y="380" width="720" height="14" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <rect x="120" y="394" width="24" height="200" fill="#1e293b"/>
+  <rect x="816" y="394" width="24" height="200" fill="#1e293b"/>
+  <!-- frames -->
+  <rect x="160" y="260" width="72" height="96" rx="4" fill="#161d26" stroke="#334155"/>
+  <rect x="248" y="270" width="64" height="86" rx="4" fill="#161d26" stroke="#334155"/>
+  <rect x="648" y="265" width="80" height="98" rx="4" fill="#161d26" stroke="#334155"/>
+  <!-- device -->
+  <rect x="360" y="220" width="240" height="320" rx="18" fill="#161d26" stroke="#f97316" stroke-width="2" opacity="0.9"/>
+  <rect x="378" y="242" width="204" height="220" rx="8" fill="#0a0e14" stroke="#2d3748"/>
+  <rect x="378" y="242" width="204" height="220" rx="8" fill="url(#warm)"/>
+  <!-- screen modules -->
+  <rect x="394" y="258" width="56" height="40" rx="4" fill="#f97316" opacity="0.25" stroke="#f97316" stroke-opacity="0.5"/>
+  <rect x="458" y="258" width="56" height="40" rx="4" fill="#22c55e" opacity="0.2" stroke="#22c55e" stroke-opacity="0.45"/>
+  <rect x="522" y="258" width="56" height="40" rx="4" fill="#38bdf8" opacity="0.2" stroke="#38bdf8" stroke-opacity="0.45"/>
+  <text x="422" y="284" text-anchor="middle" fill="#e8edf4" font-family="system-ui,sans-serif" font-size="11" font-weight="600">Q</text>
+  <text x="486" y="284" text-anchor="middle" fill="#e8edf4" font-family="system-ui,sans-serif" font-size="11" font-weight="600">H</text>
+  <text x="550" y="284" text-anchor="middle" fill="#e8edf4" font-family="system-ui,sans-serif" font-size="11" font-weight="600">C</text>
+  <rect x="394" y="312" width="184" height="8" rx="2" fill="#334155"/>
+  <rect x="394" y="328" width="140" height="8" rx="2" fill="#2d3748"/>
+  <rect x="394" y="344" width="160" height="8" rx="2" fill="#2d3748"/>
+  <!-- mic -->
+  <circle cx="480" cy="470" r="4" fill="#475569"/>
+  <circle cx="468" cy="470" r="3" fill="#475569"/>
+  <circle cx="492" cy="470" r="3" fill="#475569"/>
+  <!-- ambient glow -->
+  <circle cx="480" cy="360" r="140" fill="#f97316" opacity="0.06"/>
+</svg>
