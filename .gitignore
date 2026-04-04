@@ -1,5 +1,35 @@
+# Dependencies
 node_modules/
+
+# Environment and secrets
 .env
+.env.local
+.env.*.local
+
+# Local data (user store, etc.)
 data/
-.DS_Store
+
+# Logs and debug
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Vercel
+.vercel
+
+# Optional tooling
+coverage/
+.nyc_output/
+*.tsbuildinfo
