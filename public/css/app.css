@@ -1042,6 +1042,9 @@ table.data .hi {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
 }
 .console-side-title {
   margin: 0;
@@ -1084,6 +1087,13 @@ table.data .hi {
   padding: clamp(1rem, 3vw, 1.75rem);
   background: var(--bg);
   overflow-x: auto;
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.console-panel {
+  min-width: 0;
 }
 
 .console-topbar {

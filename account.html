@@ -35,7 +35,7 @@
     <div class="wrap page-title">
       <h1>My account</h1>
       <p>
-        <strong>User management</strong> on clawdcare.com: your profile, orders in progress, cart snapshot, and session. Over time this area will connect more tightly to <a href="/use.html">how you use ClawdCare</a> and what appears on your <a href="/console.html">console</a>.
+        <strong>User management</strong> on clawdcare.com: your profile, <strong>BingoClaw credits</strong> (bound to this account), orders in progress, cart snapshot, and session. ClawdCare is a <strong>BingoClaw-based</strong> product—you buy credit packs in the <a href="/shop.html#bingoclaw-credits">Shop</a>; we route usage to BingoClaw capabilities without asking you to choose a foundation model.
       </p>
     </div>
     <section style="padding-top:0">
@@ -44,6 +44,12 @@
           <h3>Profile</h3>
           <p id="acct-email" style="color:var(--text)">—</p>
           <p id="acct-name" style="margin-top:0.5rem"></p>
+        </div>
+        <div class="panel">
+          <h3>BingoClaw credits</h3>
+          <p style="color:var(--text);font-size:1.35rem;font-weight:700;margin:0.25rem 0" id="acct-credits-balance">—</p>
+          <p style="color:var(--muted);font-size:0.875rem;margin:0.5rem 0 0">Credits are tied to this account and consumed by BingoClaw-backed AI across ClawdCare (console, skills, cloud assists). Balance sync is <em>roadmap</em>—shown as demo until billing connects.</p>
+          <p style="margin-top:0.75rem;font-size:0.875rem"><a href="/shop.html#bingoclaw-credits">Buy credit packs</a></p>
         </div>
         <div class="panel">
           <h3>Quick links</h3>
@@ -79,6 +85,13 @@
         if (data.user) {
           document.getElementById("acct-email").textContent = data.user.email;
           document.getElementById("acct-name").textContent = data.user.name ? "Name: " + data.user.name : "";
+          var bal = document.getElementById("acct-credits-balance");
+          if (bal) {
+            var h = 0;
+            for (var i = 0; i < (data.user.email || "").length; i++) h = ((h << 5) - h + data.user.email.charCodeAt(i)) | 0;
+            var demo = 200 + (Math.abs(h) % 800);
+            bal.textContent = demo + " credits (demo)";
+          }
         }
       } catch (_) {}
       try {

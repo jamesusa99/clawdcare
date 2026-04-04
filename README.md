@@ -1,19 +1,21 @@
 # ClawdCare (clawdcare.com)
 
-Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, **shop** (ordering), **Your health** (product use and personal health center narrative), **console** preview, **about**, **support**, **legal**, and **My account** (user management + email/password auth)—structured as a single platform toward a personal health management center.
+Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, **shop** (ordering + **BingoClaw credit packs**), **Your health** (longitudinal wellness dashboard), **console** preview, **about**, **support**, **legal**, and **My account** (profile, **credit balance placeholder**, session)—structured as a single platform toward a personal health management center.
+
+**Product model:** **ClawdCare is built on BingoClaw.** Users buy **BingoClaw credits** on clawdcare.com (bound to the account); cloud/device experiences consume that wallet. Users are **not** asked to choose underlying LLMs—BingoClaw’s standard capabilities surface across the product.
 
 ## Pages
 
 | Path | Purpose |
 |------|---------|
 | `/` | Product introduction — 16 capabilities, market gap, science/privacy |
-| `/shop.html` | Product ordering — SKUs, localStorage cart, email order handoff |
+| `/shop.html` | Product ordering — hardware/programs + **BingoClaw credit packs** (`#bingoclaw-credits`), localStorage cart, email order handoff |
 | `/use.html` | **Your health** — longitudinal wellness dashboard (demo when signed out; personalized stub when signed in): biomarker domains, biological-age style summary, viz, guidance, advanced programs |
 | `/console.html` | Control panel preview (public; sign-in optional for future binding) |
 | `/about.html` | Company, roadmap, financial sketch from plan |
 | `/support.html` | Help & contact |
 | `/legal.html` | Wellness / disclaimer summary |
-| `/account.html` | **My** — profile, cart snapshot (**requires login**) |
+| `/account.html` | **My** — profile, **BingoClaw credits** (demo balance), cart snapshot (**requires login**) |
 | `/login.html`, `/register.html` | Session auth |
 | `/admin.html` | **Platform admin** — overview (stats, DB status, config hints), user table with filter & CSV export, refresh (**requires admin**; `noindex`) |
 | `/404.html` | Custom not-found (used by Vercel when a path has no file) |

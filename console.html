@@ -69,21 +69,21 @@
     <div id="console-app" class="console-app" hidden>
       <aside class="console-sidebar" aria-label="Console navigation">
         <p class="console-side-title">Console</p>
-        <nav class="console-side-nav">
-          <a href="/console.html" class="is-active" aria-current="page">Dashboard</a>
-          <a href="/console.html">My devices</a>
-          <a href="/console.html">Health data</a>
-          <a href="/console.html">Programs</a>
-          <a href="/console.html">Skills / automations</a>
-          <a href="/console.html">Alerts</a>
-          <a href="/console.html">Settings</a>
+        <nav class="console-side-nav" aria-label="Console sections">
+          <a href="/console.html#dashboard" data-console-nav="dashboard" class="is-active" aria-current="page">Dashboard</a>
+          <a href="/console.html#devices" data-console-nav="devices">My devices</a>
+          <a href="/console.html#health-data" data-console-nav="health-data">Health data</a>
+          <a href="/console.html#programs" data-console-nav="programs">Programs</a>
+          <a href="/console.html#skills" data-console-nav="skills">Skills / automations</a>
+          <a href="/console.html#alerts" data-console-nav="alerts">Alerts</a>
+          <a href="/console.html#settings" data-console-nav="settings">Settings</a>
         </nav>
         <p class="console-side-foot"><a href="/use.html">Your health</a> · <a href="/account.html">Account</a> · <a href="/support.html">Support</a></p>
       </aside>
       <div class="console-main">
         <header class="console-topbar">
           <div>
-            <h2 class="console-topbar-title">Dashboard</h2>
+            <h2 class="console-topbar-title" id="console-topbar-title">Dashboard</h2>
             <p class="console-topbar-sub">ClawdCare Cloud Console · US English</p>
           </div>
           <div class="console-topbar-user">
@@ -92,57 +92,108 @@
           </div>
         </header>
 
-        <div class="console-modules">
-          <article class="console-mod console-mod--cyan">
-            <p class="console-mod-label">Signals</p>
-            <p class="console-mod-title">Markets / feeds</p>
-            <p class="console-mod-meta">Last sync: 04/04/2026</p>
-          </article>
-          <article class="console-mod console-mod--green">
-            <p class="console-mod-label">Health Guardian</p>
-            <p class="console-mod-title">ClawdCare core</p>
-            <p class="console-mod-meta">A1c 5.4% · 03/15/2026</p>
-          </article>
-          <article class="console-mod console-mod--violet">
-            <p class="console-mod-label">Workflows</p>
-            <p class="console-mod-title">Docs / automation</p>
-            <p class="console-mod-meta">3 tasks due today</p>
-          </article>
+        <div id="console-panel-dashboard" class="console-panel" role="tabpanel">
+          <div class="console-modules">
+            <article class="console-mod console-mod--cyan">
+              <p class="console-mod-label">Signals</p>
+              <p class="console-mod-title">Markets / feeds</p>
+              <p class="console-mod-meta">Last sync: 04/04/2026</p>
+            </article>
+            <article class="console-mod console-mod--green">
+              <p class="console-mod-label">Health Guardian</p>
+              <p class="console-mod-title">ClawdCare core</p>
+              <p class="console-mod-meta">A1c 5.4% · 03/15/2026</p>
+            </article>
+            <article class="console-mod console-mod--violet">
+              <p class="console-mod-label">Workflows</p>
+              <p class="console-mod-title">Docs / automation</p>
+              <p class="console-mod-meta">3 tasks due today</p>
+            </article>
+          </div>
+
+          <section class="console-card-block">
+            <h3>Today’s snapshot</h3>
+            <p class="console-muted">Resting HR 62 bpm · Sleep 7h 10m · Steps 8,420</p>
+            <p class="console-fine">Sources: Apple Health <em>(coming soon)</em> · manual entry · ClawdCare device</p>
+          </section>
+
+          <section class="console-card-block">
+            <h3>Integrations · United States</h3>
+            <p class="console-muted">Connect tools your team already uses. Roadmap—toggle when live.</p>
+            <div class="console-chips">
+              <span class="console-chip">Slack</span>
+              <span class="console-chip">Google Workspace</span>
+              <span class="console-chip">SMS</span>
+              <span class="console-chip">Webhooks</span>
+              <span class="console-chip console-chip--dim">Apple Health</span>
+              <span class="console-chip console-chip--dim">Epic MyChart</span>
+            </div>
+          </section>
+
+          <section class="console-card-block">
+            <h3>Device status</h3>
+            <div class="table-wrap">
+              <table class="data console-table">
+                <thead>
+                  <tr><th>Device</th><th>Status</th><th>Last seen</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>ClawdCare Hub</td><td class="hi">Not paired</td><td>—</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="console-fine" style="margin-top:0.75rem"><a href="/shop.html">Order hardware</a> · <a href="/use.html">How to use ClawdCare</a></p>
+          </section>
         </div>
 
-        <section class="console-card-block">
-          <h3>Today’s snapshot</h3>
-          <p class="console-muted">Resting HR 62 bpm · Sleep 7h 10m · Steps 8,420</p>
-          <p class="console-fine">Sources: Apple Health <em>(coming soon)</em> · manual entry · ClawdCare device</p>
-        </section>
+        <div id="console-panel-devices" class="console-panel" role="tabpanel" hidden>
+          <section class="console-card-block">
+            <h3>My devices</h3>
+            <p class="console-muted">Pair ClawdCare hardware, rename rooms, and see firmware status. <strong>Roadmap preview</strong>—use <a href="/shop.html">Shop</a> to order a hub.</p>
+            <div class="table-wrap" style="margin-top:1rem">
+              <table class="data console-table">
+                <thead><tr><th>Device</th><th>Room</th><th>Status</th></tr></thead>
+                <tbody><tr><td>—</td><td>—</td><td>No devices yet</td></tr></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
 
-        <section class="console-card-block">
-          <h3>Integrations · United States</h3>
-          <p class="console-muted">Connect tools your team already uses. Roadmap—toggle when live.</p>
-          <div class="console-chips">
-            <span class="console-chip">Slack</span>
-            <span class="console-chip">Google Workspace</span>
-            <span class="console-chip">SMS</span>
-            <span class="console-chip">Webhooks</span>
-            <span class="console-chip console-chip--dim">Apple Health</span>
-            <span class="console-chip console-chip--dim">Epic MyChart</span>
-          </div>
-        </section>
+        <div id="console-panel-health-data" class="console-panel" role="tabpanel" hidden>
+          <section class="console-card-block">
+            <h3>Health data</h3>
+            <p class="console-muted">Imports, timelines, and vault sync from your ClawdCare device. For a longitudinal wellness view, open <a href="/use.html">Your health</a>.</p>
+          </section>
+        </div>
 
-        <section class="console-card-block">
-          <h3>Device status</h3>
-          <div class="table-wrap">
-            <table class="data console-table">
-              <thead>
-                <tr><th>Device</th><th>Status</th><th>Last seen</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>ClawdCare Hub</td><td class="hi">Not paired</td><td>—</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="console-fine" style="margin-top:0.75rem"><a href="/shop.html">Order hardware</a> · <a href="/use.html">How to use ClawdCare</a></p>
-        </section>
+        <div id="console-panel-programs" class="console-panel" role="tabpanel" hidden>
+          <section class="console-card-block">
+            <h3>Programs</h3>
+            <p class="console-muted">Structured pathways (screenings, adherence, coaching). Content and toggles ship with product milestones.</p>
+          </section>
+        </div>
+
+        <div id="console-panel-skills" class="console-panel" role="tabpanel" hidden>
+          <section class="console-card-block">
+            <h3>Skills / automations</h3>
+            <p class="console-muted">Governed skills and webhook-style automations—US integrations first (Slack, Google, SMS).</p>
+          </section>
+        </div>
+
+        <div id="console-panel-alerts" class="console-panel" role="tabpanel" hidden>
+          <section class="console-card-block">
+            <h3>Alerts</h3>
+            <p class="console-muted">Thresholds, nudges, and digest summaries will appear here when monitoring is enabled.</p>
+          </section>
+        </div>
+
+        <div id="console-panel-settings" class="console-panel" role="tabpanel" hidden>
+          <section class="console-card-block">
+            <h3>Settings</h3>
+            <p class="console-muted">Locale, notifications, data export, and consent. Account details live in <a href="/account.html">My account</a>.</p>
+            <p class="console-muted" style="margin-top:0.85rem"><strong>BingoClaw credits:</strong> AI and skills on ClawdCare consume credits tied to your account. Buy packs in the <a href="/shop.html#bingoclaw-credits">Shop</a>; balance and usage history will appear in <a href="/account.html">My account</a> when billing is connected.</p>
+          </section>
+        </div>
       </div>
     </div>
   </main>
