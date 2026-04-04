@@ -80,7 +80,7 @@ Open `http://localhost:3000`.
 ## Deploy (Vercel)
 
 - **Why `/about.html` showed the homepage:** On Vercel, static hosting does **not** mirror local Express (which serves both repo-root **`*.html`** and **`public/`** at the same URL root). If the deployment only exposed part of the tree—or every path hit the API—`/about.html` could resolve to the wrong file (often **`index.html`**).  
-- **Fix in this repo:** `npm run build` runs **`scripts/vercel-build.js`**, which writes **`dist/`** = **`public/`** plus all root **`*.html`** and **`sitemap.xml`**. **`vercel.json`** sets **`outputDirectory`: `dist`** so the CDN serves **`/about.html`**, **`/css/...`**, **`/js/...`** from one layout that matches your HTML.  
+- **Fix in this repo:** `npm run build` runs **`scripts/vercel-build.js`**, which writes **`dist/`** = **`public/`** plus all root **`*.html`** and **`sitemap.xml`**. **`vercel.json`** sets **`outputDirectory`: `dist`** and **`framework`: `null`** (“Other”) so Vercel treats **`dist/`** as **static files**, not an Express server bundle (avoids “No entrypoint found in output directory”).  
 - **`/api/:path*`** → **`/api`** only. Do **not** add **`/(.*)` → `/api`** in the dashboard; that routes the whole site through Express and breaks multi-page HTML.
 - **`functions.api.index.js.includeFiles`** still bundles **`*.html`** and **`public/**`** for the serverless API (sessions/auth) if a request hits the function.
 - Set **`SESSION_SECRET`** (and optionally **`BASE_URL`** for your production URL) in the Vercel project environment.
