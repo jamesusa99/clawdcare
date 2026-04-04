@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>Console — ClawdCare</title>
+  <link rel="stylesheet" href="/css/app.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav-row">
+      <a class="logo" href="/">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 18c0-4 2.5-7 6-8 1.5 2 2 4.5 1.5 7L8 18zm16 0c0-4-2.5-7-6-8-1.5 2-2 4.5-1.5 7L24 18z" stroke="currentColor" stroke-width="1.5"/><path d="M12 20c2 3 5 4 8 0" stroke="currentColor" stroke-width="1.5"/></svg>
+        </span>
+        ClawdCare
+      </a>
+      <nav class="nav-main" aria-label="Main">
+        <a href="/" data-nav>Product</a>
+        <a href="/shop.html" data-nav>Shop</a>
+        <a href="/console.html" data-nav>Console</a>
+        <a href="/about.html" data-nav>About</a>
+        <a href="/support.html" data-nav>Support</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="/shop.html" class="badge-cart" id="cart-badge" style="display:none"></a>
+        <span id="nav-auth"></span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap page-title">
+      <h1>Console</h1>
+      <p>Preview of the in-home control surface. Pairing, sync, and automation controls will activate as alpha hardware ships. <a href="/login.html?next=/console.html">Sign in</a> to associate this view with your account (optional during beta).</p>
+    </div>
+    <section style="padding-top:0">
+      <div class="wrap panel-grid">
+        <div class="panel">
+          <h3><span class="status-dot"></span>Device</h3>
+          <p>No paired hardware detected. After you receive a BingoClaw hub, use <strong>Scan to pair</strong> from the mobile companion (coming soon).</p>
+          <p style="margin-top:0.75rem;font-size:0.8125rem"><a href="/account.html">My account</a> · <a href="/shop.html">Reserve hardware</a></p>
+        </div>
+        <div class="panel">
+          <h3>Data plane</h3>
+          <p>Imports: structured reports, wearables, and OCR pipelines—progress indicators will show per source.</p>
+        </div>
+        <div class="panel">
+          <h3>Skills &amp; automations</h3>
+          <p>Governed OpenClaw-compatible skills: allow-listed actions, read defaults, audit trail (health mode).</p>
+        </div>
+        <div class="panel">
+          <h3>Alerts</h3>
+          <p>Quiet by default. Priority nudges for retests, missing data, and risk summaries will surface here.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap"><p class="disclaimer">Console is a preview UI. Features ship per roadmap on <a href="/about.html">About</a>.</p></div>
+  </footer>
+  <script src="/js/nav.js" defer></script>
+</body>
+</html>

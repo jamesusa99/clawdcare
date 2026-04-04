@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>Sign in — ClawdCare</title>
+  <link rel="stylesheet" href="/css/auth.css" />
+</head>
+<body class="auth-body">
+  <header class="auth-top">
+    <a class="auth-brand" href="/">← ClawdCare</a>
+    <a href="/register.html" style="color:var(--a-accent);font-size:0.9rem">Create account</a>
+  </header>
+  <main class="auth-main">
+    <div class="auth-card">
+      <h1>Sign in</h1>
+      <p class="auth-sub">Access console and account settings.</p>
+      <div class="auth-error" id="auth-error" role="alert"></div>
+      <form id="form-login">
+        <div class="auth-field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="username" required />
+        </div>
+        <div class="auth-field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+        <button type="submit" class="btn-a">Sign in</button>
+      </form>
+      <p class="auth-footer">New? <a href="/register.html">Register</a></p>
+    </div>
+  </main>
+  <script src="/js/auth.js" defer></script>
+</body>
+</html>

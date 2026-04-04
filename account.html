@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>My account — ClawdCare</title>
+  <link rel="stylesheet" href="/css/app.css" />
+  <script src="/js/guard.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap nav-row">
+      <a class="logo" href="/">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 18c0-4 2.5-7 6-8 1.5 2 2 4.5 1.5 7L8 18zm16 0c0-4-2.5-7-6-8-1.5 2-2 4.5-1.5 7L24 18z" stroke="currentColor" stroke-width="1.5"/><path d="M12 20c2 3 5 4 8 0" stroke="currentColor" stroke-width="1.5"/></svg>
+        </span>
+        ClawdCare
+      </a>
+      <nav class="nav-main" aria-label="Main">
+        <a href="/" data-nav>Product</a>
+        <a href="/shop.html" data-nav>Shop</a>
+        <a href="/console.html" data-nav>Console</a>
+        <a href="/about.html" data-nav>About</a>
+        <a href="/support.html" data-nav>Support</a>
+      </nav>
+      <div class="nav-actions">
+        <a href="/shop.html" class="badge-cart" id="cart-badge" style="display:none"></a>
+        <span id="nav-auth"></span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap page-title">
+      <h1>My account</h1>
+      <p>Profile, orders (draft), and session.</p>
+    </div>
+    <section style="padding-top:0">
+      <div class="wrap panel-grid">
+        <div class="panel">
+          <h3>Profile</h3>
+          <p id="acct-email" style="color:var(--text)">—</p>
+          <p id="acct-name" style="margin-top:0.5rem"></p>
+        </div>
+        <div class="panel">
+          <h3>Quick links</h3>
+          <p><a href="/console.html">Open console</a><br /><a href="/shop.html">Continue shopping</a></p>
+        </div>
+        <div class="panel" style="grid-column:1/-1">
+          <h3>Cart snapshot (this browser)</h3>
+          <p id="acct-cart" style="color:var(--muted)">Loading…</p>
+        </div>
+        <div class="panel" style="grid-column:1/-1">
+          <h3>Session</h3>
+          <button type="button" class="btn btn-ghost" id="acct-logout">Sign out</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="wrap"><p class="disclaimer"><a href="/legal.html">Privacy &amp; terms</a></p></div></footer>
+  <script src="/js/nav.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      try {
+        var r = await fetch("/api/auth/me", { credentials: "same-origin" });
+        var data = await r.json();
+        if (data.user) {
+          document.getElementById("acct-email").textContent = data.user.email;
+          document.getElementById("acct-name").textContent = data.user.name ? "Name: " + data.user.name : "";
+        }
+      } catch (_) {}
+      try {
+        var cart = JSON.parse(localStorage.getItem("clawdcare_cart") || "[]");
+        var el = document.getElementById("acct-cart");
+        if (!cart.length) el.textContent = "Cart is empty.";
+        else el.innerHTML = cart.map(function (l) { return "• " + l.name + " ×" + l.qty + "<br/>"; }).join("");
+      } catch (_) {
+        document.getElementById("acct-cart").textContent = "—";
+      }
+      document.getElementById("acct-logout").addEventListener("click", async function () {
+        await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
+        location.href = "/";
+      });
+    });
+  </script>
+</body>
+</html>
