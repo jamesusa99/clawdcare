@@ -4,7 +4,8 @@
   --a-text: #18181b;
   --a-muted: #71717a;
   --a-border: #e4e4e7;
-  --a-accent: #0891b2;
+  --a-accent: #ea580c;
+  --a-accent-soft: rgba(234, 88, 12, 0.12);
 }
 
 body.auth-body {
@@ -86,7 +87,7 @@ body.auth-body {
 .auth-field input:focus {
   outline: none;
   border-color: var(--a-accent);
-  box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.15);
+  box-shadow: 0 0 0 3px var(--a-accent-soft);
 }
 
 .btn-a {

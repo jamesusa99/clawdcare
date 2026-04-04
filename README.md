@@ -27,10 +27,12 @@ Open `http://localhost:3000`.
 
 ## Deploy (Vercel)
 
-- `vercel.json` only rewrites `/api/*` to the Node serverless function.
-- Static HTML/CSS/JS is served from the repo root by the CDN.
+- `vercel.json` routes **all** traffic to the Express serverless entry (`api/index.js`) so CSS/JS/HTML are always bundled with `includeFiles` (avoids “unstyled HTML” when the CDN layer does not see static files).
+- First rewrite still targets `/api/:path*` explicitly; a catch-all `/(.*)` → `/api` covers pages and assets.
 - Set `SESSION_SECRET` (and optionally `BASE_URL` for your production URL) in the Vercel project environment.
 - Demo users are stored in `/tmp` on serverless; use a real database for production.
+
+UI colors follow **bingoclaw.cn** tokens: background `#0a0e14`, text `#e8edf4`, accent `#f97316` / `#ea580c`.
 
 ## Content source
 

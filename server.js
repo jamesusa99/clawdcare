@@ -23,6 +23,20 @@ const app = express();
 app.set("trust proxy", 1);
 
 app.get("/favicon.ico", (_req, res) => res.redirect(301, "/favicon.svg"));
+
+const BLOCKED_STATIC = new Set([
+  "/server.js",
+  "/user-store.js",
+  "/package.json",
+  "/package-lock.json",
+  "/vercel.json",
+  "/api/index.js",
+]);
+app.use((req, res, next) => {
+  if (BLOCKED_STATIC.has(req.path)) return res.status(403).send("Forbidden");
+  next();
+});
+
 app.use(express.static(path.join(__dirname), { index: "index.html" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
