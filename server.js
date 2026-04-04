@@ -1,4 +1,5 @@
 require("dotenv").config();
+const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const session = require("express-session");
@@ -143,19 +144,32 @@ app.use(express.static(path.join(__dirname), { index: "index.html" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "dev-only-change-me",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 14 * 24 * 60 * 60 * 1000,
-    },
-  })
-);
+/** Vercel serverless: default MemoryStore is per-instance — sessions vanish on the next request. Set REDIS_URL (e.g. Upstash TCP URL). */
+const sessionConfig = {
+  secret: process.env.SESSION_SECRET || "dev-only-change-me",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 14 * 24 * 60 * 60 * 1000,
+  },
+};
+if (process.env.REDIS_URL) {
+  const Redis = require("ioredis");
+  const RedisStore = require("connect-redis").default;
+  const redisClient = new Redis(process.env.REDIS_URL, {
+    maxRetriesPerRequest: null,
+    enableReadyCheck: false,
+  });
+  sessionConfig.store = new RedisStore({ client: redisClient });
+} else if (process.env.VERCEL && process.env.NODE_ENV === "production") {
+  console.warn(
+    "[clawdcare] No REDIS_URL: sessions use MemoryStore and will not persist across Vercel invocations. Add REDIS_URL (Upstash Redis) for login to work."
+  );
+}
+app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -335,6 +349,19 @@ app.use((req, res) => {
   const ext = path.extname(req.path);
   const assets = new Set([".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".woff", ".woff2", ".ttf", ".map", ".json"]);
   if (assets.has(ext)) return res.status(404).send("Not found");
+  // Vercel: if all traffic is wrongly routed to this function, never serve index.html for /shop.html etc.
+  if (process.env.VERCEL && ext === ".html") {
+    const base = path.basename(req.path);
+    if (/^[a-zA-Z0-9][a-zA-Z0-9.-]*\.html$/.test(base)) {
+      const f = path.join(__dirname, base);
+      try {
+        if (fs.existsSync(f) && fs.statSync(f).isFile()) return res.sendFile(f);
+      } catch (_) {}
+    }
+    const nf = path.join(__dirname, "404.html");
+    if (fs.existsSync(nf)) return res.status(404).sendFile(nf);
+    return res.status(404).type("html").send("<!DOCTYPE html><html><head><meta charset=utf-8><title>Not found</title></head><body>Not found</body></html>");
+  }
   res.sendFile(path.join(__dirname, "index.html"));
 });
 

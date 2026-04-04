@@ -28,6 +28,7 @@ Thumbs.db
 
 # Vercel
 .vercel
+dist/
 
 # Optional tooling
 coverage/

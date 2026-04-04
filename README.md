@@ -79,9 +79,13 @@ Open `http://localhost:3000`.
 
 ## Deploy (Vercel)
 
-- Shared assets live under **`public/`** (`css/`, `js/`, `assets/` product PNGs + `favicon.svg`, `robots.txt`) so Vercel’s static layer serves them at `/css/...`, `/js/...`, `/assets/...`, etc. (filesystem wins before rewrites).
-- `vercel.json` only rewrites **`/api/:path*`** → `/api` (Express for auth/session APIs). HTML at the repo root is deployed as static files the same way.
-- Set `SESSION_SECRET` (and optionally `BASE_URL` for your production URL) in the Vercel project environment.
+- **Why `/about.html` showed the homepage:** On Vercel, static hosting does **not** mirror local Express (which serves both repo-root **`*.html`** and **`public/`** at the same URL root). If the deployment only exposed part of the tree—or every path hit the API—`/about.html` could resolve to the wrong file (often **`index.html`**).  
+- **Fix in this repo:** `npm run build` runs **`scripts/vercel-build.js`**, which writes **`dist/`** = **`public/`** plus all root **`*.html`** and **`sitemap.xml`**. **`vercel.json`** sets **`outputDirectory`: `dist`** so the CDN serves **`/about.html`**, **`/css/...`**, **`/js/...`** from one layout that matches your HTML.  
+- **`/api/:path*`** → **`/api`** only. Do **not** add **`/(.*)` → `/api`** in the dashboard; that routes the whole site through Express and breaks multi-page HTML.
+- **`functions.api.index.js.includeFiles`** still bundles **`*.html`** and **`public/**`** for the serverless API (sessions/auth) if a request hits the function.
+- Set **`SESSION_SECRET`** (and optionally **`BASE_URL`** for your production URL) in the Vercel project environment.
+- **`REDIS_URL` (required for auth on Vercel):** Each API invocation may run on a different instance; the default in-memory session store does **not** share state, so `/api/auth/me` often returns **401** even right after login. Create a free **[Upstash Redis](https://upstash.com/)** database, copy the **`rediss://…`** URL (Redis protocol, not the REST URL), and add it as **`REDIS_URL`** in Vercel. The app uses **`connect-redis` + `ioredis`** when this variable is set.
+- **`GET /api/auth/me` → 401** when you are **not** signed in is normal (nav and guarded pages probe the session). If you **are** signed in and still see 401 on every load, fix **`REDIS_URL`** + **`SESSION_SECRET`** as above.
 - **Admin:** In **production**, set `ADMIN_EMAILS` to operator emails and/or assign the `admin` role in storage. In **non-production**, if `ADMIN_EMAILS` is **empty**, any signed-in user can open `/admin.html` (local default). Opt out with `STRICT_ADMIN=1` or `ADMIN_DEV_OPEN=0` (see `.env.example`).
 - **There is no separate “admin password”.** Same email/password as site sign-in.
 - Demo users are stored in `/tmp` on serverless unless **Supabase** env vars are set; prefer Supabase (or another DB) for production.
