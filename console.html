@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <meta name="description" content="ClawdCare console: pair hardware, manage health data imports, programs, and alerts—your control surface for a personal health management center." />
-  <title>Console — ClawdCare</title>
+  <meta name="description" content="ClawdCare Cloud Console — pair hardware, health data, programs, and US-friendly integrations after sign-in." />
+  <title>Cloud Console — ClawdCare</title>
   <style>html,body{background:#0a0e14;color:#e8edf4}</style>
   <link rel="stylesheet" href="/css/app.css" />
 </head>
-<body>
+<body class="console-page">
   <header class="site-header">
     <div class="nav-shell nav-row">
       <a class="logo" href="/">
@@ -34,48 +34,134 @@
   </header>
 
   <main>
-    <div class="wrap page-title">
-      <h1>Console</h1>
-      <p>
-        Your <strong>control surface</strong> for ClawdCare: pairing, data imports, programs, skills, and alerts. This is where the platform moves from “website” to <strong>operating your personal health management center</strong> alongside the device. Preview UI—controls activate as hardware and services roll out.
-        <a href="/login.html?next=/console.html">Sign in</a> to tie this view to your account; new to the journey? See <a href="/use.html">Your health</a>.
-      </p>
-    </div>
-    <section style="padding-top:0">
-      <div class="wrap panel-grid">
-        <div class="panel">
-          <h3><span class="status-dot"></span>Device</h3>
-          <p>No paired ClawdCare hardware detected. After delivery, use <strong>Scan to pair</strong> from the companion app (roadmap) so the console can manage firmware, storage, and trust boundaries.</p>
-          <p style="margin-top:0.75rem;font-size:0.8125rem"><a href="/account.html">My account</a> · <a href="/shop.html">Order hardware</a></p>
-        </div>
-        <div class="panel">
-          <h3>Health data plane</h3>
-          <p>Imports for labs, imaging PDFs, wearables, and voice-captured notes—so what you add at home becomes structured input for longitudinal wellness support (per roadmap).</p>
-        </div>
-        <div class="panel">
-          <h3>Programs &amp; skills</h3>
-          <p>Longevity and adherence programs, plus governed OpenClaw-style skills: allow-listed actions, read defaults, and audit trail in health mode.</p>
-        </div>
-        <div class="panel">
-          <h3>Alerts &amp; reviews</h3>
-          <p>Quiet by default. Retest reminders, missing-data prompts, and periodic “healthy aging” summaries can surface here when you opt in.</p>
-        </div>
+    <!-- Signed-out: marketing-style gate (BingoClaw-style CTA) -->
+    <div id="console-guest" class="wrap">
+      <div class="page-title">
+        <p class="pill">ClawdCare Cloud Console</p>
+        <h1>Your control room—after you sign in.</h1>
+        <p>
+          Modeled after the <a href="https://www.bingoclaw.cn/" rel="noopener noreferrer">BingoClaw</a> cloud-console idea: one place to see <strong>devices</strong>, <strong>health data</strong>, <strong>programs</strong>, and <strong>US-ready integrations</strong> (Slack, Google, SMS, webhooks—not Feishu/WeChat-first).
+          <strong> Sign in</strong> to open the live console layout below.
+        </p>
+        <p style="margin-top:1.25rem;display:flex;flex-wrap:wrap;gap:0.65rem">
+          <a class="btn btn-primary" href="/login.html?next=/console.html">Sign in to Console</a>
+          <a class="btn btn-ghost" href="/register.html">Create account</a>
+        </p>
       </div>
-    </section>
+      <section style="padding-top:0;padding-bottom:2rem">
+        <div class="panel-grid">
+          <div class="panel">
+            <h3><span class="status-dot" style="background:#64748b"></span>Device</h3>
+            <p>No paired hardware until you connect a ClawdCare hub. Use <strong>Scan to pair</strong> from the mobile app (roadmap).</p>
+            <p style="margin-top:0.75rem;font-size:0.8125rem"><a href="/shop.html">Order hardware</a></p>
+          </div>
+          <div class="panel">
+            <h3>Preview</h3>
+            <p>The dashboard uses <strong>US English</strong> labels, <strong>MM/DD/YYYY</strong>-style dates in examples, and common US integration names.</p>
+          </div>
+        </div>
+        <figure class="console-figure" style="margin-top:1.5rem">
+          <img src="/assets/console-ui-us-preview.svg" width="640" height="360" alt="Example US English ClawdCare Cloud Console: Dashboard, Signals, Health Guardian, Workflows, and integration chips for Slack, Google, SMS, Webhooks" loading="lazy" decoding="async" />
+          <figcaption class="console-figure-cap">Example UI for US customers (illustration).</figcaption>
+        </figure>
+      </section>
+    </div>
+
+    <!-- Signed-in: full-width console shell -->
+    <div id="console-app" class="console-app" hidden>
+      <aside class="console-sidebar" aria-label="Console navigation">
+        <p class="console-side-title">Console</p>
+        <nav class="console-side-nav">
+          <a href="/console.html" class="is-active" aria-current="page">Dashboard</a>
+          <a href="/console.html">My devices</a>
+          <a href="/console.html">Health data</a>
+          <a href="/console.html">Programs</a>
+          <a href="/console.html">Skills / automations</a>
+          <a href="/console.html">Alerts</a>
+          <a href="/console.html">Settings</a>
+        </nav>
+        <p class="console-side-foot"><a href="/account.html">Account</a> · <a href="/support.html">Support</a></p>
+      </aside>
+      <div class="console-main">
+        <header class="console-topbar">
+          <div>
+            <h2 class="console-topbar-title">Dashboard</h2>
+            <p class="console-topbar-sub">ClawdCare Cloud Console · US English</p>
+          </div>
+          <div class="console-topbar-user">
+            <span id="console-user-email" class="console-email">—</span>
+            <a class="btn btn-ghost" href="/account.html" style="padding:0.35rem 0.75rem;font-size:0.8125rem">Account</a>
+          </div>
+        </header>
+
+        <div class="console-modules">
+          <article class="console-mod console-mod--cyan">
+            <p class="console-mod-label">Signals</p>
+            <p class="console-mod-title">Markets / feeds</p>
+            <p class="console-mod-meta">Last sync: 04/04/2026</p>
+          </article>
+          <article class="console-mod console-mod--green">
+            <p class="console-mod-label">Health Guardian</p>
+            <p class="console-mod-title">ClawdCare core</p>
+            <p class="console-mod-meta">A1c 5.4% · 03/15/2026</p>
+          </article>
+          <article class="console-mod console-mod--violet">
+            <p class="console-mod-label">Workflows</p>
+            <p class="console-mod-title">Docs / automation</p>
+            <p class="console-mod-meta">3 tasks due today</p>
+          </article>
+        </div>
+
+        <section class="console-card-block">
+          <h3>Today’s snapshot</h3>
+          <p class="console-muted">Resting HR 62 bpm · Sleep 7h 10m · Steps 8,420</p>
+          <p class="console-fine">Sources: Apple Health <em>(coming soon)</em> · manual entry · ClawdCare device</p>
+        </section>
+
+        <section class="console-card-block">
+          <h3>Integrations · United States</h3>
+          <p class="console-muted">Connect tools your team already uses. Roadmap—toggle when live.</p>
+          <div class="console-chips">
+            <span class="console-chip">Slack</span>
+            <span class="console-chip">Google Workspace</span>
+            <span class="console-chip">SMS</span>
+            <span class="console-chip">Webhooks</span>
+            <span class="console-chip console-chip--dim">Apple Health</span>
+            <span class="console-chip console-chip--dim">Epic MyChart</span>
+          </div>
+        </section>
+
+        <section class="console-card-block">
+          <h3>Device status</h3>
+          <div class="table-wrap">
+            <table class="data console-table">
+              <thead>
+                <tr><th>Device</th><th>Status</th><th>Last seen</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>ClawdCare Hub</td><td class="hi">Not paired</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="console-fine" style="margin-top:0.75rem"><a href="/shop.html">Order hardware</a> · <a href="/use.html">How to use ClawdCare</a></p>
+        </section>
+      </div>
+    </div>
   </main>
 
   <footer class="site-footer">
     <div class="wrap footer-grid">
       <div class="footer-brand">
         <a class="logo" href="/"><span class="logo-mark"><svg viewBox="0 0 32 32" fill="none" width="20" height="20"><path d="M8 18c0-4 2.5-7 6-8 1.5 2 2 4.5 1.5 7L8 18zm16 0c0-4-2.5-7-6-8-1.5 2-2 4.5-1.5 7L24 18z" stroke="currentColor" stroke-width="1.5"/><path d="M12 20c2 3 5 4 8 0" stroke="currentColor" stroke-width="1.5"/></svg></span> ClawdCare</a>
-        <p>Console preview · roadmap on <a href="/about.html">About</a></p>
+        <p>Cloud Console · US market UI</p>
       </div>
       <div><h4>Platform</h4><a href="/use.html">Your health</a><a href="/shop.html">Shop</a></div>
       <div><h4>Account</h4><a href="/account.html">My account</a><a href="/login.html?next=/console.html">Sign in</a></div>
       <div><h4>Legal</h4><a href="/legal.html">Privacy &amp; terms</a></div>
     </div>
-    <div class="wrap"><p class="disclaimer"><strong>Wellness use.</strong> Console features described here are product direction unless cleared as a medical device in your jurisdiction.</p></div>
+    <div class="wrap"><p class="disclaimer"><strong>Wellness use.</strong> Console is a preview. Features ship per roadmap.</p></div>
   </footer>
   <script src="/js/nav.js" defer></script>
+  <script src="/js/console.js" defer></script>
 </body>
 </html>

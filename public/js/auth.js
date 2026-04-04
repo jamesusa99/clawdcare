@@ -33,7 +33,7 @@
             password: formLogin.password.value || "",
           });
           var next = qs("next");
-          location.href = next && next.startsWith("/") ? next : "/account.html";
+          location.href = next && next.startsWith("/") ? next : "/console.html";
         } catch (x) {
           if (err) {
             err.textContent = x.message || "Login failed";
@@ -62,7 +62,7 @@
             password: formReg.password.value || "",
             name: (formReg.name && formReg.name.value) || "",
           });
-          location.href = "/account.html";
+          location.href = "/console.html";
         } catch (x) {
           if (err) {
             err.textContent = x.message || "Registration failed";

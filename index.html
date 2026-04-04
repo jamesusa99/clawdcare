@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -50,21 +50,127 @@
           </div>
           <p style="margin-top:1.5rem;display:flex;flex-wrap:wrap;gap:0.65rem">
             <a class="btn btn-primary" href="/shop.html">Order ClawdCare</a>
+            <a class="btn btn-ghost" href="/login.html?next=/console.html">Open Cloud Console</a>
             <a class="btn btn-ghost" href="/use.html">How you’ll use it</a>
           </p>
+          <p style="margin-top:0.85rem;font-size:0.8125rem;color:var(--dim)">Hardware ships with localized on-screen text; <strong>clawdcare.com</strong> and the signed-in console use <strong>US English</strong> by default.</p>
+          <div class="bc-int-pills" aria-label="Planned US integrations">
+            <span>Works with</span>
+            <span class="bc-pill">Apple Health</span>
+            <span class="bc-pill">Google</span>
+            <span class="bc-pill">Slack</span>
+            <span class="bc-pill">SMS</span>
+            <span class="bc-pill">Webhooks</span>
+            <a href="/console.html">Console preview →</a>
+          </div>
         </div>
-        <div class="hero-card hero-card--media">
-          <img
-            class="hero-product-img"
-            src="/assets/product-home-hero.png"
-            width="1024"
-            height="558"
-            alt="BingoClaw V-Series on a wooden shelf in a warm living room; screen shows Health Guardian at center with Finance and Content modules, cyan accent lighting"
-            fetchpriority="high"
-            decoding="async"
-          />
-          <div class="hero-card-foot">
-            <p style="margin:0;font-size:0.8125rem;color:var(--muted)"><strong style="color:var(--text)">BingoClaw V-Series</strong> — designed for the family room: Health Guardian at the center, ambient accent lighting, mic array. Out of the box: scan QR → auto configuration → natural conversation.</p>
+        <div class="hero-visual-stack">
+          <div class="hero-card hero-card--media">
+            <img
+              class="hero-product-img"
+              src="/assets/product-home-hero.png"
+              width="1024"
+              height="558"
+              alt="BingoClaw V-Series in a US-style living room; device UI may show multiple modules—your Cloud Console uses US English labels after sign-in"
+              fetchpriority="high"
+              decoding="async"
+            />
+            <div class="hero-card-foot">
+              <p style="margin:0;font-size:0.8125rem;color:var(--muted)"><strong style="color:var(--text)">Lifestyle shot</strong> — V-Series at home. On-device UI varies by market; web console for US customers is English-first with US date and lab formats.</p>
+            </div>
+          </div>
+          <figure class="hero-ui-mock">
+            <img
+              src="/assets/console-ui-us-preview.svg"
+              width="640"
+              height="360"
+              alt="Example ClawdCare Cloud Console in US English: Dashboard, Signals, Health Guardian, Workflows, vitals snapshot, Slack Google SMS Webhooks"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>US English Cloud Console (illustration)—what you see after <a href="/login.html?next=/console.html">sign in</a>.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="bc-strip">
+      <div class="wrap">
+        <p><strong>AI in the box, privacy at the edge.</strong> ClawdCare puts an embodied agent on your desk or shelf—sensitive health context stays on your M.2 vault unless you opt into cloud.</p>
+        <p class="bc-sub">Inspired by the <a href="https://www.bingoclaw.cn/" rel="noopener noreferrer">BingoClaw</a> “local × cloud × open API” story, tuned for US families and clinicians-in-the-loop wellness.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <p class="section-label">Core architecture</p>
+        <h2>Three layers—data, compute, connections.</h2>
+        <p class="lead">Same trilogy as the BingoClaw narrative, expressed for ClawdCare and US compliance thinking.</p>
+        <div class="card-grid cols-3 bc-pillars" style="margin-top:1.5rem">
+          <article class="card">
+            <p class="bc-pillar-ico" aria-hidden="true">🏠</p>
+            <h3>Local vault</h3>
+            <p>Records, genomics-friendly files, and policies on NVMe under your roof—physical boundary first.</p>
+          </article>
+          <article class="card">
+            <p class="bc-pillar-ico" aria-hidden="true">☁️</p>
+            <h3>Cloud compute</h3>
+            <p>Heavy reasoning and rendering when you choose—device stays cool; you control what leaves the home.</p>
+          </article>
+          <article class="card">
+            <p class="bc-pillar-ico" aria-hidden="true">🔌</p>
+            <h3>Open hooks</h3>
+            <p>Webhooks, Slack, Google, SMS, and EHR-friendly paths on the roadmap—meet US teams where they work.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-alt">
+      <div class="wrap">
+        <p class="section-label">Highlights</p>
+        <h2>Six reasons households pick ClawdCare.</h2>
+        <div class="bc-feature-grid">
+          <div class="bc-feature"><h3>Zero DevOps</h3><p>No model installs or YAML—scan, sign in, start in minutes.</p></div>
+          <div class="bc-feature"><h3>Data stays local</h3><p>Wellness vault on-device; explicit opt-in for any upload.</p></div>
+          <div class="bc-feature"><h3>Hybrid AI</h3><p>Edge for privacy; cloud for heavy jobs you approve.</p></div>
+          <div class="bc-feature"><h3>US integrations</h3><p>Slack, Google, SMS, webhooks—MyChart-style links on roadmap.</p></div>
+          <div class="bc-feature"><h3>Always-on nudges</h3><p>Screenings, refills, and retests on your schedule.</p></div>
+          <div class="bc-feature"><h3>Health mode skills</h3><p>Governed skills—safe defaults for home wellness use.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <p class="section-label">Getting started</p>
+        <h2>Four steps—plain and simple.</h2>
+        <div class="bc-steps">
+          <div class="bc-step"><h3>Pick your bundle</h3><p>Hub, programs, and add-ons from the shop—USD pricing, US shipping dialogue.</p></div>
+          <div class="bc-step"><h3>Unbox &amp; power on</h3><p>Scan QR, Wi-Fi join, and account link—under a minute.</p></div>
+          <div class="bc-step"><h3>Connect your life</h3><p>Apple Health / Google Fit paths (roadmap), PDF labs, voice notes.</p></div>
+          <div class="bc-step"><h3>Tune over time</h3><p>Console dashboards, alerts, and skills adapt as you add data.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-alt">
+      <div class="wrap">
+        <p class="section-label">Where it lives</p>
+        <h2>From family room to R&amp;D bench.</h2>
+        <p class="lead">Product photography matches the BingoClaw site pattern: real environments, shallow depth, warm + tech contrast.</p>
+        <div class="bc-where-grid">
+          <div class="bc-where-card">
+            <img src="/assets/product-home-hero.png" width="1024" height="558" alt="ClawdCare V-Series at home on a wood shelf" loading="lazy" decoding="async" />
+            <div class="bc-where-cap"><strong>Living room</strong> Calm presence next to photos—wellness without clinic vibes.</div>
+          </div>
+          <div class="bc-where-card">
+            <img src="/assets/product-medialab-photo.png" width="1024" height="558" alt="ClawdCare on a US-style developer desk with laptop" loading="lazy" decoding="async" />
+            <div class="bc-where-cap"><strong>Desk / lab</strong> Same hardware beside your IDE, charts, and research notes.</div>
+          </div>
+          <div class="bc-where-card">
+            <img src="/assets/product-engineering.png" width="1024" height="558" alt="Engineering detail ports SSD" loading="lazy" decoding="async" />
+            <div class="bc-where-cap"><strong>Engineering truth</strong> M.2, Ethernet, USB-C, Wi-Fi/sync LEDs, mic array.</div>
           </div>
         </div>
       </div>
@@ -87,7 +193,7 @@
               loading="lazy"
               decoding="async"
             />
-            <figcaption><strong>Engineering detail</strong> — SSD bay, Ethernet, USB-C (power &amp; data), connectivity status, and the three-module shell: Finance, Health Guardian, Creative.</figcaption>
+            <figcaption><strong>Engineering detail</strong> — SSD bay, Ethernet, USB-C (power &amp; data), connectivity LEDs, mic array; on-device module names may vary by region—your web console stays US English.</figcaption>
           </figure>
           <figure class="product-shot">
             <img
@@ -98,7 +204,7 @@
               loading="lazy"
               decoding="async"
             />
-            <figcaption><strong>Media Lab workflow</strong> — the same device as a credible workstation anchor next to code, data charts, and research notes.</figcaption>
+            <figcaption><strong>Desk workflow</strong> — workstation shot: use ClawdCare beside your laptop, keyboard, and quantitative research stack (US English in Cloud Console).</figcaption>
           </figure>
           <figure class="product-shot">
             <img
