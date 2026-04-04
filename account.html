@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="description" content="Manage your ClawdCare account: profile, billing, payment methods, subscriptions, and orders." />
   <title>My account — ClawdCare</title>
   <style>html,body{background:#0a0e14;color:#e8edf4}</style>
   <link rel="stylesheet" href="/css/app.css" />
+  <link rel="stylesheet" href="/css/account.css" />
   <script src="/js/guard.js" defer></script>
 </head>
 <body>
@@ -31,71 +33,214 @@
     </div>
   </header>
 
-  <main>
-    <div class="wrap page-title">
-      <h1>My account</h1>
-      <p>
-        <strong>User management</strong> on clawdcare.com: your profile, <strong>BingoClaw credits</strong> (bound to this account), <strong>orders</strong>, and session. ClawdCare is a <strong>BingoClaw-based</strong> product—you buy credit packs in the <a href="/shop.html#bingoclaw-credits">Shop</a>; we route usage to BingoClaw capabilities without asking you to choose a foundation model.
-      </p>
-    </div>
-    <section style="padding-top:0">
-      <div class="wrap panel-grid">
-        <div class="panel">
-          <h3>Profile</h3>
-          <p id="acct-email" style="color:var(--text)">—</p>
-          <p id="acct-name" style="margin-top:0.5rem"></p>
-        </div>
-        <div class="panel">
-          <h3>BingoClaw credits</h3>
-          <p style="color:var(--text);font-size:1.35rem;font-weight:700;margin:0.25rem 0" id="acct-credits-balance">—</p>
-          <p style="color:var(--muted);font-size:0.875rem;margin:0.5rem 0 0">Credits are stored on your account and consumed by BingoClaw-backed AI across ClawdCare (console, skills, cloud assists). New accounts start at <strong>0</strong>; purchases will credit this balance when order processing is connected.</p>
-          <p style="margin-top:0.75rem;font-size:0.875rem"><a href="/shop.html#bingoclaw-credits">Buy credit packs</a></p>
-        </div>
-        <div class="panel">
-          <h3>ClawdCare device</h3>
-          <p style="color:var(--muted);font-size:0.875rem">When hardware is linked to your account, serial, warranty, and pairing status will show here. <em>Roadmap.</em></p>
-        </div>
-        <div class="panel">
-          <h3>Health profile (preview)</h3>
-          <p style="color:var(--muted);font-size:0.875rem">Goals, reminders, and consent for longitudinal wellness features will sync from ClawdCare with your explicit choices. <em>Not for clinical records on this demo site.</em></p>
-        </div>
-        <div class="panel" style="grid-column:1/-1">
-          <h3>Orders</h3>
-          <p id="acct-orders" style="color:var(--muted);font-size:0.875rem;line-height:1.5">Loading…</p>
-        </div>
-        <div class="panel" style="grid-column:1/-1">
-          <h3>Session</h3>
-          <button type="button" class="btn btn-ghost" id="acct-logout">Sign out</button>
+  <main class="account-main-wrap">
+    <div class="wrap account-app">
+      <header class="account-page-head page-title" style="padding-top:1rem;padding-bottom:0">
+        <h1>Account</h1>
+        <p class="lead">Profile, billing, and purchases for <strong>clawdcare.com</strong>. Usage draws from your <strong>BingoClaw credits</strong> and any active programs—same patterns you see in modern SaaS billing portals (read-only until checkout and subscriptions are wired to the backend).</p>
+      </header>
+
+      <div class="account-layout">
+        <aside class="account-sidebar" aria-label="Account sections">
+          <nav aria-label="Account settings">
+            <a class="account-nav__link" href="#profile" data-route="profile">Profile</a>
+            <div class="account-nav__group">
+              <p class="account-nav__label">Billing</p>
+              <a class="account-nav__link account-nav__link--sub" href="#billing" data-route="billing">Overview</a>
+              <a class="account-nav__link account-nav__link--sub" href="#billing-payment" data-route="billing-payment">Payment methods</a>
+              <a class="account-nav__link account-nav__link--sub" href="#billing-address" data-route="billing-address">Billing address</a>
+              <a class="account-nav__link account-nav__link--sub" href="#billing-subscriptions" data-route="billing-subscriptions">Subscriptions</a>
+              <a class="account-nav__link account-nav__link--sub" href="#billing-orders" data-route="billing-orders">Orders &amp; receipts</a>
+            </div>
+          </nav>
+        </aside>
+
+        <div class="account-content">
+          <!-- Profile -->
+          <section id="pane-profile" class="account-pane" aria-labelledby="profile-heading">
+            <h2 class="account-pane__title" id="profile-heading">Profile</h2>
+            <p class="account-pane__desc">Your sign-in identity and workspace preferences. Email is your username; display name is shown in the console where supported.</p>
+
+            <div class="account-card">
+              <h3>Contact</h3>
+              <div class="account-field">
+                <label for="acct-email">Email</label>
+                <input id="acct-email" type="email" autocomplete="email" readonly value="—" />
+              </div>
+              <div class="account-field">
+                <label for="acct-name">Display name</label>
+                <input id="acct-name" type="text" autocomplete="name" readonly disabled placeholder="Not set" value="" />
+              </div>
+              <p class="account-muted-note">Profile edits and password changes will use a standard flow once account settings API endpoints are enabled.</p>
+            </div>
+
+            <div class="account-grid-2">
+              <div class="account-card">
+                <h3>ClawdCare device</h3>
+                <p>When hardware is linked to your account, serial, warranty, and pairing status will appear here.</p>
+                <p><span class="account-pill">Coming soon</span></p>
+              </div>
+              <div class="account-card">
+                <h3>Wellness preferences</h3>
+                <p>Goals, reminders, and consent for longitudinal features will sync with your choices in ClawdCare. Not a clinical record on this site.</p>
+                <p><span class="account-pill">Preview</span></p>
+              </div>
+            </div>
+
+            <div class="account-card">
+              <h3>Session</h3>
+              <p>Sign out on this browser. Other sessions are not listed until session management ships.</p>
+              <button type="button" class="btn btn-ghost" id="acct-logout" style="margin-top:0.75rem">Sign out</button>
+            </div>
+          </section>
+
+          <!-- Billing overview -->
+          <section id="pane-billing-overview" class="account-pane" aria-labelledby="billing-overview-heading">
+            <h2 class="account-pane__title" id="billing-overview-heading">Billing overview</h2>
+            <p class="account-pane__desc">Credits, subscriptions, and payment profile—mirroring how US SaaS products group money-related settings in one place.</p>
+
+            <div class="account-grid-2">
+              <div class="account-card">
+                <h3>BingoClaw credits</h3>
+                <p class="account-credits-stat" id="acct-credits-balance">—</p>
+                <p>Credits are stored on your account and consumed by BingoClaw-backed AI across ClawdCare. New accounts start at <strong>0</strong>; purchases will credit this balance when order processing is connected.</p>
+                <p style="margin-top:0.75rem"><a class="btn btn-primary" href="/shop.html#bingoclaw-credits">Buy credit packs</a></p>
+              </div>
+              <div class="account-card">
+                <h3>Subscriptions</h3>
+                <p><strong>No active subscriptions</strong> on this account.</p>
+                <p>Hardware bundles and guided programs from the Shop will show status, renewal, and invoices here.</p>
+                <p style="margin-top:0.75rem"><a class="btn btn-ghost" href="/shop.html">Browse Shop</a></p>
+              </div>
+            </div>
+
+            <div class="account-card">
+              <h3>Quick links</h3>
+              <p style="margin:0">
+                <a href="#billing-payment">Payment methods</a>
+                ·
+                <a href="#billing-address">Billing address</a>
+                ·
+                <a href="#billing-subscriptions">Subscriptions</a>
+                ·
+                <a href="#billing-orders">Orders &amp; receipts</a>
+              </p>
+            </div>
+          </section>
+
+          <!-- Payment methods -->
+          <section id="pane-billing-payment" class="account-pane" aria-labelledby="pay-heading">
+            <h2 class="account-pane__title" id="pay-heading">Payment methods</h2>
+            <p class="account-pane__desc">Cards and bank debits used for ClawdCare purchases. Default method applies to subscription renewals when billing is connected.</p>
+            <div class="account-empty">
+              <p>No payment methods on file yet. When checkout is connected to a card processor, you will add cards, ACH, or wallet methods here and choose a default for renewals—same flow as Stripe Customer Portal or AWS Payment Profiles.</p>
+              <p class="account-muted-note" style="border:none;padding:0;margin-top:1rem;max-width:none;margin-inline:auto">Gateway integration pending.</p>
+            </div>
+          </section>
+
+          <!-- Billing address -->
+          <section id="pane-billing-address" class="account-pane" aria-labelledby="addr-heading">
+            <h2 class="account-pane__title" id="addr-heading">Billing address</h2>
+            <p class="account-pane__desc">Used on invoices and for tax and shipping estimates. Same structure as Stripe Billing or AWS account contacts.</p>
+            <div class="account-card">
+              <div class="account-field">
+                <label for="bill-name">Name on account</label>
+                <input id="bill-name" type="text" disabled value="" placeholder="—" />
+              </div>
+              <div class="account-field">
+                <label for="bill-line1">Address line 1</label>
+                <input id="bill-line1" type="text" disabled placeholder="—" />
+              </div>
+              <div class="account-field">
+                <label for="bill-line2">Address line 2</label>
+                <input id="bill-line2" type="text" disabled placeholder="Optional" />
+              </div>
+              <div class="account-grid-2">
+                <div class="account-field" style="margin-bottom:0">
+                  <label for="bill-city">City</label>
+                  <input id="bill-city" type="text" disabled placeholder="—" />
+                </div>
+                <div class="account-field" style="margin-bottom:0">
+                  <label for="bill-state">State / Province</label>
+                  <input id="bill-state" type="text" disabled placeholder="—" />
+                </div>
+              </div>
+              <div class="account-grid-2" style="margin-top:1rem">
+                <div class="account-field" style="margin-bottom:0">
+                  <label for="bill-zip">ZIP / Postal</label>
+                  <input id="bill-zip" type="text" disabled placeholder="—" />
+                </div>
+                <div class="account-field" style="margin-bottom:0">
+                  <label for="bill-country">Country</label>
+                  <input id="bill-country" type="text" disabled placeholder="—" />
+                </div>
+              </div>
+              <p class="account-muted-note">Values will sync from your first completed order or from an explicit “Save address” action once the billing API is live.</p>
+            </div>
+          </section>
+
+          <!-- Subscriptions -->
+          <section id="pane-billing-subscriptions" class="account-pane" aria-labelledby="sub-heading">
+            <h2 class="account-pane__title" id="sub-heading">Subscriptions</h2>
+            <p class="account-pane__desc">Active plans (hardware service, guided longevity layer, add-ons). Cancel, change plan, or update seats—typical SaaS subscription management.</p>
+            <div class="account-empty">
+              <p>You do not have any recurring subscriptions yet. Programs sold in the Shop will list here with renewal date and invoice history.</p>
+              <a class="btn btn-primary" href="/shop.html">View plans</a>
+            </div>
+          </section>
+
+          <!-- Orders -->
+          <section id="pane-billing-orders" class="account-pane" aria-labelledby="ord-heading">
+            <h2 class="account-pane__title" id="ord-heading">Orders &amp; receipts</h2>
+            <p class="account-pane__desc">Order history, fulfillment status, and downloadable receipts—aligned with e-commerce account pages.</p>
+            <div class="account-card">
+              <p id="acct-orders" style="color:var(--muted);font-size:0.9rem;line-height:1.55;margin:0">Loading…</p>
+            </div>
+          </section>
         </div>
       </div>
-    </section>
+    </div>
   </main>
 
   <footer class="site-footer"><div class="wrap"><p class="disclaimer"><a href="/legal.html">Privacy &amp; terms</a></p></div></footer>
   <script src="/js/nav.js" defer></script>
+  <script src="/js/account.js" defer></script>
   <script>
     document.addEventListener("DOMContentLoaded", async function () {
       try {
         var r = await fetch("/api/auth/me", { credentials: "same-origin" });
         var data = await r.json();
         if (data.user) {
-          document.getElementById("acct-email").textContent = data.user.email;
-          document.getElementById("acct-name").textContent = data.user.name ? "Name: " + data.user.name : "";
+          var em = document.getElementById("acct-email");
+          if (em) {
+            em.value = data.user.email || "—";
+            em.setAttribute("readonly", "readonly");
+          }
+          var nm = document.getElementById("acct-name");
+          if (nm) {
+            nm.value = data.user.name || "";
+            nm.placeholder = data.user.name ? "" : "Not set";
+          }
           var bal = document.getElementById("acct-credits-balance");
           if (bal && typeof data.user.credits === "number") {
             bal.textContent = data.user.credits + " credits";
           }
+          var billName = document.getElementById("bill-name");
+          if (billName && data.user.name) billName.placeholder = data.user.name;
         }
       } catch (_) {}
       var ord = document.getElementById("acct-orders");
       if (ord) {
         ord.innerHTML =
-          "No orders linked to this account yet. After you complete checkout (email order flow today), <strong>hardware, subscriptions, and BingoClaw credit packs</strong> will list here with status and receipts. <em>Roadmap—syncs when order backend connects.</em><br /><br /><a href=\"/shop.html\">Go to Shop</a>";
+          "No orders linked to this account yet. After checkout, <strong>hardware, subscriptions, and BingoClaw credit packs</strong> will appear here with status and receipts.<br /><br /><a href=\"/shop.html\">Go to Shop</a>";
       }
-      document.getElementById("acct-logout").addEventListener("click", async function () {
-        await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
-        location.href = "/";
-      });
+      var lo = document.getElementById("acct-logout");
+      if (lo) {
+        lo.addEventListener("click", async function () {
+          await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
+          location.href = "/";
+        });
+      }
     });
   </script>
 </body>

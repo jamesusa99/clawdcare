@@ -9,7 +9,7 @@ Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, 
 | Path | Purpose |
 |------|---------|
 | `/` | Product introduction — 16 capabilities, market gap, science/privacy |
-| `/shop.html` | Product ordering — hardware/programs + **BingoClaw credit packs** (`#bingoclaw-credits`), localStorage cart, email order handoff |
+| `/shop.html` | Product ordering — **Hardware & programs** first, cart (edit qty / remove), **Place Order** (mailto); **BingoClaw credits** below (`#bingoclaw-credits`) |
 | `/use.html` | **Your health** — longitudinal wellness dashboard (demo when signed out; personalized stub when signed in): biomarker domains, biological-age style summary, viz, guidance, advanced programs |
 | `/console.html` | Control panel preview (public; sign-in optional for future binding) |
 | `/about.html` | Company, roadmap, financial sketch from plan |
