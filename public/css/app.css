@@ -233,7 +233,7 @@ section {
   padding: clamp(3rem, 8vw, 5.5rem) 0;
 }
 
-/* Shop: one column — Hardware, Programs, Token Plan, then cart in same wrap */
+/* Shop: Hardware, Programs, Credit Plan, Credit packs, cart (same .wrap) */
 section.shop-catalog {
   padding-top: 0;
   padding-bottom: 3rem;
@@ -1296,6 +1296,114 @@ table.data .hi {
 .console-figure--photo .console-figure-cap strong {
   color: var(--text);
   font-weight: 600;
+}
+
+/* --- Shop: one-time credit packs (reference: 积分包) --- */
+.shop-credit-packs-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1.25rem;
+}
+.shop-credit-packs-head__hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--dim);
+  max-width: 42ch;
+  text-align: right;
+}
+.shop-credit-packs-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+@media (min-width: 720px) {
+  .shop-credit-packs-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.shop-credit-pack-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 1.35rem 1.15rem 1.15rem;
+  border-radius: var(--r);
+  border: 1px solid var(--border-soft);
+  background: var(--card);
+  text-align: center;
+}
+.shop-credit-pack-card--popular {
+  border-color: rgba(129, 140, 248, 0.55);
+  box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.12);
+}
+.shop-credit-pack-card__badge {
+  position: absolute;
+  top: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.2rem 0.65rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #e0e7ff;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 6px;
+}
+.shop-credit-pack-card__tier {
+  margin: 0 0 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.shop-credit-pack-card__credits {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.35rem, 3.2vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.15;
+}
+.shop-credit-pack-card__price {
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #a78bfa;
+}
+.shop-credit-pack-card__valid {
+  margin: 0 0 1rem;
+  font-size: 0.8125rem;
+  color: var(--dim);
+  flex: 1;
+}
+.shop-credit-pack-card .btn-primary {
+  width: 100%;
+}
+
+.shop-cart-line__qty--locked {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.shop-cart-line__qty-label {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.shop-cart-line__recurring {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  background: var(--accent-dim);
 }
 
 /* --- Shop cart (editable lines) --- */

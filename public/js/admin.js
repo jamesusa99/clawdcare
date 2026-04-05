@@ -151,7 +151,7 @@
         "</span>" +
         '<span class="admin-side-link__meta">' +
         String(cr) +
-        " tokens</span>";
+        " credits</span>";
       box.appendChild(a);
     });
   }

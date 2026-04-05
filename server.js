@@ -432,7 +432,7 @@ app.post("/api/me/subscriptions/demo", requireLogin, async (req, res, next) => {
       {
         id: crypto.randomUUID(),
         kind: "token",
-        name: "Token Plan — Standard (~1,500 tokens/mo, sample)",
+        name: "Credit Plan — Standard (~1,500 credits/mo, sample)",
         cycle: "Monthly",
         price_cents: 4900,
         next_renewal: defaultNextRenewalDate(),

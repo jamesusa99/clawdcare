@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <meta name="description" content="Manage your ClawdCare account: profile, billing, orders, and Subscriptions (Programs, Token Plan lines, and token balance)." />
+  <meta name="description" content="Manage your ClawdCare account: Settings, Preferences, and Billing &amp; subscriptions (credits, plans, payment, orders)." />
   <title>Account — ClawdCare</title>
   <style>html,body{background:#0a0e14;color:#e8edf4}</style>
   <link rel="stylesheet" href="/css/app.css" />
@@ -36,21 +36,24 @@
 
   <main class="account-main-wrap">
     <div class="wrap account-app account-shell">
-      <aside class="account-sidebar" aria-label="Account sections">
-        <nav aria-label="Account settings">
-          <a class="account-nav__link" href="#profile" data-route="profile">Profile</a>
-          <a class="account-nav__link" href="#billing" data-route="billing">Billing</a>
-          <a class="account-nav__link" href="#orders" data-route="orders">Orders</a>
-          <a class="account-nav__link" href="#subscriptions" data-route="subscriptions">Subscriptions</a>
-        </nav>
-      </aside>
-
       <div class="account-main-scroll">
-        <div class="account-content">
-          <!-- Profile -->
-          <section id="pane-profile" class="account-pane" aria-labelledby="profile-heading">
-            <h2 class="account-pane__title" id="profile-heading">Profile</h2>
-            <p class="account-pane__desc">Your sign-in identity and workspace preferences. Email is your username; display name is shown in the console where supported.</p>
+        <div class="account-content account-content--hub">
+          <header class="account-hub-header">
+            <div class="account-hub-header__row">
+              <h1 class="account-hub-title">Account</h1>
+              <p class="account-hub-user" id="acct-hub-email" aria-live="polite"></p>
+            </div>
+            <nav class="account-primary-tabs" aria-label="Account">
+              <a href="#settings" class="account-primary-tab" data-route="settings">Settings</a>
+              <a href="#preferences" class="account-primary-tab" data-route="preferences">Preferences</a>
+              <a href="#billing" class="account-primary-tab" data-route="billing">Billing &amp; subscriptions</a>
+            </nav>
+          </header>
+
+          <!-- Settings: identity, security, devices, session -->
+          <section id="pane-settings" class="account-pane" aria-labelledby="settings-heading">
+            <h2 class="account-pane__title visually-hidden" id="settings-heading">Settings</h2>
+            <p class="account-pane__desc">Sign-in identity, security, linked hardware, and session.</p>
 
             <div class="account-card">
               <h3>Contact</h3>
@@ -62,38 +65,115 @@
                 <label for="acct-name">Display name</label>
                 <input id="acct-name" type="text" autocomplete="name" readonly disabled placeholder="Not set" value="" />
               </div>
-              <p class="account-muted-note">Profile edits and password changes will use a standard flow once account settings API endpoints are enabled.</p>
+              <p class="account-muted-note">Email is your username. Profile edits sync when account APIs are enabled.</p>
             </div>
 
-            <div class="account-grid-2">
-              <div class="account-card">
-                <h3>ClawdCare device</h3>
-                <p>When hardware is linked to your account, serial, warranty, and pairing status will appear here.</p>
-                <p><span class="account-pill">Coming soon</span></p>
-              </div>
-              <div class="account-card">
-                <h3>Wellness preferences</h3>
-                <p>Goals, reminders, and consent for longitudinal features will sync with your choices in ClawdCare. Not a clinical record on this site.</p>
-                <p><span class="account-pill">Preview</span></p>
-              </div>
+            <div class="account-card" style="margin-top:1rem">
+              <h3>Account security</h3>
+              <p>Password and verification flows (for example SMS or email codes) will match your sign-in provider once production auth is wired. Use <strong>Sign out</strong> below if this device is shared.</p>
+              <p class="account-muted-note" style="margin-top:0.75rem">No password change on this demo—connect your IdP or enable the account security API when ready.</p>
             </div>
 
-            <div class="account-card">
+            <div class="account-card" style="margin-top:1rem;max-width:40rem">
+              <h3>ClawdCare device</h3>
+              <p>When hardware is linked to your account, serial, warranty, and pairing status will appear here.</p>
+              <p><span class="account-pill">Coming soon</span></p>
+            </div>
+
+            <div class="account-card" style="margin-top:1rem;max-width:40rem">
               <h3>Session</h3>
               <p>Sign out on this browser. Other sessions are not listed until session management ships.</p>
               <button type="button" class="btn btn-ghost" id="acct-logout" style="margin-top:0.75rem">Sign out</button>
             </div>
           </section>
 
-          <!-- Subscriptions: Programs + Token Plan lines + token wallet (Shop categories 2 &amp; 3) -->
-          <section id="pane-subscriptions" class="account-pane" aria-labelledby="sub-heading">
-            <h2 class="account-pane__title" id="sub-heading">Subscriptions</h2>
-            <p class="account-pane__desc">
-              <strong>Programs</strong> are <strong>monthly</strong> guided subscriptions from the <a href="/shop.html#shop-programs">Shop</a>—coaching, tracks, and longevity workflows (not per-token metering). Each active line bills until you cancel it.
-            </p>
-            <p class="account-pane__desc" style="margin-top:0.65rem">
-              <strong>Token Plan</strong> is billed <strong>monthly</strong> like Programs. Each row in the table below is its own renewal; you can hold several plans and add another in the Shop if you run through tokens before the next cycle. Your running balance is in <a href="#acct-token-wallet">Token balance</a> (below the tables). Tokens power on-demand AI, console skills, and automations (separate from Program fees). Use <strong>Edit</strong> / <strong>Cancel</strong> the same way as Programs.
-            </p>
+          <!-- Preferences: product behavior (separate from account credentials) -->
+          <section id="pane-preferences" class="account-pane" aria-labelledby="preferences-heading">
+            <h2 class="account-pane__title visually-hidden" id="preferences-heading">Preferences</h2>
+            <p class="account-pane__desc">Notifications, locale, and how the console feels—without changing your sign-in credentials.</p>
+
+            <div class="account-grid-2">
+              <div class="account-card">
+                <h3>Notifications</h3>
+                <p>Product updates, billing receipts, and wellness digests will be configurable here.</p>
+                <p><span class="account-pill">Coming soon</span></p>
+              </div>
+              <div class="account-card">
+                <h3>Language &amp; region</h3>
+                <p>Display language and formats for dates and numbers in the console.</p>
+                <p class="account-muted-note" style="margin-top:0.65rem">English (US) · more locales when localized builds ship.</p>
+              </div>
+              <div class="account-card">
+                <h3>Appearance</h3>
+                <p>ClawdCare marketing and console use a single dark theme today.</p>
+                <p><span class="account-pill">Preview</span> Light mode when the design system supports it.</p>
+              </div>
+              <div class="account-card">
+                <h3>Wellness preferences</h3>
+                <p>Goals, reminders, and consent for longitudinal features sync with your choices in ClawdCare. Not a clinical record on this site.</p>
+                <p><span class="account-pill">Preview</span></p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Billing hub: summary + secondary tabs (overview / subscriptions / payment / orders) -->
+          <section id="pane-billing-hub" class="account-pane" aria-labelledby="billing-hub-heading">
+            <h2 class="account-pane__title visually-hidden" id="billing-hub-heading">Billing &amp; subscriptions</h2>
+            <p class="account-pane__desc">Credit balance, monthly plans, cards on file, and orders.</p>
+
+            <div class="account-billing-hero account-card" aria-labelledby="acct-billing-hero-label">
+              <div class="account-billing-hero__top">
+                <div class="account-billing-hero__balance">
+                  <p class="account-billing-hero__label" id="acct-billing-hero-label">Available credits</p>
+                  <p class="account-billing-hero__value" id="acct-credit-balance">—</p>
+                  <p class="account-billing-hero__hint">Active Credit Plans add credits each billing cycle; on-demand AI and skills consume this balance.</p>
+                </div>
+                <div class="account-billing-hero__actions">
+                  <a class="btn btn-primary" href="/shop.html#shop-programs">Shop Programs</a>
+                  <a class="btn btn-ghost" href="/shop.html#shop-credit-plans">Credit Plan</a>
+                  <a class="btn btn-ghost" href="/shop.html#shop-credit-packs">Credit packs</a>
+                </div>
+              </div>
+            </div>
+
+            <nav class="account-secondary-tabs" aria-label="Billing sections">
+              <a href="#billing" class="account-secondary-tab" data-billing-sub="overview">Overview</a>
+              <a href="#billing-subscriptions" class="account-secondary-tab" data-billing-sub="subscriptions">Subscriptions</a>
+              <a href="#billing-payment" class="account-secondary-tab" data-billing-sub="payment">Payment</a>
+              <a href="#billing-orders" class="account-secondary-tab" data-billing-sub="orders">Orders</a>
+            </nav>
+
+            <div id="billing-sub-overview" class="account-billing-subpane is-active" role="tabpanel" aria-labelledby="acct-billing-overview-title">
+              <h3 class="account-sub-block__title" id="acct-billing-overview-title">Overview</h3>
+              <p class="account-sub-block__lead">How ClawdCare billing fits together—same ideas as a typical console <strong>Settings → Billing</strong> area.</p>
+              <div class="account-grid-2 account-billing-overview-grid">
+                <div class="account-card account-billing-overview-card">
+                  <h4 class="account-billing-overview-card__title">Programs</h4>
+                  <p>Monthly guided subscriptions from the <a href="/shop.html#shop-programs">Shop</a>. Coaching and tracks—not metered per credit.</p>
+                </div>
+                <div class="account-card account-billing-overview-card">
+                  <h4 class="account-billing-overview-card__title">Credit plan &amp; packs</h4>
+                  <p>Monthly <strong>Credit Plan</strong> refills your balance each cycle. Mid-cycle top-up: <strong>Credit packs</strong> (one-time) in the <a href="/shop.html#shop-credit-packs">Shop</a>. Manage your plan under <a href="#billing-subscriptions">Subscriptions</a>.</p>
+                </div>
+                <div class="account-card account-billing-overview-card">
+                  <h4 class="account-billing-overview-card__title">Payment</h4>
+                  <p>Saved cards pay for hardware and recurring charges. Set a default for renewals under <a href="#billing-payment">Payment</a>.</p>
+                </div>
+                <div class="account-card account-billing-overview-card">
+                  <h4 class="account-billing-overview-card__title">Orders</h4>
+                  <p>Hardware bundles and one-time services appear under <a href="#billing-orders">Orders</a> when commerce APIs are connected.</p>
+                </div>
+              </div>
+            </div>
+
+            <div id="billing-sub-subscriptions" class="account-billing-subpane" role="tabpanel" aria-labelledby="acct-billing-subscriptions-title">
+              <h3 class="account-sub-block__title" id="acct-billing-subscriptions-title">Subscriptions</h3>
+              <p class="account-pane__desc">
+                <strong>Programs</strong> are <strong>monthly</strong> guided subscriptions from the <a href="/shop.html#shop-programs">Shop</a>—coaching, tracks, and longevity workflows (not per-credit metering). Each active line bills until you cancel it.
+              </p>
+              <p class="account-pane__desc" style="margin-top:0.65rem">
+                <strong>Credit Plan</strong> is billed <strong>monthly</strong> like Programs—typically <strong>one</strong> active plan line per account. Your balance is summarized in the card above. Need more credits before the next cycle? Use <a href="/shop.html#shop-credit-packs">Credit packs</a> (one-time), not a second Credit Plan. Use <strong>Edit</strong> / <strong>Cancel</strong> the same way as Programs.
+              </p>
 
             <div class="account-card account-sub-block" style="max-width:48rem;margin-top:1rem">
               <h3 class="account-sub-block__title" style="margin-top:0">Programs</h3>
@@ -126,10 +206,10 @@
             </div>
 
             <div class="account-card account-sub-block" style="max-width:48rem;margin-top:1rem">
-              <h3 class="account-sub-block__title" style="margin-top:0">Token plan</h3>
+              <h3 class="account-sub-block__title" style="margin-top:0">Credit plan</h3>
               <div class="account-pay-table-wrap" style="margin-top:0.65rem">
-                <table class="account-pay-table account-sub-table" aria-describedby="acct-sub-tokens-caption">
-                  <caption id="acct-sub-tokens-caption" class="visually-hidden">Active token plan subscriptions</caption>
+                <table class="account-pay-table account-sub-table" aria-describedby="acct-sub-credits-caption">
+                  <caption id="acct-sub-credits-caption" class="visually-hidden">Active Credit Plan subscriptions</caption>
                   <thead>
                     <tr>
                       <th scope="col">Plan</th>
@@ -140,37 +220,129 @@
                       <th scope="col" class="account-pay-table__actions account-pay-table__actions--subs">Actions</th>
                     </tr>
                   </thead>
-                  <tbody id="acct-sub-tokens-tbody">
-                    <tr class="account-pay-table__placeholder" id="acct-sub-tokens-empty">
-                      <td colspan="6">No active Token Plan subscriptions.</td>
+                  <tbody id="acct-sub-credits-tbody">
+                    <tr class="account-pay-table__placeholder" id="acct-sub-credits-empty">
+                      <td colspan="6">No active Credit Plan subscriptions.</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <p style="margin:0.85rem 0 0"><a class="btn btn-ghost" href="/shop.html#shop-token-plans">Add Token Plans in Shop</a></p>
-            </div>
-
-            <div class="account-card account-token-balance-card" id="acct-token-wallet" style="max-width:48rem;margin-top:1rem">
-              <h3 class="account-sub-block__title" style="margin-top:0">Token balance</h3>
-              <p class="account-token-stat" id="acct-token-balance">—</p>
-              <p>New accounts start at <strong>0</strong> tokens. Active Token Plans credit tokens each billing cycle; usage draws the balance down. Need more before the next cycle? <strong>Add another Token Plan</strong> from the Shop—purchases are not limited to one.</p>
-              <p style="margin-top:0.75rem"><a class="btn btn-primary" href="/shop.html#shop-token-plans">Shop Token Plans</a></p>
+              <p style="margin:0.85rem 0 0"><a class="btn btn-ghost" href="/shop.html#shop-credit-plans">Change Credit Plan tier</a> · <a class="btn btn-ghost" href="/shop.html#shop-credit-packs">Buy credit packs</a></p>
             </div>
 
             <div class="account-card" style="max-width:48rem;margin-top:1rem">
-              <h3 class="account-sub-block__title" style="margin-top:0">How tokens are used</h3>
-              <ul class="account-token-list">
+              <h3 class="account-sub-block__title" style="margin-top:0">How credits are used</h3>
+              <ul class="account-credit-list">
                 <li>Reasoning, drafting, and Q&amp;A in the cloud console</li>
                 <li>Skills, workflows, and scheduled automations</li>
                 <li>Optional cloud assists when you opt in (device stays private by default)</li>
               </ul>
               <p class="account-muted-note" style="border:none;padding:0;margin-top:0.85rem">Usage detail and cycle summaries will appear here when metering is connected.</p>
             </div>
-          </section>
+            </div>
+
+            <div id="billing-sub-payment" class="account-billing-subpane" role="tabpanel" aria-labelledby="billing-payment-heading">
+            <h3 class="account-pane__title" id="billing-payment-heading">Payment</h3>
+            <p class="account-pane__desc">Cards on file and billing address for hardware and monthly renewals.</p>
+
+            <div class="account-card account-pay-card">
+              <h3>Payment methods</h3>
+              <p class="account-pay-lead">
+                Saved <strong>cards</strong> pay for <strong>Hardware</strong>, one-time <strong>Credit pack</strong> purchases, and <strong>monthly</strong> <strong>Programs</strong> plus your <strong>Credit Plan</strong>. Your <strong>default</strong> card is charged <strong>each month</strong> for active Program and Credit Plan subscriptions until canceled; packs and hardware bill when you purchase.
+              </p>
+
+              <div class="account-pay-block">
+                <h4 class="account-pay-subhead">Default for subscriptions &amp; renewals</h4>
+                <p class="account-pay-hint">Recurring charges (e.g. monthly programs) use this method automatically.</p>
+                <div class="account-pay-panel account-pay-panel--empty" id="acct-pay-default-panel" role="status">
+                  <p class="account-pay-panel__text">No default payment method on file.</p>
+                  <p class="account-pay-panel__sub">Add a card below, then set it as default.</p>
+                </div>
+              </div>
+
+              <div class="account-pay-block">
+                <div class="account-pay-block__head">
+                  <h4 class="account-pay-subhead">Payment method</h4>
+                  <button type="button" class="btn btn-primary account-pay-btn-sm" id="acct-pay-open-add">Add card</button>
+                </div>
+                <p class="account-pay-secure" id="acct-pay-secure-line">
+                  <span class="account-pay-secure__ico" aria-hidden="true">🔒</span>
+                  All transactions are secure and encrypted.
+                </p>
+                <p class="account-pay-hint">Visa, Mastercard, American Express, Discover, and other major brands. We never store your full card number or CVC on ClawdCare servers—only a safe summary after you save.</p>
+                <p class="account-muted-note" id="acct-pay-list-err" style="display:none;margin:0.5rem 0 0;color:#f87171" role="alert"></p>
+                <div class="account-pay-table-wrap">
+                  <table class="account-pay-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Card</th>
+                        <th scope="col">Expires</th>
+                        <th scope="col" class="account-pay-table__actions account-pay-table__actions--subs">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="acct-pay-tbody">
+                      <tr class="account-pay-table__placeholder" id="acct-pay-empty">
+                        <td colspan="3">No cards on file.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="account-pay-block">
+                <h4 class="account-pay-subhead">Backup &amp; invoicing</h4>
+                <p class="account-pay-hint">
+                  If a charge fails, we may retry or notify you to update your payment method. For business or invoice-based billing, purchase orders and wire instructions can be attached to your account when your team enables them.
+                </p>
+              </div>
+
+              <p class="account-pay-security">
+                Card details are processed per <strong>PCI-DSS</strong> practice: this demo stores only brand, last four digits, expiry, and billing address. Connect Stripe (or similar) for live tokenization before production.
+              </p>
+            </div>
+
+            <div class="account-card" style="max-width:40rem">
+              <h3>Billing address</h3>
+              <p class="account-pane__desc" style="margin:0 0 1rem;font-size:0.875rem">Synced from your <strong>default</strong> card’s billing address when you save a payment method.</p>
+              <div class="account-field">
+                <label for="bill-name">Name on account</label>
+                <input id="bill-name" type="text" readonly value="" placeholder="—" />
+              </div>
+              <div class="account-field">
+                <label for="bill-line1">Address line 1</label>
+                <input id="bill-line1" type="text" readonly placeholder="—" />
+              </div>
+              <div class="account-field">
+                <label for="bill-line2">Address line 2</label>
+                <input id="bill-line2" type="text" readonly placeholder="Optional" />
+              </div>
+              <div class="account-grid-2">
+                <div class="account-field" style="margin-bottom:0">
+                  <label for="bill-city">City</label>
+                  <input id="bill-city" type="text" readonly placeholder="—" />
+                </div>
+                <div class="account-field" style="margin-bottom:0">
+                  <label for="bill-state">State / Province</label>
+                  <input id="bill-state" type="text" readonly placeholder="—" />
+                </div>
+              </div>
+              <div class="account-grid-2" style="margin-top:1rem">
+                <div class="account-field" style="margin-bottom:0">
+                  <label for="bill-zip">ZIP / Postal</label>
+                  <input id="bill-zip" type="text" readonly placeholder="—" />
+                </div>
+                <div class="account-field" style="margin-bottom:0">
+                  <label for="bill-country">Country</label>
+                  <input id="bill-country" type="text" readonly placeholder="—" />
+                </div>
+              </div>
+              <p class="account-muted-note">Edit billing by removing the card and adding it again, or when card-update flow is connected.</p>
+            </div>
+            </div>
 
           <!-- Orders — hardware + subscription commerce pattern -->
-          <section id="pane-orders" class="account-pane account-orders" aria-labelledby="ord-heading">
-            <h2 class="account-pane__title" id="ord-heading">Orders</h2>
+          <div id="billing-sub-orders" class="account-billing-subpane account-orders" role="tabpanel" aria-labelledby="ord-heading">
+            <h3 class="account-pane__title" id="ord-heading">Orders</h3>
             <p class="account-pane__desc">
               Every ClawdCare purchase is a <strong>bundle</strong>: physical hardware plus the matching cloud or guided service (subscription). Hardware ships from fulfillment; subscriptions bill on their own cycle once the device is activated or on the date shown below.
             </p>
@@ -345,109 +517,10 @@
             </article>
 
             <div class="account-orders-cta">
-              <p class="account-orders-cta__text">Need hardware, a Program, or a monthly Token Plan?</p>
+              <p class="account-orders-cta__text">Need hardware, a Program, a Credit Plan, or credit packs?</p>
               <a class="btn btn-primary" href="/shop.html">Shop ClawdCare</a>
             </div>
-          </section>
-
-          <!-- Billing: payment methods + address (single page) -->
-          <section id="pane-billing" class="account-pane" aria-labelledby="billing-heading">
-            <h2 class="account-pane__title" id="billing-heading">Billing</h2>
-            <p class="account-pane__desc">How you pay for purchases and renewals.</p>
-
-            <div class="account-card account-pay-card">
-              <h3>Payment methods</h3>
-              <p class="account-pay-lead">
-                Saved <strong>cards</strong> only—used for <strong>Hardware</strong> (typically once) and for <strong>monthly</strong> <strong>Programs</strong> and <strong>Token Plan</strong> subscriptions. Your <strong>default</strong> card is charged <strong>each month</strong> for every active Program and for <strong>each</strong> active Token Plan line until you cancel that subscription.
-              </p>
-
-              <div class="account-pay-block">
-                <h4 class="account-pay-subhead">Default for subscriptions &amp; renewals</h4>
-                <p class="account-pay-hint">Recurring charges (e.g. monthly programs) use this method automatically.</p>
-                <div class="account-pay-panel account-pay-panel--empty" id="acct-pay-default-panel" role="status">
-                  <p class="account-pay-panel__text">No default payment method on file.</p>
-                  <p class="account-pay-panel__sub">Add a card below, then set it as default.</p>
-                </div>
-              </div>
-
-              <div class="account-pay-block">
-                <div class="account-pay-block__head">
-                  <h4 class="account-pay-subhead">Payment method</h4>
-                  <button type="button" class="btn btn-primary account-pay-btn-sm" id="acct-pay-open-add">Add card</button>
-                </div>
-                <p class="account-pay-secure" id="acct-pay-secure-line">
-                  <span class="account-pay-secure__ico" aria-hidden="true">🔒</span>
-                  All transactions are secure and encrypted.
-                </p>
-                <p class="account-pay-hint">Visa, Mastercard, American Express, Discover, and other major brands. We never store your full card number or CVC on ClawdCare servers—only a safe summary after you save.</p>
-                <p class="account-muted-note" id="acct-pay-list-err" style="display:none;margin:0.5rem 0 0;color:#f87171" role="alert"></p>
-                <div class="account-pay-table-wrap">
-                  <table class="account-pay-table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Card</th>
-                        <th scope="col">Expires</th>
-                        <th scope="col" class="account-pay-table__actions account-pay-table__actions--subs">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody id="acct-pay-tbody">
-                      <tr class="account-pay-table__placeholder" id="acct-pay-empty">
-                        <td colspan="3">No cards on file.</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div class="account-pay-block">
-                <h4 class="account-pay-subhead">Backup &amp; invoicing</h4>
-                <p class="account-pay-hint">
-                  If a charge fails, we may retry or notify you to update your payment method. For business or invoice-based billing, purchase orders and wire instructions can be attached to your account when your team enables them.
-                </p>
-              </div>
-
-              <p class="account-pay-security">
-                Card details are processed per <strong>PCI-DSS</strong> practice: this demo stores only brand, last four digits, expiry, and billing address. Connect Stripe (or similar) for live tokenization before production.
-              </p>
-            </div>
-
-            <div class="account-card" style="max-width:40rem">
-              <h3>Billing address</h3>
-              <p class="account-pane__desc" style="margin:0 0 1rem;font-size:0.875rem">Synced from your <strong>default</strong> card’s billing address when you save a payment method.</p>
-              <div class="account-field">
-                <label for="bill-name">Name on account</label>
-                <input id="bill-name" type="text" readonly value="" placeholder="—" />
-              </div>
-              <div class="account-field">
-                <label for="bill-line1">Address line 1</label>
-                <input id="bill-line1" type="text" readonly placeholder="—" />
-              </div>
-              <div class="account-field">
-                <label for="bill-line2">Address line 2</label>
-                <input id="bill-line2" type="text" readonly placeholder="Optional" />
-              </div>
-              <div class="account-grid-2">
-                <div class="account-field" style="margin-bottom:0">
-                  <label for="bill-city">City</label>
-                  <input id="bill-city" type="text" readonly placeholder="—" />
-                </div>
-                <div class="account-field" style="margin-bottom:0">
-                  <label for="bill-state">State / Province</label>
-                  <input id="bill-state" type="text" readonly placeholder="—" />
-                </div>
-              </div>
-              <div class="account-grid-2" style="margin-top:1rem">
-                <div class="account-field" style="margin-bottom:0">
-                  <label for="bill-zip">ZIP / Postal</label>
-                  <input id="bill-zip" type="text" readonly placeholder="—" />
-                </div>
-                <div class="account-field" style="margin-bottom:0">
-                  <label for="bill-country">Country</label>
-                  <input id="bill-country" type="text" readonly placeholder="—" />
-                </div>
-              </div>
-              <p class="account-muted-note">Edit billing by removing the card and adding it again, or when card-update flow is connected.</p>
-            </div>
+          </div>
           </section>
 
         </div>
@@ -592,6 +665,8 @@
         var r = await fetch("/api/auth/me", { credentials: "same-origin" });
         var data = await r.json();
         if (data.user) {
+          var hubEm = document.getElementById("acct-hub-email");
+          if (hubEm && data.user.email) hubEm.textContent = data.user.email;
           var em = document.getElementById("acct-email");
           if (em) {
             em.value = data.user.email || "—";
@@ -602,9 +677,9 @@
             nm.value = data.user.name || "";
             nm.placeholder = data.user.name ? "" : "Not set";
           }
-          var bal = document.getElementById("acct-token-balance");
+          var bal = document.getElementById("acct-credit-balance");
           if (bal && typeof data.user.credits === "number") {
-            bal.textContent = data.user.credits + " tokens";
+            bal.textContent = data.user.credits + " credits";
           }
           var billName = document.getElementById("bill-name");
           if (billName && data.user.name) billName.placeholder = data.user.name;

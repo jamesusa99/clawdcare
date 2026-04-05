@@ -1,8 +1,8 @@
 # ClawdCare (clawdcare.com)
 
-Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, **shop** (Hardware, **Programs**, **Token Plan** monthly subscriptions + cart), **Your health** (longitudinal wellness dashboard), **console** preview, **about**, **support**, **legal**, and **My account** (profile, **Subscriptions** including token balance and Token Plan lines, **Orders**, session)—structured as a single platform toward a personal health management center.
+Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, **shop** (Hardware, **Programs**, **Credit Plan** monthly subscriptions, **Credit packs** one-time + cart), **Your health** (longitudinal wellness dashboard), **console** preview, **about**, **support**, **legal**, and **My account** (Settings, Preferences, **Billing & subscriptions** including credit balance and Credit Plan line, **Orders**, session)—structured as a single platform toward a personal health management center.
 
-**Product model:** **ClawdCare is built on BingoClaw.** The Shop has three categories: **Hardware** (typically one-time), **Programs** (monthly subscription), and **Token Plan** (monthly subscription that credits a **token** wallet for on-demand AI and automations). Customers may hold **multiple Token Plans** (e.g. an extra purchase when monthly tokens are exhausted); **each** active plan bills monthly until canceled. **Programs** bill monthly separately. Users are **not** asked to choose underlying LLMs—BingoClaw capabilities surface across the product.
+**Product model:** **ClawdCare is built on BingoClaw.** The Shop has four product types: **Hardware** (typically one-time), **Programs** (monthly), **Credit Plan** (monthly subscription that credits a **credit** balance), and **Credit packs** (one-time credit purchase for mid-cycle top-up). **Programs** and **Credit Plan** bill monthly until canceled. Users are **not** asked to choose underlying LLMs—BingoClaw capabilities surface across the product.
 
 ## Pages
 
@@ -10,13 +10,13 @@ Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, 
 |------|---------|
 | `/` | Marketing home — positioning, value pillars, CTAs to Product / Shop |
 | `/product.html` | Full product story — hero, architecture, 16 capabilities, gallery, science/privacy, market gap |
-| `/shop.html` | Product ordering — **Hardware** (`#shop-hardware`), **Programs** (`#shop-programs`), **Token Plan** (`#shop-token-plans`); shared **cart** (`#shop-cart`), **Place Order** (mailto) |
+| `/shop.html` | Product ordering — **Hardware** (`#shop-hardware`), **Programs** (`#shop-programs`), **Credit Plan** (`#shop-credit-plans`), **Credit packs** (`#shop-credit-packs`); shared **cart** (`#shop-cart`), **Place Order** (mailto) |
 | `/use.html` | **Your health** — longitudinal wellness dashboard (demo when signed out; personalized stub when signed in): biomarker domains, biological-age style summary, viz, guidance, advanced programs |
 | `/console.html` | Control panel preview (public; sign-in optional for future binding) |
 | `/about.html` | Company, roadmap, financial sketch from plan |
 | `/support.html` | Help & contact |
 | `/legal.html` | Wellness / disclaimer summary |
-| `/account.html` | **Account** — profile, billing (**Payment methods** dialog: card + billing address → `/api/me/payment-methods`), **Orders** (sample), **Subscriptions** (token balance, Programs + Token Plan + demo rows), session (**requires login**) |
+| `/account.html` | **Account** — **Settings**, **Preferences**, **Billing & subscriptions** (credit balance, Programs + Credit Plan tables, **Payment** / **Orders**), payment-methods API (**requires login**) |
 | `/login.html`, `/register.html` | Session auth |
 | `/admin.html` | **Platform admin** — overview (stats, DB status, config hints), user table with filter & CSV export, refresh (**requires admin**; `noindex`) |
 | `/404.html` | Custom not-found (used by Vercel when a path has no file) |
@@ -93,7 +93,7 @@ Open `http://localhost:3000`.
 - **There is no separate “admin password”.** Same email/password as site sign-in.
 - Demo users are stored in `/tmp` on serverless unless **Supabase** env vars are set; prefer Supabase (or another DB) for production.
 
-UI colors follow **bingoclaw.cn** tokens: background `#0a0e14`, text `#e8edf4`, accent `#f97316` / `#ea580c`.
+UI colors follow **bingoclaw.cn** (same palette): background `#0a0e14`, text `#e8edf4`, accent `#f97316` / `#ea580c`.
 
 ## Content source
 

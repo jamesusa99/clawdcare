@@ -2,6 +2,19 @@
   var STORAGE = "clawdcare_cart";
   var MAX_QTY = 99;
 
+  /** Monthly subscription SKUs: one line each, quantity locked at 1 (no stacking). */
+  function inferLineKind(id) {
+    if (/^token-pack-/.test(id)) return "once";
+    if (/^token-/.test(id)) return "sub";
+    if (/^longevity$|^chronic$/.test(id)) return "sub";
+    return "once";
+  }
+
+  function lineKind(line) {
+    if (line.kind === "sub" || line.kind === "once") return line.kind;
+    return inferLineKind(line.id);
+  }
+
   function getCart() {
     try {
       var c = JSON.parse(localStorage.getItem(STORAGE) || "[]");
@@ -16,14 +29,34 @@
     window.dispatchEvent(new Event("clawdcare:cart"));
   }
 
-  function addItem(id, name, priceCents, qty) {
+  function addItem(id, name, priceCents, qty, kind) {
+    kind = kind || inferLineKind(id);
     qty = qty || 1;
     var cart = getCart();
     var found = cart.find(function (x) {
       return x.id === id;
     });
+    if (kind === "sub") {
+      if (/^token-/.test(id)) {
+        cart = cart.filter(function (x) {
+          return !/^token-/.test(x.id);
+        });
+        found = cart.find(function (x) {
+          return x.id === id;
+        });
+      }
+      if (found) {
+        found.qty = 1;
+        found.kind = "sub";
+        setCart(cart);
+        return;
+      }
+      cart.push({ id: id, name: name, priceCents: priceCents, qty: 1, kind: "sub" });
+      setCart(cart);
+      return;
+    }
     if (found) found.qty = Math.min(MAX_QTY, found.qty + qty);
-    else cart.push({ id: id, name: name, priceCents: priceCents, qty: Math.min(MAX_QTY, qty) });
+    else cart.push({ id: id, name: name, priceCents: priceCents, qty: Math.min(MAX_QTY, qty), kind: "once" });
     setCart(cart);
   }
 
@@ -33,6 +66,14 @@
       return x.id === id;
     });
     if (i < 0) return;
+    if (lineKind(cart[i]) === "sub") {
+      if (delta < 0) {
+        cart.splice(i, 1);
+        setCart(cart);
+        renderCart();
+      }
+      return;
+    }
     cart[i].qty += delta;
     if (cart[i].qty < 1) cart.splice(i, 1);
     else if (cart[i].qty > MAX_QTY) cart[i].qty = MAX_QTY;
@@ -46,6 +87,10 @@
       return x.id === id;
     });
     if (!found) return;
+    if (lineKind(found) === "sub") {
+      renderCart();
+      return;
+    }
     if (!Number.isFinite(n) || n < 1) {
       setCart(
         cart.filter(function (x) {
@@ -69,6 +114,36 @@
     renderCart();
   }
 
+  /** Normalize older carts: subscription lines cannot stack quantity. */
+  function migrateCart() {
+    var cart = getCart();
+    var changed = false;
+    cart.forEach(function (line) {
+      if (lineKind(line) === "sub") {
+        if (line.qty !== 1) {
+          line.qty = 1;
+          changed = true;
+        }
+        if (line.kind !== "sub") {
+          line.kind = "sub";
+          changed = true;
+        }
+      }
+    });
+    var tokenLines = cart.filter(function (l) {
+      return /^token-/.test(l.id);
+    });
+    if (tokenLines.length > 1) {
+      var keep = tokenLines[tokenLines.length - 1];
+      cart = cart.filter(function (line) {
+        if (!/^token-/.test(line.id)) return true;
+        return line.id === keep.id;
+      });
+      changed = true;
+    }
+    if (changed) setCart(cart);
+  }
+
   function escapeHtml(s) {
     var d = document.createElement("div");
     d.textContent = s;
@@ -87,31 +162,43 @@
       total += sub;
       var li = document.createElement("li");
       li.className = "shop-cart-line";
+      var isSub = lineKind(line) === "sub";
+      var qtyBlock;
+      if (isSub) {
+        qtyBlock =
+          '<div class="shop-cart-line__qty shop-cart-line__qty--locked"><span class="shop-cart-line__qty-label">Qty 1</span>' +
+          '<span class="shop-cart-line__recurring">Monthly</span></div>';
+      } else {
+        qtyBlock =
+          '<div class="shop-cart-line__qty" role="group" aria-label="Quantity for ' +
+          escapeHtml(line.name) +
+          '">' +
+          '<button type="button" class="btn btn-ghost shop-cart-line__qtybtn" data-cart-act="minus" data-id="' +
+          escapeHtml(line.id) +
+          '" aria-label="Decrease quantity">−</button>' +
+          '<input type="number" class="shop-cart-qty-input" min="1" max="' +
+          MAX_QTY +
+          '" value="' +
+          line.qty +
+          '" data-id="' +
+          escapeHtml(line.id) +
+          '" aria-label="Quantity" />' +
+          '<button type="button" class="btn btn-ghost shop-cart-line__qtybtn" data-cart-act="plus" data-id="' +
+          escapeHtml(line.id) +
+          '" aria-label="Increase quantity">+</button>' +
+          "</div>";
+      }
       li.innerHTML =
         '<div class="shop-cart-line__info">' +
         '<span class="shop-cart-line__name">' +
         escapeHtml(line.name) +
-        '</span><div class="shop-cart-line__qty" role="group" aria-label="Quantity for ' +
-        escapeHtml(line.name) +
-        '">' +
-        '<button type="button" class="btn btn-ghost shop-cart-line__qtybtn" data-cart-act="minus" data-id="' +
-        escapeHtml(line.id) +
-        '" aria-label="Decrease quantity">−</button>' +
-        '<input type="number" class="shop-cart-qty-input" min="1" max="' +
-        MAX_QTY +
-        '" value="' +
-        line.qty +
-        '" data-id="' +
-        escapeHtml(line.id) +
-        '" aria-label="Quantity" />' +
-        '<button type="button" class="btn btn-ghost shop-cart-line__qtybtn" data-cart-act="plus" data-id="' +
-        escapeHtml(line.id) +
-        '" aria-label="Increase quantity">+</button>' +
-        '</div></div>' +
+        "</span>" +
+        qtyBlock +
+        "</div>" +
         '<div class="shop-cart-line__aside">' +
         '<span class="shop-cart-line__price">$' +
         (sub / 100).toFixed(2) +
-        '</span>' +
+        "</span>" +
         '<button type="button" class="btn btn-ghost shop-cart-line__remove" data-cart-act="remove" data-id="' +
         escapeHtml(line.id) +
         '">Remove</button>' +
@@ -159,7 +246,9 @@
         var id = btn.getAttribute("data-id");
         var name = btn.getAttribute("data-name");
         var price = parseInt(btn.getAttribute("data-price"), 10);
-        addItem(id, name, price, 1);
+        var kindAttr = btn.getAttribute("data-line-kind");
+        var kind = kindAttr === "sub" || kindAttr === "once" ? kindAttr : inferLineKind(id);
+        addItem(id, name, price, 1, kind);
         renderCart();
         btn.textContent = "Added ✓";
         setTimeout(function () {
@@ -168,6 +257,7 @@
       });
     });
     bindCartListEvents();
+    migrateCart();
     renderCart();
 
     var checkout = document.getElementById("checkout-btn");
@@ -190,7 +280,8 @@
             lines.join("\n") +
             "\n\nEstimated total: $" +
             (sum / 100).toFixed(2) +
-            "\n\n(Prices before tax/shipping; final total from your team.)\n"
+            "\n\nNote: Programs and Credit Plan lines are monthly subscriptions; Hardware and Credit packs are one-time in this cart.\n" +
+            "(Prices before tax/shipping; final total from your team.)\n"
         );
         window.location.href = "mailto:hello@clawdcare.com?subject=" + subj + "&body=" + body;
       });

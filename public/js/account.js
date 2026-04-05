@@ -1,72 +1,104 @@
 (function () {
   var ROUTES = {
-    profile: "pane-profile",
-    subscriptions: "pane-subscriptions",
-    orders: "pane-orders",
-    billing: "pane-billing",
+    settings: "pane-settings",
+    preferences: "pane-preferences",
+    billing: "pane-billing-hub",
   };
 
+  /** Old sidebar hashes → new routes (underscore style). */
   var LEGACY_HASH = {
-    credits: "subscriptions",
-    "token-plan": "subscriptions",
-    "billing-subscriptions": "subscriptions",
-    "billing-orders": "orders",
-    "billing-payment": "billing",
-    "billing-address": "billing",
+    profile: "settings",
+    subscriptions: "billing-subscriptions",
+    credits: "billing-subscriptions",
+    "token-plan": "billing-subscriptions",
+    "billing-subscriptions": "billing-subscriptions",
+    orders: "billing-orders",
+    "billing-orders": "billing-orders",
+    billing: "billing-payment",
+    "billing-payment": "billing-payment",
+    "billing-address": "billing-payment",
     "billing-overview": "billing",
   };
 
-  var DEFAULT_ROUTE = "profile";
+  var DEFAULT_HASH = "settings";
+
+  var TITLES = {
+    settings: "Account — Settings — ClawdCare",
+    preferences: "Account — Preferences — ClawdCare",
+    billing: "Account — Billing & subscriptions — ClawdCare",
+  };
 
   function normalizedHashKey() {
     var h = (location.hash || "").replace(/^#/, "").trim().toLowerCase();
     if (LEGACY_HASH[h]) {
-      history.replaceState(null, "", location.pathname + location.search + "#" + LEGACY_HASH[h]);
-      return LEGACY_HASH[h];
+      var n = LEGACY_HASH[h];
+      history.replaceState(null, "", location.pathname + location.search + "#" + n);
+      return n;
     }
     return h;
   }
 
-  function routeFromHash() {
-    var h = normalizedHashKey();
-    if (ROUTES[h]) return h;
-    return DEFAULT_ROUTE;
+  function primaryFromKey(h) {
+    if (h === "settings" || h === "preferences") return h;
+    if (h === "billing" || h.indexOf("billing-") === 0) return "billing";
+    return "settings";
   }
 
-  var TITLES = {
-    profile: "Profile — ClawdCare",
-    subscriptions: "Subscriptions — ClawdCare",
-    orders: "Orders — ClawdCare",
-    billing: "Billing — ClawdCare",
-  };
+  function billingSubFromKey(h) {
+    if (h === "billing" || h === "billing-overview") return "overview";
+    if (h === "billing-subscriptions") return "subscriptions";
+    if (h === "billing-payment") return "payment";
+    if (h === "billing-orders") return "orders";
+    return "overview";
+  }
 
   function applyRoute() {
-    var route = routeFromHash();
-    var paneId = ROUTES[route];
-    if (!paneId) {
-      route = DEFAULT_ROUTE;
-      paneId = ROUTES[route];
+    var h = normalizedHashKey();
+    if (!h) {
+      history.replaceState(null, "", location.pathname + location.search + "#" + DEFAULT_HASH);
+      h = DEFAULT_HASH;
     }
 
+    var primary = primaryFromKey(h);
+    if (!ROUTES[primary]) primary = "settings";
+
+    var billingSub = primary === "billing" ? billingSubFromKey(h) : null;
+
     document.querySelectorAll(".account-pane").forEach(function (el) {
-      el.classList.toggle("is-active", el.id === paneId);
+      el.classList.toggle("is-active", el.id === ROUTES[primary]);
     });
 
-    document.querySelectorAll(".account-nav__link").forEach(function (a) {
+    document.querySelectorAll(".account-primary-tab").forEach(function (a) {
       var r = a.getAttribute("data-route");
-      if (!r) return;
-      var current = r === route;
-      a.setAttribute("aria-current", current ? "page" : "false");
+      a.setAttribute("aria-current", r === primary ? "page" : "false");
     });
 
-    document.title = TITLES[route] || TITLES.profile;
+    document.querySelectorAll(".account-billing-subpane").forEach(function (el) {
+      var id = el.id || "";
+      var match =
+        primary === "billing" &&
+        ((billingSub === "overview" && id === "billing-sub-overview") ||
+          (billingSub === "subscriptions" && id === "billing-sub-subscriptions") ||
+          (billingSub === "payment" && id === "billing-sub-payment") ||
+          (billingSub === "orders" && id === "billing-sub-orders"));
+      el.classList.toggle("is-active", !!match);
+    });
+
+    document.querySelectorAll(".account-secondary-tab").forEach(function (a) {
+      var s = a.getAttribute("data-billing-sub");
+      var cur = primary === "billing" && s === billingSub;
+      a.setAttribute("aria-current", cur ? "page" : "false");
+    });
+
+    document.title = TITLES[primary] || TITLES.settings;
   }
 
   window.addEventListener("hashchange", applyRoute);
+
   document.addEventListener("DOMContentLoaded", function () {
-    var raw = normalizedHashKey();
-    if (!raw || !ROUTES[raw]) {
-      history.replaceState(null, "", location.pathname + location.search + "#" + DEFAULT_ROUTE);
+    var raw = (location.hash || "").replace(/^#/, "").trim();
+    if (!raw) {
+      history.replaceState(null, "", location.pathname + location.search + "#" + DEFAULT_HASH);
     }
     applyRoute();
     initAccountSubscriptions();
@@ -79,9 +111,9 @@
 
   function initAccountSubscriptions() {
     var programsBody = document.getElementById("acct-sub-programs-tbody");
-    var tokensBody = document.getElementById("acct-sub-tokens-tbody");
+    var creditsBody = document.getElementById("acct-sub-credits-tbody");
     var emptyProg = document.getElementById("acct-sub-programs-empty");
-    var emptyTok = document.getElementById("acct-sub-tokens-empty");
+    var emptyCredits = document.getElementById("acct-sub-credits-empty");
     var demoBtn = document.getElementById("acct-sub-load-demo");
     var banner = document.getElementById("acct-sub-banner");
     var dialog = document.getElementById("acct-sub-edit-dialog");
@@ -93,7 +125,7 @@
     var errEl = document.getElementById("acct-sub-edit-err");
     var dismiss = document.getElementById("acct-sub-edit-dismiss");
 
-    if (!programsBody || !tokensBody) return;
+    if (!programsBody || !creditsBody) return;
 
     function showBanner(text, isErr) {
       if (!banner) return;
@@ -170,7 +202,7 @@
       programsBody.querySelectorAll("tr:not(#acct-sub-programs-empty)").forEach(function (r) {
         r.remove();
       });
-      tokensBody.querySelectorAll("tr:not(#acct-sub-tokens-empty)").forEach(function (r) {
+      creditsBody.querySelectorAll("tr:not(#acct-sub-credits-empty)").forEach(function (r) {
         r.remove();
       });
 
@@ -184,11 +216,11 @@
       }
 
       if (tok.length === 0) {
-        if (emptyTok) emptyTok.style.display = "";
+        if (emptyCredits) emptyCredits.style.display = "";
       } else {
-        if (emptyTok) emptyTok.style.display = "none";
+        if (emptyCredits) emptyCredits.style.display = "none";
         tok.forEach(function (s) {
-          tokensBody.appendChild(rowTemplate(s));
+          creditsBody.appendChild(rowTemplate(s));
         });
       }
 
@@ -211,7 +243,7 @@
     }
 
     programsBody.addEventListener("click", onTableClick);
-    tokensBody.addEventListener("click", onTableClick);
+    creditsBody.addEventListener("click", onTableClick);
 
     function onTableClick(ev) {
       var t = ev.target;
@@ -235,7 +267,7 @@
       inpId.value = sub.id;
       inpName.value = sub.name || "";
       inpRenew.value = (sub.next_renewal || "").slice(0, 10);
-      meta.textContent = sub.kind === "token" ? "Token Plan subscription" : "Program subscription";
+      meta.textContent = sub.kind === "token" ? "Credit Plan subscription" : "Program subscription";
       showFormErr("");
       if (typeof dialog.showModal === "function") dialog.showModal();
       else dialog.setAttribute("open", "");
@@ -335,7 +367,7 @@
             return;
           }
           await load();
-          showBanner("Sample Program + Token Plan added. Use Edit or Cancel to try the flow.", false);
+          showBanner("Sample Program + Credit Plan added. Use Edit or Cancel to try the flow.", false);
         } catch (_) {
           showBanner("Network error. Try again.", true);
         } finally {
@@ -347,7 +379,8 @@
     load();
 
     window.addEventListener("hashchange", function () {
-      if (routeFromHash() === "subscriptions") load();
+      var h = (location.hash || "").replace(/^#/, "").trim().toLowerCase();
+      if (h === "billing-subscriptions") load();
     });
   }
 })();

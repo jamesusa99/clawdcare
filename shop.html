@@ -35,11 +35,11 @@
     <div class="wrap page-title">
       <h1>Shop</h1>
       <p>
-        ClawdCare products fall into <strong>three categories</strong>: <strong>Hardware</strong> (typically one-time purchase), <strong>Programs</strong> (monthly guided services), and <strong>Token Plan</strong> (monthly subscription that credits your <strong>token</strong> balance for on-demand AI, skills, and automations). You can buy <strong>more than one</strong> Token Plan—if you use up this month’s tokens early, <strong>add another Token Plan</strong> from the Shop to top up (each active plan bills monthly on its own line). When a <strong>Program</strong> and one or more <strong>Token Plans</strong> are active, those charges recur <strong>every month</strong> until you change or cancel. Add any mix to your cart, adjust quantities below, then <strong>Place Order</strong> to start—we confirm total, tax, shipping, and payment.
+        ClawdCare commerce has <strong>four product types</strong>: <strong>Hardware</strong> (typically one-time), <strong>Programs</strong> (monthly guided services), <strong>Credit Plan</strong> (monthly subscription that credits your <strong>credit</strong> balance each cycle), and <strong>Credit packs</strong> (one-time purchases that add credits immediately—your top-up when you need more before the next plan cycle). The first three bill on a <strong>monthly</strong> rhythm where noted; credit packs are <strong>pay once per pack</strong>. Add items to your cart, adjust quantities where allowed, then <strong>Place Order</strong> to start—we confirm total, tax, shipping, and payment.
       </p>
     </div>
 
-    <section class="shop-catalog" aria-label="Hardware, programs, token plans, and cart">
+    <section class="shop-catalog" aria-label="Hardware, programs, credit plans, credit packs, and cart">
       <div class="wrap">
         <!-- 1 · Hardware -->
         <div id="shop-hardware">
@@ -51,7 +51,7 @@
               <h3 style="font-size:1.25rem;margin-bottom:0.5rem">BingoClaw Health Hub</h3>
               <p style="color:var(--muted);font-size:0.9rem;flex:1">Local AI appliance · M.2 vault · scan-to-activate. Entry reference <strong>$199</strong>.</p>
               <p style="font-size:1.5rem;font-weight:700;margin:1rem 0">$199</p>
-              <button type="button" class="btn btn-primary" data-add-cart data-id="hub" data-name="BingoClaw Health Hub (Hardware)" data-price="19900" data-label="Add to cart">Add to cart</button>
+              <button type="button" class="btn btn-primary" data-add-cart data-line-kind="once" data-id="hub" data-name="BingoClaw Health Hub (Hardware)" data-price="19900" data-label="Add to cart">Add to cart</button>
             </article>
           </div>
         </div>
@@ -61,7 +61,7 @@
           <p class="section-label">Programs</p>
           <h2 style="font-size:clamp(1.15rem,2.5vw,1.45rem);margin:0 0 0.75rem;font-weight:600">Recurring guided services</h2>
           <p class="lead shop-section-lead" style="margin-bottom:1.5rem">
-            <strong>Programs</strong> are <strong>monthly subscriptions</strong>. Each month the listed price is charged to your payment method on file until you cancel. If you also subscribe to one or more <strong>Token Plans</strong>, each plan’s monthly fee is charged separately—those lines continue on your bill together with this Program. Programs cover coaching, tracks, and longevity workflows (not per-token metering). Manage them under <a href="/account.html#subscriptions">Subscriptions</a>.
+            <strong>Programs</strong> are <strong>monthly subscriptions</strong>. Each month the listed price is charged to your payment method on file until you cancel. If you also have a <strong>Credit Plan</strong>, that monthly fee is billed separately alongside this Program. Programs cover coaching, tracks, and longevity workflows (not per-credit metering). Manage them under <a href="/account.html#billing-subscriptions">Account → Billing &amp; subscriptions</a>.
           </p>
           <div class="card-grid cols-3">
             <article class="card" style="display:flex;flex-direction:column">
@@ -69,60 +69,96 @@
               <h3 style="font-size:1.25rem;margin-bottom:0.5rem">Longevity program</h3>
               <p style="color:var(--muted);font-size:0.9rem;flex:1">Guided longevity layer with LifeClock-aligned nudges and check-ins. <strong>$99/mo</strong> reference.</p>
               <p style="font-size:1.5rem;font-weight:700;margin:1rem 0">$99<span style="font-size:1rem;color:var(--muted)">/mo</span></p>
-              <button type="button" class="btn btn-primary" data-add-cart data-id="longevity" data-name="Program — Longevity (1 mo)" data-price="9900" data-label="Add to cart">Add to cart</button>
+              <button type="button" class="btn btn-primary" data-add-cart data-line-kind="sub" data-id="longevity" data-name="Program — Longevity (1 mo)" data-price="9900" data-label="Add to cart">Add to cart</button>
             </article>
             <article class="card" style="display:flex;flex-direction:column">
               <p class="section-label" style="margin-bottom:0.5rem">Program · Track</p>
               <h3 style="font-size:1.25rem;margin-bottom:0.5rem">Chronic care track</h3>
               <p style="color:var(--muted);font-size:0.9rem;flex:1">Ongoing programs for metabolic, cardiovascular, and adherence workflows. <strong>$30/mo</strong> reference.</p>
               <p style="font-size:1.5rem;font-weight:700;margin:1rem 0">$30<span style="font-size:1rem;color:var(--muted)">/mo</span></p>
-              <button type="button" class="btn btn-primary" data-add-cart data-id="chronic" data-name="Program — Chronic care track (1 mo)" data-price="3000" data-label="Add to cart">Add to cart</button>
+              <button type="button" class="btn btn-primary" data-add-cart data-line-kind="sub" data-id="chronic" data-name="Program — Chronic care track (1 mo)" data-price="3000" data-label="Add to cart">Add to cart</button>
             </article>
           </div>
         </div>
 
-        <!-- 3 · Token Plan -->
-        <div id="shop-token-plans" style="margin-top:2.75rem;padding-top:2.5rem;border-top:1px solid var(--border-soft)">
-          <p class="section-label">Token Plan</p>
-          <h2 style="font-size:clamp(1.15rem,2.5vw,1.45rem);margin:0 0 0.75rem;font-weight:600">Monthly token subscription</h2>
+        <!-- 3 · Credit Plan (monthly) -->
+        <div id="shop-credit-plans" style="margin-top:2.75rem;padding-top:2.5rem;border-top:1px solid var(--border-soft)">
+          <p class="section-label">Credit Plan</p>
+          <h2 style="font-size:clamp(1.15rem,2.5vw,1.45rem);margin:0 0 0.75rem;font-weight:600">Monthly Credit Subscription</h2>
           <p class="lead shop-section-lead" style="margin-bottom:1.5rem">
-            <strong>Token Plan</strong> subscriptions increase your <strong>token</strong> balance each billing cycle. Tokens are consumed when you run on-demand AI, console skills, automations, and cloud assists—separate from monthly <strong>Programs</strong>. You do not pick raw model SKUs. <strong>You can purchase Token Plans multiple times</strong> (e.g. raise quantity in the cart or check out again): if this month’s allocation runs out before the next cycle, <strong>buy another Token Plan</strong> to credit more tokens. Each active plan is <strong>$/month</strong> until you cancel that line. Add tiers with hardware or programs in one order when you like.
+            <strong>Credit Plan</strong> is a <strong>monthly subscription</strong>: each cycle adds to your <strong>credit</strong> balance for on-demand AI, console skills, automations, and cloud assists—separate from <strong>Programs</strong>. Your cart holds <strong>one</strong> Credit Plan tier at a time—picking a different tier replaces the previous. If you run through credits before the next renewal, use <strong>Credit packs</strong> (below) for a <strong>one-time</strong> top-up—not an extra Credit Plan line.
           </p>
           <div class="card-grid cols-3">
             <article class="card" style="display:flex;flex-direction:column">
-              <p class="section-label" style="margin-bottom:0.5rem">Token Plan · Starter</p>
+              <p class="section-label" style="margin-bottom:0.5rem">Credit Plan · Starter</p>
               <h3 style="font-size:1.25rem;margin-bottom:0.5rem">Essential</h3>
-              <p style="color:var(--muted);font-size:0.9rem;flex:1">Light daily use—Q&amp;A, summaries, quick console assists. <strong>~500 tokens</strong> credited each month (reference).</p>
+              <p style="color:var(--muted);font-size:0.9rem;flex:1">Light daily use—Q&amp;A, summaries, quick console assists. <strong>~500 credits</strong> credited each month (reference).</p>
               <p style="font-size:1.5rem;font-weight:700;margin:1rem 0">$19<span style="font-size:1rem;color:var(--muted)">/mo</span></p>
-              <button type="button" class="btn btn-primary" data-add-cart data-id="token-starter" data-name="Token Plan — Starter (~500 tokens/mo)" data-price="1900" data-label="Add to cart">Add to cart</button>
+              <button type="button" class="btn btn-primary" data-add-cart data-line-kind="sub" data-id="token-starter" data-name="Credit Plan — Starter (~500 credits/mo)" data-price="1900" data-label="Add to cart">Add to cart</button>
             </article>
             <article class="card" style="display:flex;flex-direction:column;border-color:rgba(249,115,22,0.35)">
-              <p class="section-label" style="margin-bottom:0.5rem">Token Plan · Standard</p>
+              <p class="section-label" style="margin-bottom:0.5rem">Credit Plan · Standard</p>
               <h3 style="font-size:1.25rem;margin-bottom:0.5rem">Household</h3>
-              <p style="color:var(--muted);font-size:0.9rem;flex:1">More headroom for families, workflows, and frequent sessions. <strong>~1,500 tokens</strong> per month (reference).</p>
+              <p style="color:var(--muted);font-size:0.9rem;flex:1">More headroom for families, workflows, and frequent sessions. <strong>~1,500 credits</strong> per month (reference).</p>
               <p style="font-size:1.5rem;font-weight:700;margin:1rem 0">$49<span style="font-size:1rem;color:var(--muted)">/mo</span></p>
-              <button type="button" class="btn btn-primary" data-add-cart data-id="token-standard" data-name="Token Plan — Standard (~1,500 tokens/mo)" data-price="4900" data-label="Add to cart">Add to cart</button>
+              <button type="button" class="btn btn-primary" data-add-cart data-line-kind="sub" data-id="token-standard" data-name="Credit Plan — Standard (~1,500 credits/mo)" data-price="4900" data-label="Add to cart">Add to cart</button>
             </article>
             <article class="card" style="display:flex;flex-direction:column">
-              <p class="section-label" style="margin-bottom:0.5rem">Token Plan · Pro</p>
+              <p class="section-label" style="margin-bottom:0.5rem">Credit Plan · Pro</p>
               <h3 style="font-size:1.25rem;margin-bottom:0.5rem">Power</h3>
-              <p style="color:var(--muted);font-size:0.9rem;flex:1">Heavy automation, deeper analyses, multi-skill days. <strong>~3,500 tokens</strong> per month (reference).</p>
+              <p style="color:var(--muted);font-size:0.9rem;flex:1">Heavy automation, deeper analyses, multi-skill days. <strong>~3,500 credits</strong> per month (reference).</p>
               <p style="font-size:1.5rem;font-weight:700;margin:1rem 0">$99<span style="font-size:1rem;color:var(--muted)">/mo</span></p>
-              <button type="button" class="btn btn-primary" data-add-cart data-id="token-pro" data-name="Token Plan — Pro (~3,500 tokens/mo)" data-price="9900" data-label="Add to cart">Add to cart</button>
+              <button type="button" class="btn btn-primary" data-add-cart data-line-kind="sub" data-id="token-pro" data-name="Credit Plan — Pro (~3,500 credits/mo)" data-price="9900" data-label="Add to cart">Add to cart</button>
             </article>
           </div>
         </div>
 
-        <!-- Cart — bottom of catalog (same wrap as three categories) -->
+        <!-- 4 · Credit packs (one-time top-up) -->
+        <div id="shop-credit-packs" style="margin-top:2.75rem;padding-top:2.5rem;border-top:1px solid var(--border-soft)">
+          <p class="section-label">Credit packs</p>
+          <div class="shop-credit-packs-head">
+            <h2 style="font-size:clamp(1.15rem,2.5vw,1.45rem);margin:0;font-weight:600">One-time Credit Purchase</h2>
+            <p class="shop-credit-packs-head__hint">Credits apply when the order is fulfilled—valid for <strong>365 days</strong> from credit date (reference policy).</p>
+          </div>
+          <p class="lead shop-section-lead" style="margin-bottom:1.5rem">
+            <strong>Credit packs</strong> add a fixed number of credits in a <strong>single charge</strong>. Use them to recharge when your monthly <strong>Credit Plan</strong> cycle has not refreshed yet. Packs are <strong>not</strong> subscriptions; buy again anytime. You can change quantity in the cart for multiple packs of the same SKU.
+          </p>
+          <div class="shop-credit-packs-grid">
+            <article class="shop-credit-pack-card">
+              <p class="shop-credit-pack-card__tier">Starter pack</p>
+              <p class="shop-credit-pack-card__credits">5,000 credits</p>
+              <p class="shop-credit-pack-card__price">$29</p>
+              <p class="shop-credit-pack-card__valid">Valid 365 days from credit</p>
+              <button type="button" class="btn btn-primary" data-add-cart data-line-kind="once" data-id="token-pack-starter" data-name="Credit pack — Starter (5,000 credits, 365d)" data-price="2900" data-label="Add to cart">Add to cart</button>
+            </article>
+            <article class="shop-credit-pack-card shop-credit-pack-card--popular">
+              <span class="shop-credit-pack-card__badge" aria-hidden="true">Popular</span>
+              <p class="shop-credit-pack-card__tier">Plus pack</p>
+              <p class="shop-credit-pack-card__credits">10,000 credits</p>
+              <p class="shop-credit-pack-card__price">$55</p>
+              <p class="shop-credit-pack-card__valid">Valid 365 days from credit</p>
+              <button type="button" class="btn btn-primary" data-add-cart data-line-kind="once" data-id="token-pack-plus" data-name="Credit pack — Plus (10,000 credits, 365d)" data-price="5500" data-label="Add to cart">Add to cart</button>
+            </article>
+            <article class="shop-credit-pack-card">
+              <p class="shop-credit-pack-card__tier">Max pack</p>
+              <p class="shop-credit-pack-card__credits">15,000 credits</p>
+              <p class="shop-credit-pack-card__price">$79</p>
+              <p class="shop-credit-pack-card__valid">Valid 365 days from credit</p>
+              <button type="button" class="btn btn-primary" data-add-cart data-line-kind="once" data-id="token-pack-max" data-name="Credit pack — Max (15,000 credits, 365d)" data-price="7900" data-label="Add to cart">Add to cart</button>
+            </article>
+          </div>
+        </div>
+
+        <!-- Cart — bottom of catalog (same wrap as categories) -->
         <div id="shop-cart" style="margin-top:2.75rem;padding-top:2.5rem;border-top:1px solid var(--border)">
           <p class="section-label">Cart</p>
           <div class="card shop-cart-card" style="max-width:48rem">
             <h2 style="margin-top:0;font-size:1.2rem">Your cart</h2>
-            <p class="shop-cart-hint" style="font-size:0.8125rem;color:var(--dim);margin:0 0 0.75rem">Hardware (one-time), <strong>Programs</strong> ($/mo), and <strong>Token Plan</strong> ($/mo) in one cart. Use <strong>+</strong> on a Token Plan line for an extra subscription (e.g. mid-month top-up). Program and each Token Plan line <strong>recur monthly</strong> after checkout. Change quantities with − / + or remove a line.</p>
+            <p class="shop-cart-hint" style="font-size:0.8125rem;color:var(--dim);margin:0 0 0.75rem"><strong>Hardware</strong> and <strong>Credit packs</strong> are one-time (quantity with − / +). <strong>Programs</strong> and <strong>Credit Plan</strong> are <strong>monthly</strong>—each appears as qty 1; remove a line to drop that subscription from the order. Mid-month top-up: add <strong>Credit packs</strong>, not a second Credit Plan.</p>
             <ul id="cart-lines" class="shop-cart-lines"></ul>
             <p class="shop-cart-total-row"><span>Estimated total</span> <span id="cart-total">$0.00</span></p>
             <button type="button" class="btn btn-primary" id="checkout-btn">Place Order</button>
-            <p style="font-size:0.75rem;color:var(--dim);margin-top:0.75rem">Placing an order opens your email with this cart so we can send an invoice or payment link. Not a live card charge on this demo site. After activation, each <strong>Program</strong> and each <strong>Token Plan</strong> line bills <strong>every month</strong> until that line is canceled—multiple Token Plans mean multiple recurring lines. Physician tele-consults and lab partners billed separately when offered.</p>
+            <p style="font-size:0.75rem;color:var(--dim);margin-top:0.75rem">Placing an order opens your email with this cart so we can send an invoice or payment link. Not a live card charge on this demo site. After activation, each <strong>Program</strong> and <strong>Credit Plan</strong> line bills <strong>monthly</strong> until canceled. <strong>Credit packs</strong> and hardware are charged per line as one-time items. Physician tele-consults and lab partners billed separately when offered.</p>
           </div>
         </div>
       </div>
@@ -140,6 +176,20 @@
       <div><h4>Account</h4><a href="/account.html">My account</a></div>
     </div>
   </footer>
+  <script>
+    (function () {
+      var map = { "shop-token-plans": "shop-credit-plans", "shop-token-packs": "shop-credit-packs" };
+      var key = (location.hash || "").replace(/^#/, "");
+      var target = map[key];
+      if (target) {
+        history.replaceState(null, "", location.pathname + location.search + "#" + target);
+        requestAnimationFrame(function () {
+          var el = document.getElementById(target);
+          if (el) el.scrollIntoView({ block: "start" });
+        });
+      }
+    })();
+  </script>
   <script src="/js/nav.js" defer></script>
   <script src="/js/shop.js" defer></script>
 </body>
