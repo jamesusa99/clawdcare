@@ -55,114 +55,230 @@
     return s;
   }
 
-  var state = { canManageRoles: false, email: "", allUsers: [], controlsBound: false };
-
-  function renderUsers(users, currentEmail, canManageRoles) {
-    var tb = el("admin-users-body");
-    if (!tb) return;
-    tb.innerHTML = "";
-    users.forEach(function (u) {
-      var tr = document.createElement("tr");
-      var isAdmin = Array.isArray(u.roles) && u.roles.indexOf("admin") >= 0;
-      var self = (u.email || "").toLowerCase() === (currentEmail || "").toLowerCase();
-      var actions = "";
-      if (canManageRoles) {
-        if (isAdmin) {
-          actions =
-            '<button type="button" class="btn btn-ghost admin-remove-admin" data-id="' +
-            u.id +
-            '"' +
-            (self ? ' disabled title="Use another admin to remove your own role"' : "") +
-            ">Remove admin</button>";
-        } else {
-          actions = '<button type="button" class="btn btn-primary admin-make-admin" data-id="' + u.id + '">Make admin</button>';
-        }
-      } else {
-        actions = '<span style="color:var(--muted);font-size:0.8125rem">—</span>';
-      }
-      var cr = typeof u.credits === "number" ? u.credits : 0;
-      tr.innerHTML =
-        "<td>" +
-        escapeHtml(u.email || "") +
-        "</td><td>" +
-        (u.name ? escapeHtml(u.name) : "—") +
-        "</td><td>" +
-        fmtDate(u.created_at) +
-        "</td><td>" +
-        String(cr) +
-        '</td><td><span class="' +
-        (isAdmin ? "admin-pill" : "admin-pill admin-pill--off") +
-        '">' +
-        (isAdmin ? "Admin" : "User") +
-        '</span></td><td class="admin-actions">' +
-        actions +
-        "</td>";
-      tb.appendChild(tr);
-    });
-
-    tb.querySelectorAll(".admin-make-admin").forEach(function (btn) {
-      btn.addEventListener("click", async function () {
-        btn.disabled = true;
-        try {
-          await patchJson("/api/admin/users/" + btn.getAttribute("data-id") + "/roles", { roles: ["admin"] });
-          await refreshAll();
-        } catch (e) {
-          alert(e.message || "Failed");
-        } finally {
-          btn.disabled = false;
-        }
-      });
-    });
-    tb.querySelectorAll(".admin-remove-admin").forEach(function (btn) {
-      btn.addEventListener("click", async function () {
-        if (!confirm("Remove admin role for this user?")) return;
-        btn.disabled = true;
-        try {
-          await patchJson("/api/admin/users/" + btn.getAttribute("data-id") + "/roles", { roles: [] });
-          await refreshAll();
-        } catch (e) {
-          alert(e.message || "Failed");
-        } finally {
-          btn.disabled = false;
-        }
-      });
-    });
+  function parseHashRoute() {
+    var h = (location.hash || "").replace(/^#/, "").trim();
+    if (!h || h === "admin-overview") return { kind: "overview" };
+    if (h.indexOf("admin-user-") === 0) {
+      var id = decodeURIComponent(h.slice("admin-user-".length));
+      if (id) return { kind: "user", id: id };
+    }
+    return { kind: "overview" };
   }
 
-  function renderWarnings(warnings) {
-    var box = el("admin-warnings");
-    if (!box) return;
-    if (!warnings || !warnings.length) {
-      box.hidden = true;
-      box.innerHTML = "";
+  function normalizeHash() {
+    var h = (location.hash || "").replace(/^#/, "").trim();
+    if (!h) {
+      history.replaceState(null, "", location.pathname + location.search + "#admin-overview");
       return;
     }
-    box.hidden = false;
-    box.innerHTML = warnings
-      .map(function (w) {
-        return '<div class="admin-alert admin-alert--warn" role="alert">' + escapeHtml(w) + "</div>";
-      })
-      .join("");
+    if (h !== "admin-overview" && h.indexOf("admin-user-") !== 0) {
+      history.replaceState(null, "", location.pathname + location.search + "#admin-overview");
+    }
   }
 
-  function renderConfig(config, ov) {
-    var ul = el("admin-config-list");
-    if (!ul || !config) return;
-    var lines = [];
-    lines.push(
-      "ADMIN_EMAILS: " +
-        (config.adminEmailsConfigured
-          ? String(config.adminEmailSlotCount) + " operator address(es) configured"
-          : "not set (rely on admin role or ADMIN_DEV_OPEN in dev)")
-    );
-    lines.push("Persistence: " + (ov && ov.dataBackend ? String(ov.dataBackend) : "—"));
-    lines.push("NODE_ENV: " + (ov && ov.nodeEnv ? String(ov.nodeEnv) : "—"));
-    if (config.devAdminOpen) lines.push("Local dev: any signed-in user may access admin (empty ADMIN_EMAILS or ADMIN_DEV_OPEN=1).");
-    ul.innerHTML = lines
-      .map(function (t) {
-        return "<li>" + escapeHtml(t) + "</li>";
-      })
-      .join("");
+  var state = {
+    canManageRoles: false,
+    email: "",
+    allUsers: [],
+    controlsBound: false,
+    selectedUserId: null,
+  };
+
+  function setPane(kind) {
+    var ov = el("pane-admin-overview");
+    var us = el("pane-admin-user");
+    if (ov) ov.hidden = kind !== "overview";
+    if (us) us.hidden = kind !== "user";
+  }
+
+  function updateNavCurrent(routeKind, userId) {
+    document.querySelectorAll(".admin-side-link").forEach(function (a) {
+      var rk = a.getAttribute("data-admin-route");
+      var uid = a.getAttribute("data-user-id");
+      var cur = false;
+      if (routeKind === "overview" && rk === "overview") cur = true;
+      if (routeKind === "user" && uid && uid === userId) cur = true;
+      a.setAttribute("aria-current", cur ? "page" : "false");
+    });
+  }
+
+  function applyRoute() {
+    var r = parseHashRoute();
+    if (r.kind === "user") {
+      var u = state.allUsers.find(function (x) {
+        return x.id === r.id;
+      });
+      if (!u) {
+        history.replaceState(null, "", location.pathname + location.search + "#admin-overview");
+        r = { kind: "overview" };
+      } else {
+        state.selectedUserId = r.id;
+        renderUserDetail(u);
+        setPane("user");
+        updateNavCurrent("user", r.id);
+        document.title = (u.email || "User") + " — Admin — ClawdCare";
+        return;
+      }
+    }
+    state.selectedUserId = null;
+    setPane("overview");
+    updateNavCurrent("overview", null);
+    document.title = "Admin — ClawdCare";
+  }
+
+  function renderSidebarUsers(users) {
+    var box = el("admin-sidebar-user-list");
+    if (!box) return;
+    box.innerHTML = "";
+    if (!users.length) {
+      var p = document.createElement("p");
+      p.className = "admin-detail-card__body";
+      p.style.margin = "0.35rem 0";
+      p.textContent = "No users match your filter.";
+      box.appendChild(p);
+      return;
+    }
+    users.forEach(function (u) {
+      var a = document.createElement("a");
+      a.className = "admin-side-link admin-side-link--user";
+      a.href = "#admin-user-" + encodeURIComponent(u.id);
+      a.setAttribute("data-admin-route", "user");
+      a.setAttribute("data-user-id", u.id);
+      var cr = typeof u.credits === "number" ? u.credits : 0;
+      a.innerHTML =
+        '<span class="admin-side-link__email">' +
+        escapeHtml(u.email || "—") +
+        "</span>" +
+        '<span class="admin-side-link__meta">' +
+        String(cr) +
+        " tokens</span>";
+      box.appendChild(a);
+    });
+  }
+
+  function renderUserDetail(u) {
+    var title = el("admin-user-title");
+    var sum = el("admin-user-summary");
+    var credits = el("admin-user-credits");
+    var rolePill = el("admin-user-role-pill");
+    var actions = el("admin-user-actions");
+    if (title) title.textContent = u.email || "User";
+    if (sum) {
+      sum.innerHTML =
+        (u.name ? "<strong>Name:</strong> " + escapeHtml(u.name) + " · " : "") +
+        "<strong>Joined:</strong> " +
+        escapeHtml(fmtDate(u.created_at));
+    }
+    var cr = typeof u.credits === "number" ? u.credits : 0;
+    if (credits) credits.textContent = String(cr);
+    var isAdmin = Array.isArray(u.roles) && u.roles.indexOf("admin") >= 0;
+    if (rolePill) rolePill.textContent = isAdmin ? "Admin" : "User";
+
+    if (actions) {
+      var self = (u.email || "").toLowerCase() === (state.email || "").toLowerCase();
+      actions.innerHTML = "";
+      if (state.canManageRoles) {
+        if (isAdmin) {
+          var rm = document.createElement("button");
+          rm.type = "button";
+          rm.className = "btn btn-ghost";
+          rm.textContent = "Remove admin role";
+          rm.disabled = self;
+          if (self) rm.title = "Use another admin account to remove your own admin role.";
+          rm.addEventListener("click", async function () {
+            if (!confirm("Remove admin role for this user?")) return;
+            rm.disabled = true;
+            try {
+              await patchJson("/api/admin/users/" + u.id + "/roles", { roles: [] });
+              await refreshAll();
+              applyRoute();
+            } catch (e) {
+              alert(e.message || "Failed");
+            } finally {
+              rm.disabled = self;
+            }
+          });
+          actions.appendChild(rm);
+        } else {
+          var mk = document.createElement("button");
+          mk.type = "button";
+          mk.className = "btn btn-primary";
+          mk.textContent = "Make admin";
+          mk.addEventListener("click", async function () {
+            mk.disabled = true;
+            try {
+              await patchJson("/api/admin/users/" + u.id + "/roles", { roles: ["admin"] });
+              await refreshAll();
+              applyRoute();
+            } catch (e) {
+              alert(e.message || "Failed");
+            } finally {
+              mk.disabled = false;
+            }
+          });
+          actions.appendChild(mk);
+        }
+      } else {
+        actions.innerHTML = '<span style="color:var(--muted);font-size:0.875rem">No role actions available.</span>';
+      }
+    }
+  }
+
+  function applyUserFilter() {
+    var input = el("admin-sidebar-search");
+    var q = ((input && input.value) || "").trim().toLowerCase();
+    var users = state.allUsers;
+    var filtered = !q
+      ? users
+      : users.filter(function (u) {
+          var em = (u.email || "").toLowerCase();
+          var nm = (u.name || "").toLowerCase();
+          return em.indexOf(q) >= 0 || nm.indexOf(q) >= 0;
+        });
+    renderSidebarUsers(filtered);
+    var route = parseHashRoute();
+    if (route.kind === "user" && route.id) {
+      var still = filtered.some(function (u) {
+        return u.id === route.id;
+      });
+      if (!still) {
+        history.replaceState(null, "", location.pathname + location.search + "#admin-overview");
+        applyRoute();
+      } else {
+        updateNavCurrent("user", route.id);
+      }
+    }
+  }
+
+  function exportUsersCsv() {
+    var users = state.allUsers;
+    var rows = [["id", "email", "name", "created_at", "credits", "roles"]];
+    users.forEach(function (u) {
+      rows.push([
+        u.id || "",
+        u.email || "",
+        u.name || "",
+        u.created_at || "",
+        typeof u.credits === "number" ? u.credits : 0,
+        Array.isArray(u.roles) ? u.roles.join(";") : "",
+      ]);
+    });
+    var csv =
+      "\uFEFF" +
+      rows
+        .map(function (r) {
+          return r.map(csvEscape).join(",");
+        })
+        .join("\n");
+    var blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "clawdcare-users-" + new Date().toISOString().slice(0, 10) + ".csv";
+    a.rel = "noopener";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
   }
 
   function setUpdatedAt(iso) {
@@ -187,59 +303,16 @@
     banner.hidden = false;
     banner.classList.toggle("admin-db-banner--ok", !!db.ok);
     banner.classList.toggle("admin-db-banner--fail", !db.ok);
-    title.textContent = db.ok ? "数据库已连接" : "数据库连接失败";
-    msg.textContent = db.message || (db.ok ? "" : "请检查 SUPABASE_URL、密钥与网络，并确认已执行 migrations。");
-  }
-
-  function applyUserFilter() {
-    var input = el("admin-user-search");
-    var q = ((input && input.value) || "").trim().toLowerCase();
-    var users = state.allUsers;
-    var filtered = !q
-      ? users
-      : users.filter(function (u) {
-          var em = (u.email || "").toLowerCase();
-          var nm = (u.name || "").toLowerCase();
-          return em.indexOf(q) >= 0 || nm.indexOf(q) >= 0;
-        });
-    var fc = el("admin-filter-count");
-    if (fc) fc.textContent = String(filtered.length) + " / " + String(users.length) + " shown";
-    var emptyEl = el("admin-users-empty");
-    if (emptyEl) emptyEl.hidden = filtered.length > 0 || users.length === 0;
-    renderUsers(filtered, state.email, state.canManageRoles);
-  }
-
-  function exportUsersCsv() {
-    var users = state.allUsers;
-    var rows = [["id", "email", "name", "created_at", "credits", "roles"]];
-    users.forEach(function (u) {
-      rows.push([
-        u.id || "",
-        u.email || "",
-        u.name || "",
-        u.created_at || "",
-        typeof u.credits === "number" ? u.credits : 0,
-        Array.isArray(u.roles) ? u.roles.join(";") : "",
-      ]);
-    });
-    var csv = "\uFEFF" + rows.map(function (r) {
-      return r.map(csvEscape).join(",");
-    }).join("\n");
-    var blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "clawdcare-users-" + new Date().toISOString().slice(0, 10) + ".csv";
-    a.rel = "noopener";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(a.href);
+    title.textContent = db.ok ? "Database connected" : "Database error";
+    msg.textContent =
+      db.message ||
+      (db.ok ? "" : "Check your database configuration and network, and ensure migrations have been applied.");
   }
 
   function bindControlsOnce() {
     if (state.controlsBound) return;
     state.controlsBound = true;
-    var search = el("admin-user-search");
+    var search = el("admin-sidebar-search");
     if (search) search.addEventListener("input", applyUserFilter);
     var ex = el("admin-export-csv");
     if (ex) ex.addEventListener("click", exportUsersCsv);
@@ -255,13 +328,14 @@
           ref.disabled = false;
         }
       });
+    window.addEventListener("hashchange", function () {
+      applyRoute();
+    });
   }
 
   async function refreshAll() {
     var ov = await getJson("/api/admin/overview");
     renderDatabaseBanner(ov.database);
-    renderWarnings(ov.warnings);
-    renderConfig(ov.config, ov);
     setUpdatedAt(ov.generatedAt);
     el("admin-stat-users").textContent = String(ov.totalUsers);
     el("admin-stat-week").textContent = String(ov.signupsLast7Days);
@@ -272,6 +346,7 @@
     var data = await getJson("/api/admin/users");
     state.allUsers = data.users || [];
     applyUserFilter();
+    applyRoute();
   }
 
   document.addEventListener("DOMContentLoaded", async function () {
@@ -285,6 +360,11 @@
         if (shell) shell.style.display = "none";
         if (denied) {
           denied.hidden = false;
+          var errP = el("admin-denied-error");
+          if (errP) {
+            errP.hidden = true;
+            errP.textContent = "";
+          }
           var em = el("admin-denied-email");
           if (em && me.user && me.user.email) {
             em.innerHTML = "Signed in as <strong>" + escapeHtml(me.user.email) + "</strong>";
@@ -297,13 +377,22 @@
       if (loading) loading.style.display = "none";
       if (shell) shell.hidden = false;
       bindControlsOnce();
+      normalizeHash();
       await refreshAll();
     } catch (e) {
       if (loading) loading.style.display = "none";
       if (shell) shell.style.display = "none";
       if (denied) {
         denied.hidden = false;
-        denied.querySelector("p").textContent = e.message || "Could not load admin session.";
+        var lead = el("admin-denied-lead");
+        if (lead) lead.hidden = true;
+        var em = el("admin-denied-email");
+        if (em) em.innerHTML = "";
+        var er = el("admin-denied-error");
+        if (er) {
+          er.hidden = false;
+          er.textContent = e.message || "Could not load session.";
+        }
       }
     }
   });

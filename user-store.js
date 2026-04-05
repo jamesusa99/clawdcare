@@ -17,9 +17,34 @@ function writeJson(filePath, data) {
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf8");
 }
 
+function normalizeSubscriptions(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw.filter((s) => s && typeof s === "object" && s.id && (s.kind === "program" || s.kind === "token"));
+}
+
+function normalizePaymentMethods(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw.filter(
+    (p) =>
+      p &&
+      typeof p === "object" &&
+      p.id &&
+      typeof p.last4 === "string" &&
+      /^\d{4}$/.test(p.last4) &&
+      typeof p.brand === "string" &&
+      typeof p.exp_month === "number" &&
+      typeof p.exp_year === "number"
+  );
+}
+
 function withCredits(u) {
   if (!u) return null;
-  return { ...u, credits: typeof u.credits === "number" && Number.isFinite(u.credits) ? u.credits : 0 };
+  return {
+    ...u,
+    credits: typeof u.credits === "number" && Number.isFinite(u.credits) ? u.credits : 0,
+    subscriptions: normalizeSubscriptions(u.subscriptions),
+    payment_methods: normalizePaymentMethods(u.payment_methods),
+  };
 }
 
 function createFileStore(filePath) {
@@ -44,6 +69,8 @@ function createFileStore(filePath) {
         created_at: new Date().toISOString(),
         roles: [],
         credits: 0,
+        subscriptions: [],
+        payment_methods: [],
       };
       data.users.push(row);
       save(data);

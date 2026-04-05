@@ -1,56 +1,84 @@
-/* Account settings — SaaS-style sidebar + panes (ClawdCare / app.css tokens) */
-.account-main-wrap {
-  padding-bottom: 3rem;
-}
-.account-app {
-  padding-top: 0.5rem;
-}
-.account-page-head {
-  margin-bottom: 1.5rem;
-}
-.account-page-head h1 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  margin: 0 0 0.35rem;
-}
-.account-page-head .lead {
-  margin: 0;
-  max-width: 52ch;
-  color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.55;
+/* Account settings — fixed sidebar, scrollable main (ClawdCare / app.css tokens) */
+body.account-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.account-layout {
-  display: grid;
-  gap: 1.5rem;
-  align-items: start;
+body.account-page .account-main-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding-bottom: 0;
 }
+
+.account-app.account-shell {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  min-height: 0;
+  padding-top: 0.75rem;
+  padding-bottom: 1rem;
+}
+
 @media (min-width: 880px) {
-  .account-layout {
-    grid-template-columns: 13.5rem minmax(0, 1fr);
-    gap: 2rem;
+  body.account-page .account-app.account-shell {
+    max-height: calc(100vh - 5.75rem);
+    min-height: min(70vh, calc(100vh - 5.75rem));
   }
 }
 
 .account-sidebar {
-  position: sticky;
-  top: 4.5rem;
+  flex: 0 0 13.5rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.25rem;
+  align-self: stretch;
+  border-right: 1px solid var(--border);
 }
 .account-sidebar nav {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
+
+.account-main-scroll {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.25rem;
+  padding-top: 0.2rem;
+  padding-bottom: 1.5rem;
+}
+
 @media (max-width: 879px) {
+  .account-app.account-shell {
+    flex-direction: column;
+    max-height: none;
+    min-height: auto;
+  }
   .account-sidebar {
-    position: static;
+    flex: 0 0 auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding-right: 0;
+    padding-bottom: 0.75rem;
+    overflow-y: visible;
   }
   .account-sidebar nav {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 0.4rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
+  }
+  .account-main-scroll {
+    overflow-y: visible;
+    flex: none;
+    min-height: 0;
+    padding-right: 0;
   }
 }
 
@@ -139,6 +167,12 @@
 
 .account-content {
   min-width: 0;
+}
+
+/* Override global `section { padding: clamp(3rem, …) }` from app.css — account panes are <section>s */
+.account-main-wrap .account-content > section.account-pane {
+  padding-block: 0;
+  margin: 0;
 }
 
 .account-pane {
@@ -246,6 +280,7 @@
   margin-top: 1rem;
 }
 
+.account-token-stat,
 .account-credits-stat {
   font-size: 1.5rem;
   font-weight: 700;
@@ -282,4 +317,609 @@
   background: rgba(148, 163, 184, 0.12);
   color: var(--muted);
   border: 1px solid var(--border-soft);
+}
+
+/* Billing — Payment methods (Stripe-style sections) */
+.account-pay-card {
+  max-width: 44rem;
+}
+.account-pay-lead {
+  margin: 0 0 1.15rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 52rem;
+}
+.account-pay-block {
+  margin-top: 1.2rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--border-soft);
+}
+.account-pay-subhead {
+  margin: 0 0 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--dim);
+}
+.account-pay-hint {
+  margin: 0 0 0.6rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  line-height: 1.5;
+  max-width: 48rem;
+}
+.account-pay-block__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 0.75rem;
+  margin-bottom: 0.25rem;
+}
+.account-pay-block__head .account-pay-subhead {
+  margin-bottom: 0;
+}
+.account-pay-panel {
+  margin-top: 0.5rem;
+  padding: 0.95rem 1.05rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-soft);
+  background: rgba(22, 29, 38, 0.4);
+}
+.account-pay-panel--empty {
+  border-style: dashed;
+}
+.account-pay-panel__text {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text);
+  font-weight: 500;
+}
+.account-pay-panel__sub {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.account-pay-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-top: 0.45rem;
+  background: var(--bg2);
+}
+.account-pay-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+.account-pay-table th,
+.account-pay-table td {
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: middle;
+}
+.account-pay-table th {
+  color: var(--dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.7rem;
+}
+.account-pay-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.account-pay-table__placeholder td {
+  color: var(--muted);
+  font-style: italic;
+}
+.account-pay-table__actions {
+  text-align: right;
+  width: 6.5rem;
+}
+.account-pay-table__actions--subs {
+  width: 10.5rem;
+  min-width: 9rem;
+}
+.account-pay-inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.6rem 0 0;
+}
+.account-pay-btn-sm {
+  font-size: 0.8125rem;
+  padding: 0.35rem 0.65rem;
+}
+.account-pay-security {
+  margin: 1.25rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.78rem;
+  color: var(--dim);
+  line-height: 1.55;
+  max-width: 48rem;
+}
+.account-pay-footnote {
+  margin-top: 0.65rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.account-sub-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: flex-end;
+}
+
+.account-dialog {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0;
+  background: var(--card);
+  color: var(--text);
+  max-width: 26rem;
+  width: calc(100vw - 2rem);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+}
+.account-dialog::backdrop {
+  background: rgba(2, 6, 12, 0.65);
+  backdrop-filter: blur(4px);
+}
+.account-dialog__inner {
+  padding: 1.25rem 1.35rem 1.35rem;
+}
+.account-dialog__title {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.account-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 1.15rem;
+}
+
+.account-pay-add-dialog {
+  max-width: min(42rem, calc(100vw - 1.5rem));
+  width: 100%;
+}
+.account-pay-add-dialog__inner {
+  max-height: min(90vh, 44rem);
+  overflow-y: auto;
+}
+.account-pay-add-dialog__head {
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+.account-pay-add-dialog__actions {
+  margin-top: 1.25rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border-soft);
+}
+
+.account-pay-secure {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--accent);
+}
+.account-pay-secure--dialog {
+  margin: 0.5rem 0 0;
+}
+.account-pay-secure__ico {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.account-pay-form-section {
+  margin-top: 1rem;
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg2);
+}
+.account-pay-form-section:first-of-type {
+  margin-top: 0.25rem;
+}
+.account-pay-form-section__title {
+  margin: 0 0 0.85rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.account-pay-form-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.65rem;
+  align-items: end;
+}
+@media (max-width: 520px) {
+  .account-pay-form-row-3 {
+    grid-template-columns: 1fr;
+  }
+  .account-pay-form-row-3 .account-field label.visually-hidden + select {
+    margin-top: 0 !important;
+  }
+}
+
+.account-pay-form-disclaimer {
+  margin: 0.85rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--dim);
+}
+
+.account-pay-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+.account-pay-checkbox-label input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--accent);
+}
+
+.account-pay-add-dialog select,
+.account-pay-add-dialog input[type="text"],
+.account-pay-add-dialog input[type="password"] {
+  width: 100%;
+}
+.account-pay-add-dialog select {
+  padding: 0.45rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 0.875rem;
+}
+
+/* Orders — hardware + subscription (e-commerce pattern) */
+.account-orders-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  max-width: 48rem;
+}
+@media (min-width: 720px) {
+  .account-orders-toolbar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+.account-orders-search {
+  flex: 1;
+  min-width: min(100%, 14rem);
+}
+.account-orders-search__input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg2);
+  color: var(--text);
+  font-size: 0.875rem;
+}
+.account-orders-search__input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.account-orders-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.account-orders-tab {
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+}
+.account-orders-tab:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--border-soft);
+}
+.account-orders-tab:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.account-orders-tab.is-active {
+  background: var(--accent-dim);
+  border-color: rgba(249, 115, 22, 0.45);
+  color: var(--text);
+}
+.account-orders-sample-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.65rem;
+  margin: 0 0 1.25rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--r);
+  border: 1px solid var(--border-soft);
+  background: rgba(249, 115, 22, 0.06);
+  font-size: 0.8125rem;
+  color: var(--muted);
+  line-height: 1.45;
+  max-width: 48rem;
+}
+.account-order-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 1.15rem;
+  overflow: hidden;
+  max-width: 52rem;
+}
+.account-order-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 1rem 1.15rem;
+  border-bottom: 1px solid var(--border-soft);
+  background: linear-gradient(180deg, rgba(22, 29, 38, 0.95), rgba(19, 25, 32, 0.65));
+}
+.account-order-card__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.account-order-card__num {
+  color: var(--accent);
+  font-weight: 700;
+}
+.account-order-card__placed {
+  margin: 0.25rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.account-order-card__pay {
+  color: var(--green);
+  font-weight: 600;
+}
+.account-order-card__pay-pending {
+  color: var(--muted);
+  font-weight: 600;
+}
+.account-order-card__status {
+  text-align: right;
+}
+@media (max-width: 540px) {
+  .account-order-card__status {
+    text-align: left;
+    width: 100%;
+  }
+}
+.account-order-card__total {
+  margin: 0.35rem 0 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.account-order-card__total-label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--dim);
+}
+.account-order-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-soft);
+}
+.account-order-badge--ok {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--green);
+  border-color: rgba(34, 197, 94, 0.35);
+}
+.account-order-badge--warn {
+  background: rgba(234, 179, 8, 0.12);
+  color: #fbbf24;
+  border-color: rgba(234, 179, 8, 0.35);
+}
+.account-order-badge--pending {
+  background: rgba(249, 115, 22, 0.12);
+  color: var(--accent);
+  border-color: rgba(249, 115, 22, 0.35);
+}
+.account-order-badge--muted {
+  background: rgba(148, 163, 184, 0.1);
+  color: var(--muted);
+}
+.account-order-card__body {
+  padding: 1rem 1.15rem 1.15rem;
+}
+.account-order-lines-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 0 1rem;
+}
+.account-order-lines {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+.account-order-lines th,
+.account-order-lines td {
+  padding: 0.65rem 0.5rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border-soft);
+}
+.account-order-lines th {
+  color: var(--dim);
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.account-order-lines tbody tr:last-child td {
+  border-bottom: none;
+}
+.account-order-lines td .btn {
+  margin-top: 0.4rem;
+}
+.account-order-lines__price {
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--text);
+}
+.account-order-period {
+  font-weight: 500;
+  color: var(--muted);
+  font-size: 0.85em;
+}
+.account-order-line-title {
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.2rem;
+}
+.account-order-line-meta {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--dim);
+  line-height: 1.4;
+}
+.account-order-line-meta + .account-order-line-meta {
+  margin-top: 0.25rem;
+}
+.account-order-type {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+.account-order-type--hw {
+  background: rgba(56, 189, 248, 0.12);
+  color: #7dd3fc;
+}
+.account-order-type--sub {
+  background: rgba(249, 115, 22, 0.12);
+  color: var(--accent);
+}
+.account-order-type--svc {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--muted);
+}
+.account-order-code {
+  font-size: 0.8em;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  background: var(--bg2);
+  border: 1px solid var(--border-soft);
+}
+.account-order-ship {
+  padding: 0.85rem 0 0;
+  margin: 0 0 1rem;
+  border-top: 1px solid var(--border-soft);
+}
+.account-order-ship__label {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+}
+.account-order-ship__addr {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.account-order-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+.account-orders-cta {
+  margin-top: 1.5rem;
+  padding: 1.15rem 1.25rem;
+  border-radius: var(--r);
+  border: 1px dashed var(--border);
+  background: rgba(22, 29, 38, 0.35);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  max-width: 52rem;
+}
+.account-orders-cta__text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.account-sub-block__title {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+.account-sub-block__lead {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.55;
+  max-width: 48rem;
+}
+.account-sub-table {
+  min-width: 22rem;
+}
+.account-token-list {
+  margin: 0;
+  padding-left: 1.15rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+.account-token-list li {
+  margin-bottom: 0.35rem;
+}
+.account-token-balance-card h3 {
+  margin-bottom: 0.35rem;
 }

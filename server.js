@@ -1,4 +1,5 @@
 require("dotenv").config();
+const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
@@ -125,6 +126,112 @@ function publicUserFromRow(row) {
   const c = row.credits;
   const credits = typeof c === "number" && Number.isFinite(c) ? Math.max(0, Math.floor(c)) : 0;
   return { id: row.id, email: row.email, name: row.name, credits };
+}
+
+function requireLogin(req, res, next) {
+  if (!req.user) return res.status(401).json({ error: "Unauthorized" });
+  next();
+}
+
+function defaultNextRenewalDate() {
+  const d = new Date();
+  d.setMonth(d.getMonth() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+function normalizeSubscriptionList(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw.filter((s) => s && typeof s === "object" && s.id && (s.kind === "program" || s.kind === "token"));
+}
+
+function sanitizeSubscriptionForClient(s) {
+  return {
+    id: s.id,
+    kind: s.kind,
+    name: String(s.name || "").slice(0, 200),
+    cycle: String(s.cycle || "Monthly").slice(0, 80),
+    price_cents: typeof s.price_cents === "number" && Number.isFinite(s.price_cents) ? Math.max(0, Math.floor(s.price_cents)) : 0,
+    next_renewal: typeof s.next_renewal === "string" && /^\d{4}-\d{2}-\d{2}$/.test(s.next_renewal) ? s.next_renewal : null,
+    status: s.status === "canceled" ? "canceled" : "active",
+  };
+}
+
+function parseNewSubscriptionBody(body) {
+  const kind = body?.kind === "token" ? "token" : body?.kind === "program" ? "program" : null;
+  const name = String(body?.name || "").trim().slice(0, 200);
+  const cycle = String(body?.cycle || "Monthly").trim().slice(0, 80) || "Monthly";
+  const price_cents = Math.max(0, Math.min(99_999_999, parseInt(body?.price_cents, 10) || 0));
+  let next_renewal = null;
+  if (body?.next_renewal) {
+    const d = String(body.next_renewal).slice(0, 10);
+    if (/^\d{4}-\d{2}-\d{2}$/.test(d)) next_renewal = d;
+  }
+  return { kind, name, cycle, price_cents, next_renewal: next_renewal || defaultNextRenewalDate() };
+}
+
+function normalizePaymentMethodList(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw.filter(
+    (p) =>
+      p &&
+      typeof p === "object" &&
+      p.id &&
+      typeof p.last4 === "string" &&
+      /^\d{4}$/.test(p.last4) &&
+      typeof p.brand === "string" &&
+      typeof p.exp_month === "number" &&
+      Number.isFinite(p.exp_month) &&
+      typeof p.exp_year === "number" &&
+      Number.isFinite(p.exp_year)
+  );
+}
+
+function sanitizeBillingPayload(b) {
+  if (!b || typeof b !== "object") return {};
+  const clip = (s, n) => String(s ?? "").trim().slice(0, n);
+  return {
+    first_name: clip(b.first_name, 80),
+    last_name: clip(b.last_name, 80),
+    line1: clip(b.line1, 200),
+    line2: clip(b.line2, 200),
+    city: clip(b.city, 100),
+    state: clip(b.state, 100),
+    country: clip(b.country, 2).toUpperCase() || "US",
+    zip: clip(b.zip, 20),
+  };
+}
+
+function sanitizePaymentMethodForClient(p) {
+  return {
+    id: p.id,
+    brand: p.brand,
+    last4: p.last4,
+    exp_month: p.exp_month,
+    exp_year: p.exp_year,
+    card_country: p.card_country || null,
+    card_postal_code: p.card_postal_code || null,
+    billing: sanitizeBillingPayload(p.billing),
+    is_default: !!p.is_default,
+    created_at: p.created_at || null,
+  };
+}
+
+function normalizeCardBrand(brand) {
+  const b = String(brand || "").toLowerCase();
+  if (["visa", "mastercard", "amex", "discover"].includes(b)) return b;
+  return "other";
+}
+
+function validateCardExp(month, year) {
+  const m = parseInt(month, 10);
+  const y = parseInt(year, 10);
+  if (!Number.isFinite(m) || m < 1 || m > 12) return null;
+  if (!Number.isFinite(y) || y < 2000 || y > 2100) return null;
+  const now = new Date();
+  const curY = now.getFullYear();
+  const curM = now.getMonth() + 1;
+  if (y < curY || (y === curY && m < curM)) return null;
+  return { exp_month: m, exp_year: y };
 }
 
 const app = express();
@@ -265,6 +372,217 @@ app.post("/api/auth/logout", (req, res) => {
     if (err) return res.status(500).json({ error: "Logout failed." });
     req.session.destroy(() => res.json({ ok: true }));
   });
+});
+
+app.get("/api/me/subscriptions", requireLogin, async (req, res, next) => {
+  try {
+    const row = await store.findById(req.user.id);
+    if (!row) return res.status(401).json({ error: "Unauthorized" });
+    const list = normalizeSubscriptionList(row.subscriptions).map(sanitizeSubscriptionForClient);
+    res.json({ subscriptions: list });
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.post("/api/me/subscriptions", requireLogin, async (req, res, next) => {
+  try {
+    const parsed = parseNewSubscriptionBody(req.body || {});
+    if (!parsed.kind) return res.status(400).json({ error: "kind must be program or token." });
+    if (!parsed.name) return res.status(400).json({ error: "name is required." });
+    const row = await store.findById(req.user.id);
+    if (!row) return res.status(401).json({ error: "Unauthorized" });
+    const list = normalizeSubscriptionList(row.subscriptions);
+    const sub = {
+      id: crypto.randomUUID(),
+      kind: parsed.kind,
+      name: parsed.name,
+      cycle: parsed.cycle,
+      price_cents: parsed.price_cents,
+      next_renewal: parsed.next_renewal,
+      status: "active",
+    };
+    list.push(sub);
+    await store.updateUser(req.user.id, { subscriptions: list });
+    res.status(201).json({ subscription: sanitizeSubscriptionForClient(sub) });
+  } catch (e) {
+    next(e);
+  }
+});
+
+/** One-time sample rows so Subscriptions edit/cancel can be exercised before checkout integration. */
+app.post("/api/me/subscriptions/demo", requireLogin, async (req, res, next) => {
+  try {
+    const row = await store.findById(req.user.id);
+    if (!row) return res.status(401).json({ error: "Unauthorized" });
+    const list = normalizeSubscriptionList(row.subscriptions);
+    if (list.length > 0) {
+      return res.status(400).json({ error: "This account already has subscriptions. Remove them first or use the Shop when connected." });
+    }
+    const demo = [
+      {
+        id: crypto.randomUUID(),
+        kind: "program",
+        name: "Program — Longevity (sample)",
+        cycle: "Monthly",
+        price_cents: 9900,
+        next_renewal: defaultNextRenewalDate(),
+        status: "active",
+      },
+      {
+        id: crypto.randomUUID(),
+        kind: "token",
+        name: "Token Plan — Standard (~1,500 tokens/mo, sample)",
+        cycle: "Monthly",
+        price_cents: 4900,
+        next_renewal: defaultNextRenewalDate(),
+        status: "active",
+      },
+    ];
+    await store.updateUser(req.user.id, { subscriptions: demo });
+    res.status(201).json({ subscriptions: demo.map(sanitizeSubscriptionForClient) });
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.patch("/api/me/subscriptions/:id", requireLogin, async (req, res, next) => {
+  try {
+    const subId = String(req.params.id || "").trim();
+    if (!subId) return res.status(400).json({ error: "Missing id." });
+    const row = await store.findById(req.user.id);
+    if (!row) return res.status(401).json({ error: "Unauthorized" });
+    const list = normalizeSubscriptionList(row.subscriptions);
+    const idx = list.findIndex((s) => s.id === subId);
+    if (idx === -1) return res.status(404).json({ error: "Subscription not found." });
+    const body = req.body || {};
+    if (body.name != null) list[idx].name = String(body.name).trim().slice(0, 200) || list[idx].name;
+    if (body.next_renewal != null) {
+      const d = String(body.next_renewal).slice(0, 10);
+      if (/^\d{4}-\d{2}-\d{2}$/.test(d)) list[idx].next_renewal = d;
+    }
+    if (body.cycle != null) list[idx].cycle = String(body.cycle).trim().slice(0, 80) || list[idx].cycle;
+    await store.updateUser(req.user.id, { subscriptions: list });
+    res.json({ subscription: sanitizeSubscriptionForClient(list[idx]) });
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.delete("/api/me/subscriptions/:id", requireLogin, async (req, res, next) => {
+  try {
+    const subId = String(req.params.id || "").trim();
+    if (!subId) return res.status(400).json({ error: "Missing id." });
+    const row = await store.findById(req.user.id);
+    if (!row) return res.status(401).json({ error: "Unauthorized" });
+    const list = normalizeSubscriptionList(row.subscriptions).filter((s) => s.id !== subId);
+    if (list.length === normalizeSubscriptionList(row.subscriptions).length) {
+      return res.status(404).json({ error: "Subscription not found." });
+    }
+    await store.updateUser(req.user.id, { subscriptions: list });
+    res.json({ ok: true });
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.get("/api/me/payment-methods", requireLogin, async (req, res, next) => {
+  try {
+    const row = await store.findById(req.user.id);
+    if (!row) return res.status(401).json({ error: "Unauthorized" });
+    const list = normalizePaymentMethodList(row.payment_methods).map(sanitizePaymentMethodForClient);
+    res.json({ payment_methods: list });
+  } catch (e) {
+    next(e);
+  }
+});
+
+/** Client sends only brand, last4, exp — never full PAN or CVC. Production: replace with Stripe PaymentMethod. */
+app.post("/api/me/payment-methods", requireLogin, async (req, res, next) => {
+  try {
+    const body = req.body || {};
+    const last4 = String(body.last4 || "")
+      .replace(/\D/g, "")
+      .slice(-4);
+    if (!/^\d{4}$/.test(last4)) {
+      return res.status(400).json({ error: "Invalid card (last four digits required)." });
+    }
+
+    const exp = validateCardExp(body.exp_month, body.exp_year);
+    if (!exp) return res.status(400).json({ error: "Invalid or expired expiration date." });
+
+    const billing = sanitizeBillingPayload(body.billing);
+    if (!billing.first_name || !billing.last_name || !billing.line1 || !billing.city || !billing.country || !billing.zip) {
+      return res.status(400).json({
+        error: "Billing: first name, last name, address line 1, city, country, and ZIP/postal code are required.",
+      });
+    }
+    if (!/^[A-Z]{2}$/.test(billing.country)) {
+      return res.status(400).json({ error: "Billing country must be a 2-letter code." });
+    }
+
+    const row = await store.findById(req.user.id);
+    if (!row) return res.status(401).json({ error: "Unauthorized" });
+    const list = normalizePaymentMethodList(row.payment_methods);
+
+    const setDefault = Boolean(body.set_default) || list.length === 0;
+    if (setDefault) for (const p of list) p.is_default = false;
+
+    const cc = String(body.card_country || "US")
+      .replace(/\s/g, "")
+      .toUpperCase()
+      .slice(0, 2);
+    const entry = {
+      id: crypto.randomUUID(),
+      brand: normalizeCardBrand(body.brand),
+      last4,
+      exp_month: exp.exp_month,
+      exp_year: exp.exp_year,
+      card_country: /^[A-Z]{2}$/.test(cc) ? cc : "US",
+      card_postal_code: String(body.card_postal_code || "")
+        .replace(/\s/g, "")
+        .slice(0, 16),
+      billing,
+      is_default: setDefault,
+      created_at: new Date().toISOString(),
+    };
+    list.push(entry);
+    await store.updateUser(req.user.id, { payment_methods: list });
+    res.status(201).json({ payment_method: sanitizePaymentMethodForClient(entry) });
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.patch("/api/me/payment-methods/:id/default", requireLogin, async (req, res, next) => {
+  try {
+    const id = String(req.params.id || "").trim();
+    const row = await store.findById(req.user.id);
+    if (!row) return res.status(401).json({ error: "Unauthorized" });
+    const list = normalizePaymentMethodList(row.payment_methods);
+    if (!list.some((p) => p.id === id)) return res.status(404).json({ error: "Payment method not found." });
+    for (const p of list) p.is_default = p.id === id;
+    await store.updateUser(req.user.id, { payment_methods: list });
+    res.json({ payment_methods: list.map(sanitizePaymentMethodForClient) });
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.delete("/api/me/payment-methods/:id", requireLogin, async (req, res, next) => {
+  try {
+    const id = String(req.params.id || "").trim();
+    const row = await store.findById(req.user.id);
+    if (!row) return res.status(401).json({ error: "Unauthorized" });
+    const list = normalizePaymentMethodList(row.payment_methods);
+    const nextList = list.filter((p) => p.id !== id);
+    if (nextList.length === list.length) return res.status(404).json({ error: "Payment method not found." });
+    if (nextList.length > 0 && !nextList.some((p) => p.is_default)) nextList[0].is_default = true;
+    await store.updateUser(req.user.id, { payment_methods: nextList });
+    res.json({ ok: true, payment_methods: nextList.map(sanitizePaymentMethodForClient) });
+  } catch (e) {
+    next(e);
+  }
 });
 
 app.get("/api/admin/overview", requireAdmin, async (req, res, next) => {

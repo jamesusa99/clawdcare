@@ -421,3 +421,206 @@ table.admin-table tbody tr:hover td {
   color: var(--muted);
   line-height: 1.5;
 }
+
+/* Fixed sidebar + scrollable main (matches account settings layout) */
+body.admin-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+body.admin-page .admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding-bottom: 0;
+}
+.admin-shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+body.admin-page .admin-app {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  gap: 1.75rem;
+  min-height: 0;
+  padding-top: 0.85rem;
+  padding-bottom: 0.5rem;
+}
+@media (min-width: 900px) {
+  body.admin-page .admin-app {
+    max-height: calc(100vh - 5.75rem);
+    min-height: min(72vh, calc(100vh - 5.75rem));
+  }
+}
+.admin-sidebar {
+  flex: 0 0 15.5rem;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  padding-right: 1rem;
+}
+.admin-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-height: 0;
+  flex: 1;
+}
+.admin-sidebar__label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin: 0.5rem 0 0.15rem;
+}
+.admin-side-link {
+  display: block;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.admin-side-link:hover {
+  color: var(--text);
+  background: var(--bg2);
+  text-decoration: none;
+}
+.admin-side-link[aria-current="page"] {
+  color: var(--text);
+  background: var(--accent-dim);
+  border-color: rgba(249, 115, 22, 0.35);
+}
+.admin-sidebar__search {
+  width: 100%;
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text);
+  font-size: 0.8125rem;
+  margin-bottom: 0.35rem;
+}
+.admin-sidebar__search:focus {
+  outline: none;
+  border-color: rgba(249, 115, 22, 0.45);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.12);
+}
+.admin-sidebar__users {
+  flex: 1;
+  min-height: 4rem;
+  max-height: min(50vh, 22rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding-right: 0.2rem;
+  margin-top: 0.25rem;
+}
+.admin-side-link--user {
+  font-weight: 500;
+  font-size: 0.8125rem;
+  padding: 0.4rem 0.55rem;
+}
+.admin-side-link__email {
+  display: block;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-side-link__meta {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--dim);
+  font-weight: 500;
+  margin-top: 0.12rem;
+}
+.admin-main-scroll {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2rem;
+  padding-right: 0.25rem;
+}
+.admin-view-title {
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.75rem;
+}
+.admin-user-summary {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+.admin-user-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.admin-detail-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1rem 1.15rem;
+  margin-bottom: 1rem;
+  max-width: 40rem;
+}
+.admin-detail-card__title {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.admin-detail-card__body {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+@media (max-width: 899px) {
+  body.admin-page .admin-app {
+    flex-direction: column;
+    max-height: none;
+    min-height: auto;
+  }
+  .admin-sidebar {
+    flex: 0 0 auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding-right: 0;
+    padding-bottom: 1rem;
+  }
+  .admin-sidebar__users {
+    max-height: 12rem;
+  }
+  .admin-main-scroll {
+    overflow-y: visible;
+    flex: none;
+    min-height: 0;
+    padding-right: 0;
+  }
+}
+
+/* Override global `section` padding from app.css */
+body.admin-page .admin-main-scroll > section.admin-pane {
+  padding-block: 0;
+  margin: 0;
+}

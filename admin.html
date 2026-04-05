@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/admin.css" />
   <script src="/js/guard.js" defer></script>
 </head>
-<body>
+<body class="admin-page">
   <header class="site-header">
     <div class="wrap nav-row">
       <a class="logo" href="/" aria-label="ClawdCare home">
@@ -21,12 +21,13 @@
       <div class="admin-db-banner admin-db-banner--header" id="admin-db-banner" hidden role="status" aria-live="polite">
         <span class="admin-db-banner__dot" aria-hidden="true"></span>
         <div class="admin-db-banner__body">
-          <strong class="admin-db-banner__title" id="admin-db-title">数据库</strong>
+          <strong class="admin-db-banner__title" id="admin-db-title">Database</strong>
           <p class="admin-db-banner__msg" id="admin-db-msg"></p>
         </div>
       </div>
       <nav class="nav-main" aria-label="Main">
-        <a href="/" data-nav>Product</a>
+        <a href="/" data-nav>Home</a>
+        <a href="/product.html" data-nav>Product</a>
         <a href="/shop.html" data-nav>Shop</a>
         <a href="/console.html" data-nav>Console</a>
         <a href="/account.html" data-nav>My account</a>
@@ -38,108 +39,86 @@
   </header>
 
   <main class="admin-main">
-    <div class="wrap page-title admin-page-intro">
-      <div class="admin-page-intro__head">
-        <h1 class="admin-page-intro__title">Platform admin</h1>
-        <span class="admin-badge">Internal</span>
-      </div>
-      <p class="admin-page-intro__lead">Same login as the rest of the site (<a href="/account.html">My account</a>). No separate admin password.</p>
-      <details class="admin-help-details">
-        <summary>Access rules &amp; environment</summary>
-        <ul class="admin-page-intro__list">
-          <li><strong>Local (non-production):</strong> if <code>ADMIN_EMAILS</code> is empty, <strong>any signed-in user</strong> can open this page. Set <code>ADMIN_EMAILS=you@email.com</code> to restrict.</li>
-          <li><strong>Production:</strong> your email must be in <code>ADMIN_EMAILS</code> or you need an <code>admin</code> role in the database.</li>
-          <li><strong>Tighter local mode:</strong> <code>STRICT_ADMIN=1</code> or <code>ADMIN_DEV_OPEN=0</code> disables the empty-<code>ADMIN_EMAILS</code> shortcut.</li>
-        </ul>
-      </details>
+    <p id="admin-loading" class="admin-loading wrap">Loading…</p>
+
+    <div id="admin-denied" class="admin-denied wrap" hidden>
+      <h2>Access denied</h2>
+      <p id="admin-denied-lead">You do not have permission to view this page.</p>
+      <p id="admin-denied-email" class="admin-denied-email"></p>
+      <p id="admin-denied-error" class="admin-denied-email" hidden></p>
+      <p style="margin-top:1.25rem">
+        <a class="btn btn-primary" href="/">Back to home</a>
+        <a class="btn btn-ghost" href="/account.html">My account</a>
+      </p>
     </div>
 
-    <div class="wrap">
-      <p id="admin-loading" class="admin-loading">Loading admin…</p>
+    <div id="admin-shell" class="admin-shell" hidden>
+      <div class="wrap admin-app">
+        <aside class="admin-sidebar" aria-label="Admin navigation">
+          <nav class="admin-sidebar__nav" aria-label="Admin sections">
+            <a class="admin-side-link" href="#admin-overview" data-admin-route="overview">Overview</a>
+            <p class="admin-sidebar__label">Users</p>
+            <input type="search" id="admin-sidebar-search" class="admin-sidebar__search" placeholder="Filter by email or name…" autocomplete="off" />
+            <div class="admin-sidebar__users" id="admin-sidebar-user-list" role="navigation" aria-label="Users"></div>
+          </nav>
+        </aside>
+        <div class="admin-main-scroll">
+          <section id="pane-admin-overview" class="admin-pane" aria-labelledby="admin-overview-heading">
+            <h1 class="admin-view-title" id="admin-overview-heading">Overview</h1>
+            <div class="admin-toolbar admin-toolbar--meta">
+              <span class="admin-meta" id="admin-updated-at"></span>
+              <div style="display:flex;flex-wrap:wrap;gap:0.5rem">
+                <button type="button" class="btn btn-ghost admin-refresh-btn" id="admin-refresh">Refresh</button>
+                <button type="button" class="btn btn-ghost" id="admin-export-csv">Export CSV</button>
+              </div>
+            </div>
+            <div class="admin-stats">
+              <div class="admin-stat">
+                <strong id="admin-stat-users">—</strong>
+                <span>Registered users</span>
+              </div>
+              <div class="admin-stat">
+                <strong id="admin-stat-week">—</strong>
+                <span>New sign-ups (7 days)</span>
+              </div>
+              <div class="admin-stat">
+                <strong id="admin-stat-admins">—</strong>
+                <span>Users with admin role</span>
+              </div>
+              <div class="admin-stat">
+                <strong id="admin-stat-env">—</strong>
+                <span>Environment · backend</span>
+              </div>
+            </div>
+          </section>
 
-      <div id="admin-denied" class="admin-denied" hidden>
-        <h2>Access denied</h2>
-        <p>You are signed in but do not have admin privileges.</p>
-        <p id="admin-denied-email" class="admin-denied-email"></p>
-        <div class="admin-denied-steps">
-          <p><strong>How to get access</strong></p>
-          <ol>
-            <li>Set <code>ADMIN_EMAILS</code> in <code>.env</code> to your email (exact address you use to sign in), e.g. <code>ADMIN_EMAILS=you@example.com</code>, then restart the server and refresh this page.</li>
-            <li>Or add <code>"admin"</code> to the <code>roles</code> array for your user in <code>data/users.json</code> (file mode) or in Supabase <code>profiles.roles</code>.</li>
-            <li>Local: leave <code>ADMIN_EMAILS</code> empty (default) so any signed-in user can access admin, or set <code>ADMIN_EMAILS=your@email</code> and restart.</li>
-          </ol>
+          <section id="pane-admin-user" class="admin-pane" hidden aria-live="polite">
+            <h1 class="admin-view-title" id="admin-user-title">User</h1>
+            <p class="admin-user-summary" id="admin-user-summary"></p>
+            <div class="admin-user-stats">
+              <div class="admin-stat">
+                <strong id="admin-user-credits">—</strong>
+                <span>Token balance</span>
+              </div>
+              <div class="admin-stat">
+                <strong id="admin-user-role-pill">—</strong>
+                <span>Role</span>
+              </div>
+            </div>
+            <div class="admin-detail-card">
+              <h2 class="admin-detail-card__title">Devices</h2>
+              <p class="admin-detail-card__body" id="admin-user-devices">No devices linked to this account.</p>
+            </div>
+            <div class="admin-detail-card">
+              <h2 class="admin-detail-card__title">Usage</h2>
+              <p class="admin-detail-card__body" id="admin-user-usage">No usage telemetry for this account yet.</p>
+            </div>
+            <div class="admin-detail-card" id="admin-user-actions-card">
+              <h2 class="admin-detail-card__title">Actions</h2>
+              <div id="admin-user-actions"></div>
+            </div>
+          </section>
         </div>
-        <p><a class="btn btn-primary" href="/">Back to home</a> <a class="btn btn-ghost" href="/account.html">My account</a></p>
-      </div>
-
-      <div id="admin-shell" hidden>
-        <nav class="admin-subnav wrap" aria-label="Admin sections">
-          <a href="#admin-overview">Overview</a>
-          <a href="#admin-users">Users</a>
-        </nav>
-
-        <div id="admin-warnings" class="admin-warnings wrap" hidden></div>
-
-        <section id="admin-overview" class="admin-section wrap" aria-labelledby="admin-overview-heading">
-          <h2 id="admin-overview-heading" class="admin-section-title">Overview</h2>
-          <div class="admin-toolbar admin-toolbar--meta">
-            <span class="admin-meta" id="admin-updated-at"></span>
-            <button type="button" class="btn btn-ghost admin-refresh-btn" id="admin-refresh">Refresh</button>
-          </div>
-          <div class="admin-stats">
-            <div class="admin-stat">
-              <strong id="admin-stat-users">—</strong>
-              <span>Registered users</span>
-            </div>
-            <div class="admin-stat">
-              <strong id="admin-stat-week">—</strong>
-              <span>New sign-ups (7 days)</span>
-            </div>
-            <div class="admin-stat">
-              <strong id="admin-stat-admins">—</strong>
-              <span>Users with admin role</span>
-            </div>
-            <div class="admin-stat">
-              <strong id="admin-stat-env">—</strong>
-              <span>Environment · backend</span>
-            </div>
-          </div>
-          <div class="admin-config-card" id="admin-config-card">
-            <h3 class="admin-config-card__title">Server hints</h3>
-            <ul class="admin-config-card__list" id="admin-config-list"></ul>
-          </div>
-        </section>
-
-        <section id="admin-users" class="admin-section wrap" aria-labelledby="admin-users-heading">
-          <h2 id="admin-users-heading" class="admin-section-title">Users</h2>
-          <div class="admin-toolbar">
-            <label class="admin-search-label" for="admin-user-search">Filter</label>
-            <input type="search" id="admin-user-search" class="admin-search-input" placeholder="Email or name…" autocomplete="off" />
-            <span class="admin-toolbar-spacer"></span>
-            <span class="admin-filter-count" id="admin-filter-count"></span>
-            <button type="button" class="btn btn-ghost" id="admin-export-csv">Export CSV</button>
-          </div>
-          <div class="admin-table-wrap">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th scope="col">Email</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Created</th>
-                  <th scope="col">Credits</th>
-                  <th scope="col">Role</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="admin-users-body"></tbody>
-            </table>
-          </div>
-          <p class="admin-hint" id="admin-users-empty" hidden>No users match your filter.</p>
-          <p class="admin-hint">
-            Grant <strong>admin</strong> so a user can open this dashboard without being listed in <code>ADMIN_EMAILS</code>.
-            In production, bootstrap operators via <code>ADMIN_EMAILS</code>, then assign roles here.
-          </p>
-        </section>
       </div>
     </div>
   </main>

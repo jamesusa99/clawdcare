@@ -1,5 +1,39 @@
 const { createClient } = require("@supabase/supabase-js");
 
+function parseSubscriptions(raw) {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  if (typeof raw === "string") {
+    try {
+      const j = JSON.parse(raw);
+      return Array.isArray(j) ? j : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
+function normalizeSubscriptions(arr) {
+  const a = Array.isArray(arr) ? arr : [];
+  return a.filter((s) => s && typeof s === "object" && s.id && (s.kind === "program" || s.kind === "token"));
+}
+
+function normalizePaymentMethods(arr) {
+  const a = Array.isArray(arr) ? arr : [];
+  return a.filter(
+    (p) =>
+      p &&
+      typeof p === "object" &&
+      p.id &&
+      typeof p.last4 === "string" &&
+      /^\d{4}$/.test(p.last4) &&
+      typeof p.brand === "string" &&
+      typeof p.exp_month === "number" &&
+      typeof p.exp_year === "number"
+  );
+}
+
 function mapRow(r) {
   if (!r) return null;
   const c = r.credits;
@@ -12,6 +46,8 @@ function mapRow(r) {
     created_at: r.created_at,
     roles: Array.isArray(r.roles) ? r.roles : [],
     credits,
+    subscriptions: normalizeSubscriptions(parseSubscriptions(r.subscriptions)),
+    payment_methods: normalizePaymentMethods(parseSubscriptions(r.payment_methods)),
   };
 }
 
@@ -51,6 +87,8 @@ function createSupabaseStore(url, serviceRoleKey) {
         password_hash: password_hash || null,
         name: name || null,
         roles: [],
+        subscriptions: [],
+        payment_methods: [],
       };
       const { data, error } = await sb.from("profiles").insert(row).select("*").single();
       if (error) throw error;
@@ -76,7 +114,7 @@ function createSupabaseStore(url, serviceRoleKey) {
       return data ? mapPublic(data) : null;
     },
     async updateUser(id, patch) {
-      const allowed = ["email", "name", "password_hash", "roles", "credits"];
+      const allowed = ["email", "name", "password_hash", "roles", "credits", "subscriptions", "payment_methods"];
       const clean = {};
       for (const k of allowed) {
         if (Object.prototype.hasOwnProperty.call(patch, k)) clean[k] = patch[k];

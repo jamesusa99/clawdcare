@@ -1,33 +1,34 @@
 # ClawdCare (clawdcare.com)
 
-Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, **shop** (ordering + **BingoClaw credit packs**), **Your health** (longitudinal wellness dashboard), **console** preview, **about**, **support**, **legal**, and **My account** (profile, **credit balance placeholder**, session)—structured as a single platform toward a personal health management center.
+Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, **shop** (Hardware, **Programs**, **Token Plan** monthly subscriptions + cart), **Your health** (longitudinal wellness dashboard), **console** preview, **about**, **support**, **legal**, and **My account** (profile, **Subscriptions** including token balance and Token Plan lines, **Orders**, session)—structured as a single platform toward a personal health management center.
 
-**Product model:** **ClawdCare is built on BingoClaw.** Users buy **BingoClaw credits** on clawdcare.com (bound to the account); cloud/device experiences consume that wallet. Users are **not** asked to choose underlying LLMs—BingoClaw’s standard capabilities surface across the product.
+**Product model:** **ClawdCare is built on BingoClaw.** The Shop has three categories: **Hardware** (typically one-time), **Programs** (monthly subscription), and **Token Plan** (monthly subscription that credits a **token** wallet for on-demand AI and automations). Customers may hold **multiple Token Plans** (e.g. an extra purchase when monthly tokens are exhausted); **each** active plan bills monthly until canceled. **Programs** bill monthly separately. Users are **not** asked to choose underlying LLMs—BingoClaw capabilities surface across the product.
 
 ## Pages
 
 | Path | Purpose |
 |------|---------|
-| `/` | Product introduction — 16 capabilities, market gap, science/privacy |
-| `/shop.html` | Product ordering — **Hardware & programs** first, cart (edit qty / remove), **Place Order** (mailto); **BingoClaw credits** below (`#bingoclaw-credits`) |
+| `/` | Marketing home — positioning, value pillars, CTAs to Product / Shop |
+| `/product.html` | Full product story — hero, architecture, 16 capabilities, gallery, science/privacy, market gap |
+| `/shop.html` | Product ordering — **Hardware** (`#shop-hardware`), **Programs** (`#shop-programs`), **Token Plan** (`#shop-token-plans`); shared **cart** (`#shop-cart`), **Place Order** (mailto) |
 | `/use.html` | **Your health** — longitudinal wellness dashboard (demo when signed out; personalized stub when signed in): biomarker domains, biological-age style summary, viz, guidance, advanced programs |
 | `/console.html` | Control panel preview (public; sign-in optional for future binding) |
 | `/about.html` | Company, roadmap, financial sketch from plan |
 | `/support.html` | Help & contact |
 | `/legal.html` | Wellness / disclaimer summary |
-| `/account.html` | **My** — profile, **BingoClaw credits** (demo balance), **Orders** (placeholder), session (**requires login**) |
+| `/account.html` | **Account** — profile, billing (**Payment methods** dialog: card + billing address → `/api/me/payment-methods`), **Orders** (sample), **Subscriptions** (token balance, Programs + Token Plan + demo rows), session (**requires login**) |
 | `/login.html`, `/register.html` | Session auth |
 | `/admin.html` | **Platform admin** — overview (stats, DB status, config hints), user table with filter & CSV export, refresh (**requires admin**; `noindex`) |
 | `/404.html` | Custom not-found (used by Vercel when a path has no file) |
 
-**SEO / discovery:** `sitemap.xml` and `public/robots.txt` (served at `/robots.txt`). Product photography lives in `public/assets/` (homepage hero + gallery).
+**SEO / discovery:** `sitemap.xml` and `public/robots.txt` (served at `/robots.txt`). Product photography lives in `public/assets/` (product page hero + gallery; home is typographic / layout-first).
 
 ## Database (Supabase)
 
 Optional **[Supabase](https://supabase.com/)** Postgres backs registered users when `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are set. Otherwise users stay in `data/users.json` (or `/tmp` on Vercel).
 
 1. Create a project on [Supabase](https://supabase.com/).
-2. Run `supabase/migrations/20250404140000_clawdcare_profiles.sql`, then `supabase/migrations/20250410130000_profiles_credits.sql` in the SQL Editor (see `supabase/README.md`).
+2. Run migrations in order in the SQL Editor (see `supabase/README.md`): `20250404140000_clawdcare_profiles.sql`, `20250410130000_profiles_credits.sql`, `20250411120000_profiles_subscriptions.sql`, `20250411140000_profiles_payment_methods.sql`.
 3. Add the URL and **service_role** key to your server environment (never commit the key; never ship it to the browser).
 
 The Express app continues to own email/password checks (bcrypt + Passport); Supabase stores the `profiles` rows only.
