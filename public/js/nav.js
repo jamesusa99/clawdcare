@@ -24,6 +24,12 @@
     }
   }
 
+  function isHomePage() {
+    var path = location.pathname.replace(/\/$/, "") || "/";
+    if (path.endsWith("/index.html")) path = "/";
+    return path === "/" || path === "";
+  }
+
   async function updateAuthSlot() {
     var slot = document.getElementById("nav-auth");
     if (!slot) return;
@@ -48,14 +54,24 @@
           });
         }
       } else {
+        if (isHomePage()) {
+          slot.innerHTML =
+            '<button type="button" class="btn btn-primary" id="nav-login-open" style="padding:0.4rem 0.95rem;font-size:0.8125rem">Login</button>';
+        } else {
+          slot.innerHTML =
+            '<a href="/login.html" class="btn btn-ghost" style="padding:0.4rem 0.85rem;font-size:0.8125rem">Sign in</a>' +
+            '<a href="/register.html" class="btn btn-primary" style="padding:0.4rem 0.85rem;font-size:0.8125rem">Create account</a>';
+        }
+      }
+    } catch (_) {
+      if (isHomePage()) {
+        slot.innerHTML =
+          '<button type="button" class="btn btn-primary" id="nav-login-open" style="padding:0.4rem 0.95rem;font-size:0.8125rem">Login</button>';
+      } else {
         slot.innerHTML =
           '<a href="/login.html" class="btn btn-ghost" style="padding:0.4rem 0.85rem;font-size:0.8125rem">Sign in</a>' +
           '<a href="/register.html" class="btn btn-primary" style="padding:0.4rem 0.85rem;font-size:0.8125rem">Create account</a>';
       }
-    } catch (_) {
-      slot.innerHTML =
-        '<a href="/login.html" class="btn btn-ghost" style="padding:0.4rem 0.85rem;font-size:0.8125rem">Sign in</a>' +
-        '<a href="/register.html" class="btn btn-primary" style="padding:0.4rem 0.85rem;font-size:0.8125rem">Create account</a>';
     }
   }
 

@@ -47,6 +47,14 @@
 
     var formReg = document.getElementById("form-register");
     if (formReg) {
+      var preEmail = qs("email");
+      if (preEmail && formReg.email) {
+        try {
+          formReg.email.value = decodeURIComponent(preEmail);
+        } catch (_) {
+          formReg.email.value = preEmail;
+        }
+      }
       formReg.addEventListener("submit", async function (e) {
         e.preventDefault();
         var err = document.getElementById("auth-error");

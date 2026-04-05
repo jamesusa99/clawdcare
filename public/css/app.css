@@ -1410,10 +1410,11 @@ table.data .hi {
 
 .home-hero {
   position: relative;
-  min-height: min(88vh, 52rem);
+  min-height: min(78vh, 48rem);
   display: flex;
-  align-items: center;
-  padding: clamp(4rem, 12vw, 7rem) 0 clamp(3rem, 8vw, 5rem);
+  align-items: flex-start;
+  /* Sit below the sticky header with modest air; avoid vertical “dead center” (reads too low). */
+  padding: clamp(2rem, 3.5vh, 2.75rem) 0 clamp(2.25rem, 5vw, 3.5rem);
 }
 
 .home-hero__bg {
@@ -1499,6 +1500,55 @@ table.data .hi {
 .home-hero__inner {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.75rem, 5vw, 3rem);
+  align-items: center;
+  /* Nudge block slightly upward for optical balance with the header. */
+  margin-top: clamp(-0.25rem, -0.8vh, -0.75rem);
+}
+
+@media (min-width: 960px) {
+  .home-hero__inner {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: clamp(1.5rem, 3.5vw, 2.75rem);
+  }
+}
+
+.home-hero__copy {
+  min-width: 0;
+}
+
+.home-hero__visual {
+  min-width: 0;
+}
+
+.home-hero__figure {
+  margin: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  background: var(--card);
+  box-shadow:
+    0 24px 56px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(249, 115, 22, 0.06);
+}
+
+.home-hero__figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.home-hero__caption {
+  margin: 0;
+  padding: 0.55rem 0.85rem 0.65rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--dim);
+  border-top: 1px solid var(--border-soft);
+  background: rgba(10, 14, 20, 0.45);
 }
 
 .home-eyebrow {
@@ -1709,4 +1759,160 @@ table.data .hi {
   .home-hero__orb {
     opacity: 0.3;
   }
+}
+
+/* Home — auth dialog (minimal “platform” sign-in, inspired by modern product sites) */
+.home-auth-dialog {
+  border: none;
+  padding: 0;
+  max-width: calc(100vw - 1.5rem);
+  width: min(26rem, 100%);
+  background: transparent;
+  color: var(--text);
+}
+.home-auth-dialog::backdrop {
+  background: rgba(2, 6, 12, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.home-auth-dialog__panel {
+  position: relative;
+  padding: 1.75rem 1.65rem 1.5rem;
+  border-radius: 18px;
+  border: 1px solid var(--border-soft);
+  background: linear-gradient(165deg, rgba(22, 29, 38, 0.98), rgba(10, 14, 20, 0.94));
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(249, 115, 22, 0.08);
+}
+.home-auth-dialog__close {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.home-auth-dialog__close:hover {
+  color: var(--text);
+  background: var(--accent-dim);
+}
+.home-auth-dialog__brand {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.home-auth-dialog__title {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.35rem, 3.5vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.home-auth-dialog__lead {
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.home-auth-dialog__secure {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin: 0 0 1.15rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.home-auth-dialog__lock {
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+.home-auth-method {
+  margin-top: 0.25rem;
+  padding: 1rem 1rem 1.05rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(10, 14, 20, 0.5);
+}
+.home-auth-method__label {
+  margin: 0 0 0.85rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+.home-auth-field {
+  margin-bottom: 0.85rem;
+}
+.home-auth-field label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+  color: var(--muted);
+}
+.home-auth-field input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.9375rem;
+}
+.home-auth-field input:focus {
+  outline: none;
+  border-color: rgba(249, 115, 22, 0.45);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+.home-auth-error {
+  display: none;
+  margin: 0 0 0.65rem;
+  font-size: 0.8125rem;
+  color: #f87171;
+}
+.home-auth-error.is-visible {
+  display: block;
+}
+.home-auth-submit {
+  width: 100%;
+  margin-top: 0.15rem;
+  padding: 0.55rem 1rem;
+  font-weight: 600;
+}
+.home-auth-dialog__hint {
+  margin: 1rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--dim);
+}
+.home-auth-dialog__footer {
+  margin: 0.85rem 0 0;
+  font-size: 0.8125rem;
+  text-align: center;
+  color: var(--muted);
+}
+.home-auth-dialog__footer a {
+  color: var(--accent);
+  font-weight: 500;
+}
+.home-auth-dialog__sep {
+  margin: 0 0.35rem;
+  color: var(--dim);
 }
