@@ -14,13 +14,26 @@
   function updateCartBadge() {
     var el = document.getElementById("cart-badge");
     if (!el) return;
+    var countEl = el.querySelector(".nav-cart-count");
+    function applyCount(n) {
+      if (countEl) {
+        countEl.textContent = n > 0 ? String(n) : "";
+      } else {
+        el.textContent = n > 0 ? String(n) : "";
+      }
+      el.style.display = "";
+      el.setAttribute(
+        "aria-label",
+        n > 0 ? "Shopping cart, " + n + " items" : "Shopping cart, empty — view cart"
+      );
+    }
     try {
       var cart = JSON.parse(localStorage.getItem("clawdcare_cart") || "[]");
       var n = Array.isArray(cart) ? cart.reduce(function (s, i) { return s + (i.qty || 0); }, 0) : 0;
-      el.textContent = n > 0 ? String(n) : "";
-      el.style.display = n > 0 ? "inline-block" : "none";
+      applyCount(n);
     } catch (_) {
-      el.style.display = "none";
+      applyCount(0);
+      el.setAttribute("aria-label", "Shopping cart");
     }
   }
 

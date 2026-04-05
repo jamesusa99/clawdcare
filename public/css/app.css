@@ -194,6 +194,55 @@ a:hover {
   border: 1px solid rgba(249, 115, 22, 0.35);
 }
 
+/* Header cart: icon always visible; count pill when qty > 0 */
+.nav-cart-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 0.35rem;
+  margin: -0.35rem 0.15rem -0.35rem 0;
+  border-radius: 0.5rem;
+  line-height: 0;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.nav-cart-link:hover {
+  color: var(--text);
+  background: var(--accent-dim);
+  text-decoration: none;
+}
+.nav-cart-visual {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.nav-cart-icon {
+  display: block;
+  flex-shrink: 0;
+}
+.nav-cart-count {
+  position: absolute;
+  top: -0.2rem;
+  right: -0.35rem;
+  min-width: 1rem;
+  height: 1rem;
+  padding: 0 0.28rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1rem;
+  text-align: center;
+  color: #0a0e14;
+  background: linear-gradient(135deg, #fb923c, #ea580c);
+  border-radius: 999px;
+  box-shadow: 0 0 0 2px var(--bg, #0a0e14);
+  pointer-events: none;
+}
+.nav-cart-count:empty {
+  display: none;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
