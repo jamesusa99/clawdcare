@@ -1,6 +1,6 @@
 # ClawdCare (clawdcare.com)
 
-Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, **shop** (Hardware, **Programs**, **Credit Plan** monthly subscriptions, **Credit packs** one-time + cart), **Your health** (longitudinal wellness dashboard), **console** preview, **about**, **support**, **legal**, and **My account** (Settings, Preferences, **Billing & subscriptions** including credit balance and Credit Plan line, **Orders**, session)—structured as a single platform toward a personal health management center.
+Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, **shop** (Hardware, **Programs**, **Credit Plan** monthly subscriptions, **Credit packs** one-time + cart), **Your health** (longitudinal wellness dashboard), **console** preview, **about** (includes **Support** at `#support`), **legal**, and **My account** (Settings, Preferences, **Billing & subscriptions** including credit balance and Credit Plan line, **Orders**, session)—structured as a single platform toward a personal health management center.
 
 **Product model:** **ClawdCare is built on BingoClaw.** The Shop has four product types: **Hardware** (typically one-time), **Programs** (monthly), **Credit Plan** (monthly subscription that credits a **credit** balance), and **Credit packs** (one-time credit purchase for mid-cycle top-up). **Programs** and **Credit Plan** bill monthly until canceled. Users are **not** asked to choose underlying LLMs—BingoClaw capabilities surface across the product.
 
@@ -13,8 +13,8 @@ Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, 
 | `/shop.html` | Product ordering — **Hardware** (`#shop-hardware`), **Programs** (`#shop-programs`), **Credit Plan** (`#shop-credit-plans`), **Credit packs** (`#shop-credit-packs`); shared **cart** (`#shop-cart`), **Place Order** (mailto) |
 | `/use.html` | **Your health** — longitudinal wellness dashboard (demo when signed out; personalized stub when signed in): biomarker domains, biological-age style summary, viz, guidance, advanced programs |
 | `/console.html` | Control panel preview (public; sign-in optional for future binding) |
-| `/about.html` | Company, roadmap, financial sketch from plan |
-| `/support.html` | Help & contact |
+| `/about.html` | Company, roadmap, financial sketch from plan; **Support** (`#support`) |
+| `/support.html` | Redirects to `/about.html#support` (bookmarks) |
 | `/legal.html` | Wellness / disclaimer summary |
 | `/account.html` | **Account** — **Settings**, **Preferences**, **Billing & subscriptions** (credit balance, Programs + Credit Plan tables, **Payment** / **Orders**), payment-methods API (**requires login**) |
 | `/login.html`, `/register.html` | Session auth |
