@@ -457,7 +457,8 @@ h2 {
   min-width: 0;
 }
 
-.hero-copy .hero-works-with {
+.hero-copy .hero-works-with,
+.home-hero__visual .hero-works-with {
   max-width: 100%;
 }
 .hero-works-with {
@@ -1775,26 +1776,12 @@ table.data .hi {
   font-weight: 600;
 }
 
-.home-signals {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem 0.75rem;
-  margin: 0 0 1.85rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  font-size: 0.78rem;
-}
-
-.home-signals__tag {
-  padding: 0.38rem 0.7rem;
-  border-radius: 6px;
-  border: 1px solid var(--border-soft);
-  background: rgba(22, 29, 38, 0.85);
-  color: var(--muted);
-}
-
-.home-signals__tag strong {
+.home-lede--trailer {
+  margin-top: -0.65rem;
+  margin-bottom: 1.75rem;
   color: var(--text);
   font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .home-cta-row {
@@ -1804,12 +1791,9 @@ table.data .hi {
   margin: 0 0 1.75rem;
 }
 
-.home-micro {
-  font-size: 0.875rem;
-  color: var(--dim);
-  margin: 0;
-  max-width: 38rem;
-  line-height: 1.55;
+.home-hero__visual .home-hero__works-with {
+  margin-top: 1rem;
+  margin-bottom: 0;
 }
 
 .home-value {
