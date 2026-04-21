@@ -2,7 +2,7 @@
   "name": "bingohealth-platform",
   "version": "2.0.0",
   "private": true,
-  "description": "bingohealth.cn — BingoHealth 个人健康抗衰助理, product, shop, console, account",
+  "description": "bingohealth.cn — BingoHealth 个人健康抗衰助理 (Personal Care Utility), product, shop, console, account",
   "scripts": {
     "dev": "node server.js",
     "build": "node scripts/vercel-build.js",

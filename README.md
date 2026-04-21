@@ -1,6 +1,6 @@
-# BingoHealth (bingohealth.cn)
+# BingoHealth — 个人健康抗衰助理 (Personal Care Utility) · bingohealth.cn
 
-Official site for **BingoClaw Health Care** / **BingoHealth**（个人健康抗衰助理）: **product** story, **shop** (Hardware, **Programs**, **Credit Plan** monthly subscriptions, **Credit packs** one-time + cart), **Your health** (longitudinal wellness dashboard), **console** preview, **about** (includes **Support** at `#support`), **legal**, and **My account** (Settings, Preferences, **Billing & subscriptions** including credit balance and Credit Plan line, **Orders**, session)—structured as a single platform toward a personal health management center.
+Official site for **BingoClaw Health Care** / **BingoHealth**（个人健康抗衰助理 · Personal Care Utility）· **bingohealth.cn**: **product** story, **shop** (Hardware, **Programs**, **Credit Plan** monthly subscriptions, **Credit packs** one-time + cart), **Your health** (longitudinal wellness dashboard), **console** preview, **about** (includes **Support** at `#support`), **legal**, and **My account** (Settings, Preferences, **Billing & subscriptions** including credit balance and Credit Plan line, **Orders**, session)—structured as a single platform toward a personal health management center.
 
 **Product model:** **BingoHealth is built on BingoClaw.** The Shop has four product types: **Hardware** (typically one-time), **Programs** (monthly), **Credit Plan** (monthly subscription that credits a **credit** balance), and **Credit packs** (one-time credit purchase for mid-cycle top-up). **Programs** and **Credit Plan** bill monthly until canceled. Users are **not** asked to choose underlying LLMs—BingoClaw capabilities surface across the product.
 
