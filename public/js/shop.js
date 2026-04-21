@@ -1,6 +1,15 @@
 (function () {
-  var STORAGE = "clawdcare_cart";
+  var STORAGE = "bingohealth_cart";
+  var LEGACY_CART_STORAGE = "clawdcare_cart";
   var MAX_QTY = 99;
+
+  function ensureCartMigrated() {
+    try {
+      if (localStorage.getItem(STORAGE)) return;
+      var legacy = localStorage.getItem(LEGACY_CART_STORAGE);
+      if (legacy) localStorage.setItem(STORAGE, legacy);
+    } catch (_) {}
+  }
 
   /** Monthly subscription SKUs: one line each, quantity locked at 1 (no stacking). */
   function inferLineKind(id) {
@@ -16,6 +25,7 @@
   }
 
   function getCart() {
+    ensureCartMigrated();
     try {
       var c = JSON.parse(localStorage.getItem(STORAGE) || "[]");
       return Array.isArray(c) ? c : [];
@@ -26,7 +36,7 @@
 
   function setCart(cart) {
     localStorage.setItem(STORAGE, JSON.stringify(cart));
-    window.dispatchEvent(new Event("clawdcare:cart"));
+    window.dispatchEvent(new Event("bingohealth:cart"));
   }
 
   function addItem(id, name, priceCents, qty, kind) {
@@ -268,7 +278,7 @@
           alert("Your cart is empty.");
           return;
         }
-        var subj = encodeURIComponent("ClawdCare — Place order / payment");
+        var subj = encodeURIComponent("BingoHealth — Place order / payment");
         var lines = cart.map(function (l) {
           return "- " + l.name + " × " + l.qty + " @ $" + (l.priceCents / 100).toFixed(2) + " ea = $" + ((l.priceCents * l.qty) / 100).toFixed(2);
         });
@@ -283,7 +293,7 @@
             "\n\nNote: Programs and Credit Plan lines are monthly subscriptions; Hardware and Credit packs are one-time in this cart.\n" +
             "(Prices before tax/shipping; final total from your team.)\n"
         );
-        window.location.href = "mailto:hello@clawdcare.com?subject=" + subj + "&body=" + body;
+        window.location.href = "mailto:hello@bingohealth.cn?subject=" + subj + "&body=" + body;
       });
     }
   });

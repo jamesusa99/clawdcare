@@ -314,13 +314,13 @@
             ? user.name
             : "there";
       heroTitle.textContent = demo
-        ? "See how your longitudinal health story could look in ClawdCare."
+        ? "See how your longitudinal health story could look in BingoHealth."
         : "Hi, " + greet + " — your wellness command center.";
     }
     if (heroLead) {
       heroLead.innerHTML = demo
         ? "Below is a <strong>simulated dashboard</strong> with cardiovascular, metabolic, thyroid, nutrition, inflammation, autoimmune, hormones, toxins, and aging-related tiles—plus guidance and advanced programs. <a href=\"/register.html\">Create an account</a> or <a href=\"/login.html?next=/use.html\">sign in</a> for a personalized stub tied to your login (still demo data until device and labs connect)."
-        : "Central view of your <strong>tracked domains</strong>, visual summaries, biological age composite, anomaly hints, and action layers. Data shown remains <strong>illustrative</strong> until your ClawdCare vault and integrations are live—organized for wellness, not a medical diagnosis.";
+        : "Central view of your <strong>tracked domains</strong>, visual summaries, biological age composite, anomaly hints, and action layers. Data shown remains <strong>illustrative</strong> until your BingoHealth vault and integrations are live—organized for wellness, not a medical diagnosis.";
     }
     if (cta) {
       cta.innerHTML = demo

@@ -28,7 +28,12 @@
       );
     }
     try {
-      var cart = JSON.parse(localStorage.getItem("clawdcare_cart") || "[]");
+      var raw = localStorage.getItem("bingohealth_cart");
+      if (!raw) {
+        raw = localStorage.getItem("clawdcare_cart");
+        if (raw) localStorage.setItem("bingohealth_cart", raw);
+      }
+      var cart = JSON.parse(raw || "[]");
       var n = Array.isArray(cart) ? cart.reduce(function (s, i) { return s + (i.qty || 0); }, 0) : 0;
       applyCount(n);
     } catch (_) {
@@ -93,5 +98,5 @@
     updateCartBadge();
     updateAuthSlot();
   });
-  window.addEventListener("clawdcare:cart", updateCartBadge);
+  window.addEventListener("bingohealth:cart", updateCartBadge);
 })();

@@ -12,7 +12,7 @@
   <rect width="640" height="360" rx="14" fill="url(#bg)" stroke="#334155" stroke-width="1"/>
   <!-- title bar -->
   <rect x="16" y="14" width="608" height="28" rx="6" fill="#161d26" stroke="#2d3748"/>
-  <text x="28" y="33" fill="#94a3b8" font-family="system-ui,Segoe UI,sans-serif" font-size="11" font-weight="600">ClawdCare Cloud Console</text>
+  <text x="28" y="33" fill="#94a3b8" font-family="system-ui,Segoe UI,sans-serif" font-size="11" font-weight="600">BingoHealth Cloud Console</text>
   <text x="520" y="33" fill="#64748b" font-family="system-ui,Segoe UI,sans-serif" font-size="9">Signed in</text>
   <!-- sidebar -->
   <rect x="16" y="52" width="132" height="292" rx="8" fill="#131920" stroke="#2d3748"/>
@@ -26,7 +26,7 @@
   <!-- main -->
   <rect x="156" y="52" width="468" height="292" rx="8" fill="#0a0e14" stroke="#2d3748"/>
   <text x="172" y="78" fill="#e8edf4" font-family="system-ui,Segoe UI,sans-serif" font-size="13" font-weight="700">Welcome back</text>
-  <text x="172" y="96" fill="#64748b" font-family="system-ui,Segoe UI,sans-serif" font-size="10">US English UI ù example layout</text>
+  <text x="172" y="96" fill="#64748b" font-family="system-ui,Segoe UI,sans-serif" font-size="10">US English UI ? example layout</text>
   <!-- module row (US labels) -->
   <rect x="172" y="108" width="138" height="72" rx="8" fill="#161d26" stroke="#38bdf8" stroke-opacity="0.45"/>
   <text x="184" y="128" fill="#38bdf8" font-family="system-ui,Segoe UI,sans-serif" font-size="9" font-weight="600">SIGNALS</text>
@@ -34,8 +34,8 @@
   <text x="184" y="164" fill="#64748b" font-family="system-ui,Segoe UI,sans-serif" font-size="8">Last sync: 04/04/26</text>
   <rect x="318" y="108" width="138" height="72" rx="8" fill="#161d26" stroke="#22c55e" stroke-opacity="0.55"/>
   <text x="330" y="128" fill="#22c55e" font-family="system-ui,Segoe UI,sans-serif" font-size="9" font-weight="600">HEALTH GUARDIAN</text>
-  <text x="330" y="146" fill="#94a3b8" font-family="system-ui,Segoe UI,sans-serif" font-size="8">ClawdCare core</text>
-  <text x="330" y="164" fill="#64748b" font-family="system-ui,Segoe UI,sans-serif" font-size="8">A1c 5.4% ù 03/15/2026</text>
+  <text x="330" y="146" fill="#94a3b8" font-family="system-ui,Segoe UI,sans-serif" font-size="8">BingoHealth core</text>
+  <text x="330" y="164" fill="#64748b" font-family="system-ui,Segoe UI,sans-serif" font-size="8">A1c 5.4% ? 03/15/2026</text>
   <rect x="464" y="108" width="138" height="72" rx="8" fill="#161d26" stroke="#a78bfa" stroke-opacity="0.5"/>
   <text x="476" y="128" fill="#c4b5fd" font-family="system-ui,Segoe UI,sans-serif" font-size="9" font-weight="600">WORKFLOWS</text>
   <text x="476" y="146" fill="#94a3b8" font-family="system-ui,Segoe UI,sans-serif" font-size="8">Docs &amp; automation</text>
@@ -43,10 +43,10 @@
   <!-- vitals card -->
   <rect x="172" y="192" width="430" height="88" rx="8" fill="#131920" stroke="#334155"/>
   <text x="184" y="214" fill="#e8edf4" font-family="system-ui,Segoe UI,sans-serif" font-size="11" font-weight="600">Todays snapshot</text>
-  <text x="184" y="232" fill="#94a3b8" font-family="system-ui,Segoe UI,sans-serif" font-size="9">Resting HR 62 bpm ù Sleep 7h 10m ù Steps 8,420</text>
-  <text x="184" y="250" fill="#64748b" font-family="system-ui,Segoe UI,sans-serif" font-size="8">Sources: Apple Health (coming soon) ù manual entry ù device</text>
+  <text x="184" y="232" fill="#94a3b8" font-family="system-ui,Segoe UI,sans-serif" font-size="9">Resting HR 62 bpm ? Sleep 7h 10m ? Steps 8,420</text>
+  <text x="184" y="250" fill="#64748b" font-family="system-ui,Segoe UI,sans-serif" font-size="8">Sources: Apple Health (coming soon) ? manual entry ? device</text>
   <!-- integrations -->
-  <text x="172" y="296" fill="#64748b" font-family="system-ui,Segoe UI,sans-serif" font-size="9">Integrations ù US</text>
+  <text x="172" y="296" fill="#64748b" font-family="system-ui,Segoe UI,sans-serif" font-size="9">Integrations ? US</text>
   <rect x="172" y="304" width="72" height="22" rx="4" fill="#1e293b" stroke="#475569"/>
   <text x="188" y="319" fill="#94a3b8" font-family="system-ui,Segoe UI,sans-serif" font-size="7">Slack</text>
   <rect x="252" y="304" width="88" height="22" rx="4" fill="#1e293b" stroke="#475569"/>

@@ -2,7 +2,7 @@
  * Create or update the platform admin account (bypasses the 8-char register rule).
  * Uses the same store as server.js (file or Supabase from .env).
  *
- * Defaults: admin@clawdcare.com / 123456
+ * Defaults: admin@bingohealth.cn / 123456
  * Override: SEED_ADMIN_EMAIL, SEED_ADMIN_PASSWORD
  */
 require("dotenv").config();
@@ -11,10 +11,10 @@ const bcrypt = require("bcryptjs");
 const { createStore } = require("../user-store");
 
 const userStorePath = process.env.VERCEL
-  ? path.join("/tmp", "clawdcare-users.json")
+  ? path.join("/tmp", "bingohealth-users.json")
   : path.join(__dirname, "..", "data", "users.json");
 
-const email = (process.env.SEED_ADMIN_EMAIL || "admin@clawdcare.com").trim().toLowerCase();
+const email = (process.env.SEED_ADMIN_EMAIL || "admin@bingohealth.cn").trim().toLowerCase();
 const password = process.env.SEED_ADMIN_PASSWORD || "123456";
 
 async function main() {

@@ -1,6 +1,6 @@
-# Supabase (ClawdCare)
+# Supabase (BingoHealth)
 
-Postgres schema for **registered users** used by the ClawdCare Express API (`profiles` table).
+Postgres schema for **registered users** used by the BingoHealth Express API (`profiles` table).
 
 ## Create a project
 
@@ -14,7 +14,7 @@ Postgres schema for **registered users** used by the ClawdCare Express API (`pro
 | `SUPABASE_URL` | Project **Settings → API → Project URL** |
 | `SUPABASE_SERVICE_ROLE_KEY` | **Settings → API → service_role** (secret; server-side only) |
 
-When both are set, ClawdCare uses Supabase for users. If either is missing, it falls back to `data/users.json` (or `/tmp` on Vercel).
+When both are set, BingoHealth uses Supabase for users. If either is missing, it falls back to `data/users.json` (or `/tmp` on Vercel).
 
 Do **not** put the service role key in frontend code or public env vars.
 

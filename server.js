@@ -17,14 +17,14 @@ function baseUrl() {
 }
 
 const userStorePath = process.env.VERCEL
-  ? path.join("/tmp", "clawdcare-users.json")
+  ? path.join("/tmp", "bingohealth-users.json")
   : path.join(__dirname, "data", "users.json");
 const store = createStore(userStorePath);
 
 if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
-  console.log("[clawdcare] User persistence: Supabase (profiles)");
+  console.log("[bingohealth] User persistence: Supabase (profiles)");
 } else {
-  console.log("[clawdcare] User persistence: local JSON file");
+  console.log("[bingohealth] User persistence: local JSON file");
 }
 
 async function getDatabaseConnectionStatus() {
@@ -280,7 +280,7 @@ if (process.env.REDIS_URL) {
   sessionConfig.store = new RedisStore({ client: redisClient });
 } else if (process.env.VERCEL && process.env.NODE_ENV === "production") {
   console.warn(
-    "[clawdcare] No REDIS_URL: sessions use MemoryStore and will not persist across Vercel invocations. Add REDIS_URL (Upstash Redis) for login to work."
+    "[bingohealth] No REDIS_URL: sessions use MemoryStore and will not persist across Vercel invocations. Add REDIS_URL (Upstash Redis) for login to work."
   );
 }
 app.use(session(sessionConfig));
@@ -695,10 +695,10 @@ module.exports = app;
 
 if (require.main === module) {
   app.listen(PORT, () => {
-    console.log(`ClawdCare dev server: ${baseUrl()}`);
+    console.log(`BingoHealth dev server: ${baseUrl()}`);
     if (process.env.NODE_ENV !== "production") {
       console.log(
-        "[clawdcare] Admin: open /admin.html after Sign in. If access denied: use login?next=/admin.html or set ADMIN_EMAILS=your@email.com in .env (restart). Local default: empty ADMIN_EMAILS → any logged-in user is admin."
+        "[bingohealth] Admin: open /admin.html after Sign in. If access denied: use login?next=/admin.html or set ADMIN_EMAILS=your@email.com in .env (restart). Local default: empty ADMIN_EMAILS → any logged-in user is admin."
       );
     }
   });

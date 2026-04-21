@@ -116,14 +116,14 @@
         renderUserDetail(u);
         setPane("user");
         updateNavCurrent("user", r.id);
-        document.title = (u.email || "User") + " — Admin — ClawdCare";
+        document.title = (u.email || "User") + " — Admin — BingoHealth";
         return;
       }
     }
     state.selectedUserId = null;
     setPane("overview");
     updateNavCurrent("overview", null);
-    document.title = "Admin — ClawdCare";
+    document.title = "Admin — BingoHealth";
   }
 
   function renderSidebarUsers(users) {
@@ -273,7 +273,7 @@
     var blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "clawdcare-users-" + new Date().toISOString().slice(0, 10) + ".csv";
+    a.download = "bingohealth-users-" + new Date().toISOString().slice(0, 10) + ".csv";
     a.rel = "noopener";
     document.body.appendChild(a);
     a.click();

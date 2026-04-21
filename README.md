@@ -1,8 +1,8 @@
-# ClawdCare (clawdcare.com)
+# BingoHealth (bingohealth.cn)
 
-Official site for **BingoClaw Health Care** / **ClawdCare**: **product** story, **shop** (Hardware, **Programs**, **Credit Plan** monthly subscriptions, **Credit packs** one-time + cart), **Your health** (longitudinal wellness dashboard), **console** preview, **about** (includes **Support** at `#support`), **legal**, and **My account** (Settings, Preferences, **Billing & subscriptions** including credit balance and Credit Plan line, **Orders**, session)—structured as a single platform toward a personal health management center.
+Official site for **BingoClaw Health Care** / **BingoHealth**（个人健康抗衰助理）: **product** story, **shop** (Hardware, **Programs**, **Credit Plan** monthly subscriptions, **Credit packs** one-time + cart), **Your health** (longitudinal wellness dashboard), **console** preview, **about** (includes **Support** at `#support`), **legal**, and **My account** (Settings, Preferences, **Billing & subscriptions** including credit balance and Credit Plan line, **Orders**, session)—structured as a single platform toward a personal health management center.
 
-**Product model:** **ClawdCare is built on BingoClaw.** The Shop has four product types: **Hardware** (typically one-time), **Programs** (monthly), **Credit Plan** (monthly subscription that credits a **credit** balance), and **Credit packs** (one-time credit purchase for mid-cycle top-up). **Programs** and **Credit Plan** bill monthly until canceled. Users are **not** asked to choose underlying LLMs—BingoClaw capabilities surface across the product.
+**Product model:** **BingoHealth is built on BingoClaw.** The Shop has four product types: **Hardware** (typically one-time), **Programs** (monthly), **Credit Plan** (monthly subscription that credits a **credit** balance), and **Credit packs** (one-time credit purchase for mid-cycle top-up). **Programs** and **Credit Plan** bill monthly until canceled. Users are **not** asked to choose underlying LLMs—BingoClaw capabilities surface across the product.
 
 ## Pages
 
@@ -37,7 +37,7 @@ The Express app continues to own email/password checks (bcrypt + Passport); Supa
 
 Admin 使用**和普通用户同一套账号密码**，没有单独的 “admin 密码”。
 
-### 预设管理员（`admin@clawdcare.com`）
+### 预设管理员（`admin@bingohealth.cn`）
 
 注册页要求密码至少 8 位，短密码需用脚本写入：
 
@@ -46,10 +46,10 @@ cp .env.example .env   # 若还没有
 npm run seed:admin
 ```
 
-默认会创建或更新：**邮箱** `admin@clawdcare.com`，**密码** `123456`，并赋予 `admin` 角色。  
+默认会创建或更新：**邮箱** `admin@bingohealth.cn`，**密码** `123456`，并赋予 `admin` 角色。  
 可用环境变量覆盖：`SEED_ADMIN_EMAIL`、`SEED_ADMIN_PASSWORD`。
 
-`.env.example` 里已把 `ADMIN_EMAILS=admin@clawdcare.com` 作为示例；线上请改强密码并勿提交真实 `.env`。
+`.env.example` 里已把 `ADMIN_EMAILS=admin@bingohealth.cn` 作为示例；线上请改强密码并勿提交真实 `.env`。
 
 ### 本地开发（`NODE_ENV` 不是 `production`）
 
@@ -57,7 +57,7 @@ npm run seed:admin
 2. 打开 **`/login.html?next=/admin.html`** 登录；成功后会进入后台。  
 3. **默认规则：** 若 `.env` 里**没有**配置 `ADMIN_EMAILS`（或为空），则**任意已登录用户**都可以访问 `/admin.html`，无需再配环境变量。  
 4. 若你配了 `ADMIN_DEV_OPEN=0` 或 `STRICT_ADMIN=1`，则不再使用上述宽松策略：需要把邮箱写进 `ADMIN_EMAILS`，或在数据里给该用户 `admin` 角色。  
-5. 终端启动时会打印一行 `[clawdcare] Admin: ...` 提示。
+5. 终端启动时会打印一行 `[bingohealth] Admin: ...` 提示。
 
 ### 线上（production，如 Vercel）
 

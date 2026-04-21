@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <!-- Top-down crustacean mark — warm terracotta, BingoClaw-style dimension -->
-  <symbol id="clawd-mark" viewBox="0 0 32 32">
+  <symbol id="bingohealth-mark" viewBox="0 0 32 32">
     <g>
       <!-- Tail fan -->
       <path fill="#7a3224" d="M11.2 21.4l.85 2.05q3.95 3.35 7.9 0l.85-2.05q-2.55 1.25-4.8 1.22-2.25-.03-4.8-1.22z" />

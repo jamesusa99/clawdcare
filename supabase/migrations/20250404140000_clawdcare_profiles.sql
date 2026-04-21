@@ -1,4 +1,4 @@
--- ClawdCare: application user profiles (Passport.js email/password on the Node server).
+-- BingoHealth: application user profiles (Passport.js email/password on the Node server).
 -- The API uses SUPABASE_SERVICE_ROLE_KEY only (never expose to the browser).
 -- Docs: https://supabase.com/docs
 
@@ -13,7 +13,7 @@ create table if not exists public.profiles (
   created_at timestamptz not null default now()
 );
 
-comment on table public.profiles is 'ClawdCare registered users; credentials verified by Express + bcrypt.';
+comment on table public.profiles is 'BingoHealth registered users; credentials verified by Express + bcrypt.';
 
 create unique index if not exists profiles_email_lower_idx on public.profiles (lower(trim(email)));
 

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.clawdcare.com/sitemap.xml
+Sitemap: https://www.bingohealth.cn/sitemap.xml

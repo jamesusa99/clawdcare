@@ -23,9 +23,9 @@
   var DEFAULT_HASH = "settings";
 
   var TITLES = {
-    settings: "Account — Settings — ClawdCare",
-    preferences: "Account — Preferences — ClawdCare",
-    billing: "Account — Billing & subscriptions — ClawdCare",
+    settings: "Account — Settings — BingoHealth",
+    preferences: "Account — Preferences — BingoHealth",
+    billing: "Account — Billing & subscriptions — BingoHealth",
   };
 
   function normalizedHashKey() {
